@@ -1,0 +1,257 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rolling Returns &mdash; NIFTY Index Terminal — Notes</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=76c35ab3" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Volatility" href="volatility.html" />
+    <link rel="prev" title="Drawdown" href="drawdown.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NIFTY Index Terminal — Notes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index-levels.html">Index Levels &amp; Rebasing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#the-fix-rebasing">The fix: rebasing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#log-scale">Log scale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#why-it-matters">Why it matters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="base-dates.html">Base Dates &amp; Back-tested History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="drawdown.html">Drawdown</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#worked-example-the-2020-crash">Worked example: the 2020 crash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Rolling Returns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-n-1-3-5-7-10-years">Why N = 1, 3, 5, 7, 10 years</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#worked-example">Worked example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-it-matters-sequence-of-returns-risk">Why it matters: sequence-of-returns risk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#caveat">Caveat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="volatility.html">Volatility</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#choosing-a-window">Choosing a window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#worked-example">Worked example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="calendar-returns.html">Calendar-Year Returns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#worked-examples">Worked examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NIFTY Index Terminal — Notes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Rolling Returns</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/concepts/rolling-returns.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rolling-returns">
+<h1>Rolling Returns<a class="headerlink" href="#rolling-returns" title="Link to this heading"></a></h1>
+<section id="the-simple-explanation">
+<h2>The simple explanation<a class="headerlink" href="#the-simple-explanation" title="Link to this heading"></a></h2>
+<p>A single “5-year return” figure (e.g. “NIFTY 50 returned 45% over the last 5
+years”) only tells you about <em>one specific</em> 5-year window — the one that
+happens to end today. <strong>Rolling returns</strong> fix that by asking the same
+question on <em>every</em> trading day: “if someone had bought on this day and
+held for exactly N years, what annualized return would they have earned?”
+Plotting the answer for every day produces a continuous line instead of one
+number.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>lookback_days      = N years ≈ N × 365.25 days
+start_price        = close on (today − lookback_days)
+elapsed_days        = today − that start date (actual calendar days)
+rolling_return[i]  = ( close[i] / start_price ) ^ (365.25 / elapsed_days) − 1
+</pre></div>
+</div>
+<p>The result is <strong>annualized</strong> — expressed as “% per year”, not “% over the
+whole period” — so a 3-year window and a 10-year window are directly
+comparable numbers, even though the raw compounding happened over very
+different lengths of time.</p>
+</section>
+<section id="why-n-1-3-5-7-10-years">
+<h2>Why N = 1, 3, 5, 7, 10 years<a class="headerlink" href="#why-n-1-3-5-7-10-years" title="Link to this heading"></a></h2>
+<p>The Terminal offers five lookback periods because each answers a
+different practical question, and they tend to disagree with each other —
+which is itself the point:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12.0%" />
+<col style="width: 88.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Window</p></th>
+<th class="head"><p>What it’s good for</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>1Y</strong></p></td>
+<td><p>The noisiest, most reactive view. Dominated by whatever regime the
+market is in <em>right now</em> — a single bad quarter can swing it by
+double digits. Useful for “how has the last year felt,” not for
+judging an index’s long-run character.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>3Y</strong></p></td>
+<td><p>Short enough to still reflect a specific bull or bear phase, long
+enough to smooth out single-quarter noise. Common horizon for
+reviewing a recent SIP or lump-sum decision.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>5Y</strong></p></td>
+<td><p>A common “did this investment work out” horizon — long enough to
+usually span at least one meaningful drawdown, short enough to still
+feel personally relevant.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>7Y</strong></p></td>
+<td><p>Starts to average across more than one market cycle (a cycle from
+peak to peak has historically run roughly 5–8 years in NIFTY 50).
+Less sensitive to <em>when exactly</em> you started than 3Y or 5Y.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>10Y</strong></p></td>
+<td><p>The steadiest of the five — by this length, most single crashes and
+rallies have been averaged into the number. Closest of the five to
+a read on long-run compounding character rather than market timing.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="worked-example">
+<h2>Worked example<a class="headerlink" href="#worked-example" title="Link to this heading"></a></h2>
+<p>As of 16 Sep 2026, NIFTY 50 closed at <strong>23,217.60</strong>. Five years earlier, on
+16 Sep 2021, it closed at <strong>17,629.50</strong>. That’s 5.00 years apart, so:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(23,217.60 / 17,629.50) ^ (1/5.00) − 1 = 5.7% per year
+</pre></div>
+</div>
+<p>That +5.7% is the 5Y rolling return plotted for 16 Sep 2026. The point
+<em>immediately to its left</em> on the chart is the same calculation done for
+15 Sep 2026 vs. 15 Sep 2021 — a different pair of dates entirely, which is
+why the line moves at all even though “5 years” never changes.</p>
+</section>
+<section id="why-it-matters-sequence-of-returns-risk">
+<h2>Why it matters: sequence-of-returns risk<a class="headerlink" href="#why-it-matters-sequence-of-returns-risk" title="Link to this heading"></a></h2>
+<p>If you only ever look at <em>one</em> trailing return (e.g. “the 10-year return as
+of today”), you can’t tell whether that number is typical or a fluke of
+exactly when the window happens to start and end — an investor who bought
+right before a crash and one who bought right after can have wildly
+different 5-year outcomes from the <em>same</em> index. Rolling returns expose
+this “sequence-of-returns risk” directly: a wide, choppy band of 1Y rolling
+returns next to a much calmer band of 10Y rolling returns is the chart
+telling you that short holding periods in that index carry much more luck
+(good or bad) than long ones.</p>
+</section>
+<section id="how-to-read-it-on-the-chart">
+<h2>How to read it on the chart<a class="headerlink" href="#how-to-read-it-on-the-chart" title="Link to this heading"></a></h2>
+<p>Switch the lookback with the chip row (1Y/3Y/5Y/7Y/10Y) and watch how much
+the line calms down as the window lengthens — that calming is the
+sequence-of-returns effect shrinking. The dashed line at 0% separates
+periods where that holding length would have lost money from periods where
+it wouldn’t have. The stat tile shows the <em>latest</em> rolling return plus the
+average rolling return across whatever range you’ve zoomed into.</p>
+</section>
+<section id="caveat">
+<h2>Caveat<a class="headerlink" href="#caveat" title="Link to this heading"></a></h2>
+<p>A point on the rolling-return line only exists once enough history has
+accumulated behind it — a 10Y line can’t start until 10 years after an
+index’s first data point. That’s why NIFTY Midcap 150’s 10Y rolling-return
+line only begins in 2015, a decade after its 2005 base date.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="drawdown.html" class="btn btn-neutral float-left" title="Drawdown" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="volatility.html" class="btn btn-neutral float-right" title="Volatility" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

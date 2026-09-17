@@ -1,0 +1,224 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Base Dates &amp; Back-tested History &mdash; NIFTY Index Terminal — Notes</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=76c35ab3" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Drawdown" href="drawdown.html" />
+    <link rel="prev" title="Index Levels &amp; Rebasing" href="index-levels.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NIFTY Index Terminal — Notes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index-levels.html">Index Levels &amp; Rebasing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#the-fix-rebasing">The fix: rebasing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#log-scale">Log scale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#why-it-matters">Why it matters</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Base Dates &amp; Back-tested History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="drawdown.html">Drawdown</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#worked-example-the-2020-crash">Worked example: the 2020 crash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rolling-returns.html">Rolling Returns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#why-n-1-3-5-7-10-years">Why N = 1, 3, 5, 7, 10 years</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#worked-example">Worked example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#why-it-matters-sequence-of-returns-risk">Why it matters: sequence-of-returns risk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#caveat">Caveat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="volatility.html">Volatility</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#choosing-a-window">Choosing a window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#worked-example">Worked example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="calendar-returns.html">Calendar-Year Returns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#worked-examples">Worked examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NIFTY Index Terminal — Notes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Base Dates &amp; Back-tested History</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/concepts/base-dates.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="base-dates-back-tested-history">
+<h1>Base Dates &amp; Back-tested History<a class="headerlink" href="#base-dates-back-tested-history" title="Link to this heading"></a></h1>
+<section id="the-simple-explanation">
+<h2>The simple explanation<a class="headerlink" href="#the-simple-explanation" title="Link to this heading"></a></h2>
+<p>Every NSE index has two distinct dates that are easy to conflate:</p>
+<ul class="simple">
+<li><p><strong>Launch date</strong> — when the index actually started being calculated and
+published in real time.</p></li>
+<li><p><strong>Base date</strong> — the date NSE Indices chose to set the index to 1,000. This
+is often <em>earlier</em> than the launch date, because once an index’s
+methodology (which stocks, what weighting) is defined, NSE can apply that
+methodology backward using historical constituent prices to produce a
+continuous back-tested series — even for days before anyone was actually
+quoting the index.</p></li>
+</ul>
+<p>The Terminal’s charts default to showing the <strong>full back-tested history</strong>,
+which is why NIFTY 50 data starts in <strong>July 1990</strong> even though the index
+wasn’t launched until <strong>22 April 1996</strong> (base date 3 Nov 1995).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 27.3%" />
+<col style="width: 22.7%" />
+<col style="width: 22.7%" />
+<col style="width: 27.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Index</p></th>
+<th class="head"><p>Launched</p></th>
+<th class="head"><p>Base date (=1000)</p></th>
+<th class="head"><p>Earliest chart data</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NIFTY 50</p></td>
+<td><p>22 Apr 1996</p></td>
+<td><p>3 Nov 1995</p></td>
+<td><p>3 Jul 1990</p></td>
+</tr>
+<tr class="row-odd"><td><p>NIFTY Next 50</p></td>
+<td><p>1 Jan 1997</p></td>
+<td><p>3 Nov 1996</p></td>
+<td><p>4 Nov 1996</p></td>
+</tr>
+<tr class="row-even"><td><p>NIFTY Midcap 150</p></td>
+<td><p>Apr 2016</p></td>
+<td><p>1 Apr 2005</p></td>
+<td><p>1 Apr 2005</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="why-it-matters">
+<h2>Why it matters<a class="headerlink" href="#why-it-matters" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Data before an index’s <strong>launch date</strong> is a retroactive reconstruction —
+real historical stock prices run through today’s index methodology, not
+a series that was actually published and tradeable at the time. It’s
+generally trustworthy as a research approximation, but it wasn’t something
+you could have bought or benchmarked against in, say, 1992.</p></li>
+<li><p>Because each index has a different base date, their <strong>raw levels are not
+comparable</strong> — see <a class="reference internal" href="index-levels.html"><span class="doc">Index Levels &amp; Rebasing</span></a> for the fix (rebasing).</p></li>
+<li><p>NIFTY Midcap 150 in particular is a relatively new index construct (2016)
+wearing an older base date (2005) — its pre-2016 history is the most
+“synthetic” of the three in this Terminal, built from a stock universe
+definition that didn’t formally exist yet at the time.</p></li>
+</ul>
+</section>
+<section id="how-to-read-it-on-the-chart">
+<h2>How to read it on the chart<a class="headerlink" href="#how-to-read-it-on-the-chart" title="Link to this heading"></a></h2>
+<p>There’s no visual marker distinguishing back-tested history from live
+history on the Price tab — both are drawn identically. Treat everything
+before the launch dates above as directionally informative but not as
+precise as the live-quoted era.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index-levels.html" class="btn btn-neutral float-left" title="Index Levels &amp; Rebasing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="drawdown.html" class="btn btn-neutral float-right" title="Drawdown" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Volatility &mdash; NIFTY Index Terminal — Notes</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=76c35ab3" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Calendar-Year Returns" href="calendar-returns.html" />
+    <link rel="prev" title="Rolling Returns" href="rolling-returns.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NIFTY Index Terminal — Notes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index-levels.html">Index Levels &amp; Rebasing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#the-fix-rebasing">The fix: rebasing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#log-scale">Log scale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#why-it-matters">Why it matters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="base-dates.html">Base Dates &amp; Back-tested History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="drawdown.html">Drawdown</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#worked-example-the-2020-crash">Worked example: the 2020 crash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rolling-returns.html">Rolling Returns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#why-n-1-3-5-7-10-years">Why N = 1, 3, 5, 7, 10 years</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#worked-example">Worked example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#why-it-matters-sequence-of-returns-risk">Why it matters: sequence-of-returns risk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#caveat">Caveat</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Volatility</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#choosing-a-window">Choosing a window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#worked-example">Worked example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="calendar-returns.html">Calendar-Year Returns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#worked-examples">Worked examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NIFTY Index Terminal — Notes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Volatility</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/concepts/volatility.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="volatility">
+<h1>Volatility<a class="headerlink" href="#volatility" title="Link to this heading"></a></h1>
+<section id="the-simple-explanation">
+<h2>The simple explanation<a class="headerlink" href="#the-simple-explanation" title="Link to this heading"></a></h2>
+<p>Volatility measures <strong>how much daily returns swing around</strong>, not which
+direction the index is heading. A high-volatility index isn’t necessarily
+a bad one — it’s one whose day-to-day path is bumpier, up and down alike.
+This is the one metric on the Terminal that is never “good” or “bad” by
+sign, which is why its stat tiles show a plain number with no ▲/▼ arrow,
+unlike every other tab.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>daily_log_return[i] = ln( close[i] / close[i−1] )
+
+rolling_std         = standard deviation of the last W daily log returns
+volatility[i]        = rolling_std × √252 × 100
+</pre></div>
+</div>
+<p>Two things are doing work in that formula that are worth unpacking:</p>
+<p><strong>Log returns, not simple returns.</strong> <code class="docutils literal notranslate"><span class="pre">ln(close[i]/close[i-1])</span></code> is used
+instead of the simple <code class="docutils literal notranslate"><span class="pre">close[i]/close[i-1]</span> <span class="pre">-</span> <span class="pre">1</span></code> because log returns are
+symmetric and additive — a +10% day and a −10% day are not mirror images
+under simple returns (going up 10% then down 10% doesn’t get you back to
+where you started), but they are under log returns. That symmetry is what
+makes standard deviation a meaningful summary of “typical daily swing.”</p>
+<p><strong>The √252 annualization.</strong> A single day’s return has some standard
+deviation; if daily moves were independent of each other, variance would
+add up over T trading days, so standard deviation scales with the
+<em>square root</em> of T. There are about 252 trading days in a year on NSE, so
+multiplying the daily standard deviation by √252 rescales “how much a
+single day typically moves” into “how much a full year’s worth of those
+moves would compound to” — putting it on the same annualized footing as
+the return figures elsewhere in the Terminal.</p>
+</section>
+<section id="choosing-a-window">
+<h2>Choosing a window<a class="headerlink" href="#choosing-a-window" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12.0%" />
+<col style="width: 88.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Window</p></th>
+<th class="head"><p>What it’s good for</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>1M (21d)</strong></p></td>
+<td><p>The most reactive — spikes hard around a single sharp event (a
+budget announcement, a global shock) and fades just as fast once
+that event rolls out of the trailing window.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>3M (63d)</strong></p></td>
+<td><p>A middle ground: still responsive to a changing regime within a
+quarter, but not whipsawed by any single day.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>6M (126d)</strong></p></td>
+<td><p>Smoother still; mostly reflects whether the last two quarters have
+been calm or turbulent, rather than any one event.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>1Y (252d)</strong></p></td>
+<td><p>The steadiest reading — closest to “this index’s typical annual
+character” rather than its current mood. Good for comparing the
+three indices’ baseline riskiness against each other.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="worked-example">
+<h2>Worked example<a class="headerlink" href="#worked-example" title="Link to this heading"></a></h2>
+<p>Using NIFTY 50’s last 21 trading days as of 16 Sep 2026, the standard
+deviation of daily log returns, annualized, comes out to <strong>7.5%</strong>. Over the
+last 252 trading days (roughly the last year), it’s <strong>13.2%</strong> — the shorter
+window happened to catch a calmer recent stretch than the index’s typical
+year.</p>
+</section>
+<section id="why-it-matters">
+<h2>Why it matters<a class="headerlink" href="#why-it-matters" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Volatility is the standard proxy for <strong>risk</strong> in most portfolio theory —
+not risk of loss specifically, but of uncertainty in outcome.</p></li>
+<li><p>Comparing the three indices’ volatility (rather than just their returns)
+is how you judge whether NIFTY Midcap 150’s typically higher returns are
+compensation for genuinely bumpier ride, or a free lunch.</p></li>
+<li><p>A rising volatility line, even with the index flat or up, is often an
+early tell that a market regime is shifting — big up days and big down
+days both raise it.</p></li>
+</ul>
+</section>
+<section id="how-to-read-it-on-the-chart">
+<h2>How to read it on the chart<a class="headerlink" href="#how-to-read-it-on-the-chart" title="Link to this heading"></a></h2>
+<p>The Volatility tab has no zero line and no directional color, by design —
+higher on the chart always just means “bigger daily swings lately,”
+regardless of whether those swings were up or down moves.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rolling-returns.html" class="btn btn-neutral float-left" title="Rolling Returns" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="calendar-returns.html" class="btn btn-neutral float-right" title="Calendar-Year Returns" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

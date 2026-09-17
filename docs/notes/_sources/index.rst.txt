@@ -1,0 +1,44 @@
+NIFTY Index Terminal — Notes
+============================
+
+Reference notes for the metrics shown in the `NIFTY Index Terminal
+<../index.html>`_ — what each chart measures, the formula behind it, and
+how to read it without getting misled. Every worked example below uses the
+real NIFTY 50 series, not placeholder numbers.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 22 45 33
+
+   * - Concept
+     - What it measures
+     - Key terms
+   * - :doc:`concepts/index-levels`
+     - Raw level vs. "Growth of ₹100"
+     - rebasing, log scale
+   * - :doc:`concepts/base-dates`
+     - Data before an index's launch date
+     - base date, back-tested history
+   * - :doc:`concepts/drawdown`
+     - Fall from the last all-time high
+     - running peak, recovery time
+   * - :doc:`concepts/rolling-returns`
+     - Annualized return over a trailing N years
+     - CAGR, sequence-of-returns risk
+   * - :doc:`concepts/volatility`
+     - How much daily returns swing, annualized
+     - std. deviation, √252
+   * - :doc:`concepts/calendar-returns`
+     - Simple year-by-year return
+     - YTD, partial year
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+
+   concepts/index-levels
+   concepts/base-dates
+   concepts/drawdown
+   concepts/rolling-returns
+   concepts/volatility
+   concepts/calendar-returns

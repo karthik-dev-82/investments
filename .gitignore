@@ -1,0 +1,5 @@
+.venv/
+__pycache__/
+*.pyc
+docs_src/_build/
+download_log.txt
