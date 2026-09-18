@@ -1,0 +1,258 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Choosing a Fund &mdash; NIFTY Index Terminal — Notes</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=93e713b6" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Calendar-Year Returns" href="calendar-returns.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NIFTY Index Terminal — Notes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index-levels.html">Index Levels &amp; Rebasing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#the-fix-rebasing">The fix: rebasing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#log-scale">Log scale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#why-it-matters">Why it matters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="base-dates.html">Base Dates &amp; Back-tested History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="drawdown.html">Drawdown</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#worked-example-the-2020-crash">Worked example: the 2020 crash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rolling-returns.html">Rolling Returns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#why-n-1-3-5-7-10-years">Why N = 1, 3, 5, 7, 10 years</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#worked-example">Worked example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#why-it-matters-sequence-of-returns-risk">Why it matters: sequence-of-returns risk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#caveat">Caveat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="volatility.html">Volatility</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#choosing-a-window">Choosing a window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#worked-example">Worked example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="calendar-returns.html">Calendar-Year Returns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#worked-examples">Worked examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Choosing a Fund</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#direct-vs-regular">Direct vs. Regular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#growth-vs-idcw-and-why-it-matters-more-for-an-australian-tax-resident">Growth vs. IDCW — and why it matters more for an Australian tax resident</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lock-in-why-elss-variants-are-excluded">Lock-in: why ELSS variants are excluded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-aum-is-shown-at-all">Why AUM is shown at all</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-this-page-doesn-t-cover">What this page doesn’t cover</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NIFTY Index Terminal — Notes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Choosing a Fund</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/concepts/choosing-a-fund.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="choosing-a-fund">
+<h1>Choosing a Fund<a class="headerlink" href="#choosing-a-fund" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This page explains the filters used on the Terminal’s <strong>Funds</strong> tab. It is not tax
+or legal advice — verify anything below with an Australian tax adviser and an
+India-side AMC/RTA before acting on it, especially the points on Growth vs. IDCW
+and NRI/OCI eligibility, both of which depend on your specific circumstances.</p>
+</div>
+<section id="the-simple-explanation">
+<h2>The simple explanation<a class="headerlink" href="#the-simple-explanation" title="Link to this heading"></a></h2>
+<p>Two funds tracking the same index (say, NIFTY 50) are not interchangeable products —
+they differ in <strong>plan</strong> (Direct vs. Regular), <strong>option</strong> (Growth vs. IDCW), and
+sometimes carry a <strong>lock-in</strong> most people don’t notice until they try to sell. The
+Funds tab filters on all three, and this page explains why each filter is there.</p>
+</section>
+<section id="direct-vs-regular">
+<h2>Direct vs. Regular<a class="headerlink" href="#direct-vs-regular" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Direct plan</strong> — bought straight from the AMC (or a platform that doesn’t take a
+commission), no distributor involved.</p></li>
+<li><p><strong>Regular plan</strong> — bought through a distributor/advisor, who is paid an ongoing
+trail commission baked into the plan’s expense ratio.</p></li>
+</ul>
+<p>Same portfolio, same fund manager, same index — the <em>only</em> difference is who else is
+being paid out of your returns every year. For a passively managed index fund, where
+there’s no manager skill to pay for in the first place, that gap is pure cost. The
+Funds tab shows <strong>Direct plan only</strong>.</p>
+</section>
+<section id="growth-vs-idcw-and-why-it-matters-more-for-an-australian-tax-resident">
+<h2>Growth vs. IDCW — and why it matters more for an Australian tax resident<a class="headerlink" href="#growth-vs-idcw-and-why-it-matters-more-for-an-australian-tax-resident" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Growth option</strong> — all gains stay inside the fund; the NAV simply rises. Nothing
+is paid out until you redeem units.</p></li>
+<li><p><strong>IDCW option</strong> (Income Distribution cum Capital Withdrawal, the renamed
+“Dividend” option) — the fund periodically pays out a distribution, reducing the
+NAV by the amount paid. Reinvesting it (buying more units with the payout) does not
+undo the fact that a distribution occurred.</p></li>
+</ul>
+<p>For someone taxed only in India, this is a minor preference. For an <strong>Australian tax
+resident</strong>, it’s a materially different tax outcome:</p>
+<ul class="simple">
+<li><p>Under Growth, no income is paid out — nothing is assessable in Australia until you
+actually sell your units, at which point it’s a capital gain (and, if held over 12
+months, eligible for the CGT discount).</p></li>
+<li><p>Under IDCW, each distribution is assessable Australian income in the year it’s
+paid — including the ones you never touched because they were auto-reinvested. You’d
+owe tax on cash you didn’t receive as cash.</p></li>
+</ul>
+<p>This is why the Terminal treats <strong>Growth option</strong> as a hard requirement, not a
+preference, for anyone in this situation. When you actually invest, double-check the
+scheme you’re buying is explicitly the <strong>Growth</strong> variant — Direct and Growth are two
+independent choices on the same order form, and it’s easy to select Direct/IDCW by
+mistake.</p>
+</section>
+<section id="lock-in-why-elss-variants-are-excluded">
+<h2>Lock-in: why ELSS variants are excluded<a class="headerlink" href="#lock-in-why-elss-variants-are-excluded" title="Link to this heading"></a></h2>
+<p>Several AMCs sell an <strong>ELSS Tax Saver</strong> version of their Nifty 50 index fund — same
+index, same portfolio, but wrapped in India’s Section 80C tax-saving structure, which
+carries a <strong>mandatory 3-year lock-in</strong> from the date of each purchase (each SIP
+instalment locks in separately).</p>
+<p>If you want to <strong>control the timing of your own exit completely</strong> — redeem some now,
+redeem more later, or leave the whole position untouched for a future date you haven’t
+picked yet — a 3-year lock-in works against that, and the 80C tax deduction it exists
+for is an India-resident income-tax benefit that doesn’t obviously help an Australian
+tax resident’s return anyway. The Funds tab excludes every ELSS/tax-saver variant by
+name, regardless of its expense ratio.</p>
+</section>
+<section id="why-aum-is-shown-at-all">
+<h2>Why AUM is shown at all<a class="headerlink" href="#why-aum-is-shown-at-all" title="Link to this heading"></a></h2>
+<p>Expense ratio is a known, fixed cost. AUM (assets under management) is a rough proxy
+for two things that matter more the longer you expect to hold something and the more
+likely it is to eventually be administered by someone else (a nominee, in this case a
+daughter, rather than you):</p>
+<ul class="simple">
+<li><p><strong>Liquidity and continuity</strong> — a fund with ₹25,000 Cr under management is
+overwhelmingly unlikely to be shut down or merged away; a fund with ₹20 Cr is a
+much smaller, newer bet, however cheap its expense ratio looks today.</p></li>
+<li><p><strong>Operational maturity</strong> — a large, established AMC has run its transmission
+(the process of moving a deceased or gifting investor’s units to a nominee) process
+many times before. A newer, smaller AMC may not have.</p></li>
+</ul>
+<p>Neither of these is a reason to always pick the largest fund — but when two funds are
+close on cost, size and the AMC’s track record are a reasonable tie-breaker for a
+holding you might not personally manage the end of.</p>
+</section>
+<section id="what-this-page-doesn-t-cover">
+<h2>What this page doesn’t cover<a class="headerlink" href="#what-this-page-doesn-t-cover" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Whether you’re eligible to invest at all.</strong> NRI/OCI investment into Indian mutual
+funds is routed through an NRE or NRO account under FEMA, and while most AMCs accept
+investors resident in Australia, a few historically restrict certain overseas
+jurisdictions (this has mostly affected US/Canada-resident investors due to FATCA
+compliance costs, not Australia — but confirm directly with the AMC before investing,
+don’t assume from this page).</p></li>
+<li><p><strong>Which index, or how much to put where.</strong> That’s an asset-allocation decision, not
+a fund-selection one — the Funds tab helps you pick the cheapest, most durable
+vehicle <em>once</em> you’ve decided you want NIFTY 50, Next 50, or Midcap 150 exposure at
+all.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="calendar-returns.html" class="btn btn-neutral float-left" title="Calendar-Year Returns" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

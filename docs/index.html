@@ -160,6 +160,14 @@
     text-align:right; font-size:10.5px; color:var(--text-3);
     font-family:"IBM Plex Mono",monospace; padding:6px 6px 2px;
   }
+  .chart-hint a{ color:var(--n50); }
+
+  .fund-group-row td{
+    background:var(--page); font-weight:600; color:var(--text-2);
+    padding:8px 10px 4px; border-bottom:1px solid var(--border);
+  }
+  .fund-group-row td .dot{ display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; }
+  table.caltable td.fund-src{ color:var(--text-3); font-size:10.5px; font-weight:400; text-align:center; }
 
   .tooltip{
     position:absolute; pointer-events:none; z-index:5; background:var(--surface);
@@ -246,6 +254,9 @@
 
     <div class="calendar-wrap" id="calendarWrap" hidden></div>
     <div class="chart-hint" id="calHint" hidden>† partial year (measured from index inception, not a full calendar year) · (YTD) = year to date, through the latest trading day.</div>
+
+    <div class="calendar-wrap" id="fundsWrap" hidden></div>
+    <div class="chart-hint" id="fundsHint" hidden>Direct plan, Growth option, no lock-in — sorted by AUM within each index. Excludes ELSS/tax-saver variants (3-year statutory lock-in). Expense ratio mostly from AMFI's TER disclosure (~Jul-2025); a few newer AMCs from INDmoney (Sep-2026) where AMFI has no record yet — see <a href="notes/concepts/choosing-a-fund.html">notes</a>. Not investment advice.</div>
   </div>
 
   <div class="stats" id="stats"></div>
@@ -381,6 +392,9 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[183,185,186,189,190,191,192,193,196,19
     s.data = d;
   });
 
+  var FUNDS_DATA = {"NIFTY 50":[{"name":"UTI Nifty 50 Index Fund","ter":0.19,"aum":29485,"src":"amfi"},{"name":"HDFC Nifty 50 Index Fund","ter":0.2,"aum":23784,"src":"amfi"},{"name":"ICICI Prudential Nifty 50 Index Fund","ter":0.17,"aum":17254,"src":"amfi"},{"name":"SBI Nifty Index Fund","ter":0.25,"aum":13928,"src":"web"},{"name":"Navi Nifty 50 Index Fund","ter":0.06,"aum":4130,"src":"amfi"},{"name":"Nippon India Index Fund - Nifty 50","ter":0.07,"aum":3884,"src":"amfi"},{"name":"BANDHAN Nifty 50 Index Fund","ter":0.1,"aum":2797,"src":"amfi"},{"name":"Tata Nifty 50 Index Fund","ter":0.2,"aum":1707,"src":"amfi"},{"name":"Aditya Birla Sun Life Nifty 50 Index Fund","ter":0.2,"aum":1488,"src":"amfi"},{"name":"Kotak Nifty 50 Index Fund","ter":0.15,"aum":1157,"src":"amfi"},{"name":"DSP Nifty 50 Index Fund","ter":0.18,"aum":1109,"src":"amfi"},{"name":"Axis Nifty 50 Index Fund","ter":0.12,"aum":1031,"src":"amfi"},{"name":"Motilal Oswal Nifty 50 Index Fund","ter":0.15,"aum":893,"src":"amfi"},{"name":"Franklin India NSE Nifty 50 Index Fund","ter":0.24,"aum":715,"src":"amfi"},{"name":"HSBC NIFTY 50 Index Fund","ter":0.2,"aum":392,"src":"amfi"},{"name":"LIC MF Nifty 50 Index Fund","ter":0.2,"aum":366,"src":"amfi"},{"name":"Edelweiss Nifty 50 Index Fund","ter":0.05,"aum":287,"src":"amfi"},{"name":"JioBlackRock Nifty 50 Index Fund","ter":0.24,"aum":268,"src":"web"},{"name":"Mirae Asset Nifty 50 Index Fund","ter":0.08,"aum":71,"src":"web"},{"name":"Baroda BNP Paribas Nifty 50 Index Fund","ter":0.16,"aum":54,"src":"amfi"},{"name":"ANGEL ONE NIFTY 50 INDEX FUND","ter":0.25,"aum":33,"src":"web"},{"name":"Groww Nifty 50 Index Fund","ter":0.49,"aum":27,"src":"web"},{"name":"Taurus Nifty 50 Index Fund","ter":0.81,"aum":7,"src":"amfi"}],"NIFTY NEXT 50":[{"name":"ICICI Prudential Nifty Next 50 Index Fund","ter":0.31,"aum":10117,"src":"amfi"},{"name":"UTI - Nifty Next 50 Index Fund","ter":0.36,"aum":7547,"src":"amfi"},{"name":"HDFC NIFTY Next 50 index Fund","ter":0.3,"aum":2709,"src":"amfi"},{"name":"SBI Nifty Next 50 Index Fund","ter":0.32,"aum":2366,"src":"amfi"},{"name":"DSP Nifty Next 50 Index Fund","ter":0.28,"aum":1407,"src":"amfi"},{"name":"Navi Nifty Next 50 Index Fund","ter":0.12,"aum":1331,"src":"amfi"},{"name":"Kotak Nifty Next 50 Index Fund","ter":0.11,"aum":1295,"src":"amfi"},{"name":"Axis Nifty Next 50 Index Fund","ter":0.25,"aum":549,"src":"amfi"},{"name":"Motilal Oswal Nifty Next 50 Index Fund","ter":0.35,"aum":522,"src":"amfi"},{"name":"Edelweiss Nifty Next 50 Index Fund","ter":0.09,"aum":303,"src":"amfi"},{"name":"Aditya Birla Sun Life Nifty Next 50 Index Fund","ter":0.33,"aum":287,"src":"amfi"},{"name":"JioBlackRock Nifty Next 50 Index Fund","ter":0.39,"aum":223,"src":"web"},{"name":"HSBC NIFTY NEXT 50 Index Fund","ter":0.35,"aum":182,"src":"amfi"},{"name":"Tata Nifty Next 50 Index Fund","ter":0.34,"aum":125,"src":"web"},{"name":"LIC MF Nifty Next 50 Index Fund","ter":0.32,"aum":112,"src":"amfi"},{"name":"Bandhan Nifty Next 50 Index Fund","ter":0.39,"aum":36,"src":"web"},{"name":"Groww Nifty Next 50 Index Fund","ter":0.49,"aum":11,"src":"web"},{"name":"Nippon India Nifty Next 50 Junior BeES FoF","ter":0.11,"aum":null,"src":"amfi"}],"NIFTY MIDCAP 150":[{"name":"Motilal Oswal Nifty Midcap 150 Index Fund","ter":0.3,"aum":4151,"src":"amfi"},{"name":"Nippon India Nifty Midcap 150 Index Fund","ter":0.3,"aum":2845,"src":"amfi"},{"name":"ICICI Prudential Nifty Midcap 150 Index Fund","ter":0.3,"aum":1328,"src":"amfi"},{"name":"SBI Nifty Midcap 150 Index Fund","ter":0.41,"aum":1292,"src":"amfi"},{"name":"HDFC NIFTY Midcap 150 Index Fund","ter":0.3,"aum":726,"src":"amfi"},{"name":"Aditya Birla Sun Life Nifty Midcap 150 Index Fund","ter":0.44,"aum":503,"src":"amfi"},{"name":"Navi Nifty Midcap 150 Index Fund","ter":0.22,"aum":408,"src":"amfi"},{"name":"Tata Nifty Midcap 150 Index Fund","ter":0.24,"aum":332,"src":"web"},{"name":"JioBlackRock Nifty Midcap 150 Index Fund","ter":0.36,"aum":287,"src":"web"},{"name":"Bandhan Nifty Midcap 150 Index Fund","ter":0.21,"aum":92,"src":"amfi"},{"name":"UTI Nifty Midcap 150 Index Fund","ter":0.66,"aum":79,"src":"web"},{"name":"Kotak Nifty Midcap 150 Index Fund","ter":0.3887,"aum":47,"src":"web"},{"name":"DSP Nifty Midcap 150 Index Fund","ter":0.41,"aum":18,"src":"web"},{"name":"Groww Nifty Midcap 150 Index Fund","ter":0.49,"aum":16,"src":"web"}]}
+;
+
   var FULL_MIN = Math.min.apply(null, SERIES.map(function(s){ return s.data.d[0]; }));
   var FULL_MAX = Math.max.apply(null, SERIES.map(function(s){ return s.data.d[s.data.d.length-1]; }));
   var CAL_MIN_YEAR = Math.min.apply(null, SERIES.map(function(s){ return s.data.calStartYear; }));
@@ -431,9 +445,10 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[183,185,186,189,190,191,192,193,196,19
       zeroLine: function(){ return null; },
       forceMaxZero:false, hasLog:false
     },
-    calendar: { id:"calendar", label:"Calendar Returns" }
+    calendar: { id:"calendar", label:"Calendar Returns" },
+    funds: { id:"funds", label:"Funds" }
   };
-  var TABS_ORDER = ["price","drawdown","rollret","vol","calendar"];
+  var TABS_ORDER = ["price","drawdown","rollret","vol","calendar","funds"];
 
   // ---------- DOM refs ----------
   var chartHeadEl = document.getElementById("chartHead");
@@ -454,6 +469,8 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[183,185,186,189,190,191,192,193,196,19
   var tabControlsEl = document.getElementById("tabControls");
   var calendarWrapEl = document.getElementById("calendarWrap");
   var calHintEl = document.getElementById("calHint");
+  var fundsWrapEl = document.getElementById("fundsWrap");
+  var fundsHintEl = document.getElementById("fundsHint");
 
   // ---------- header as-of ----------
   asofEl.innerHTML = "";
@@ -571,18 +588,24 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[183,185,186,189,190,191,192,193,196,19
     state.tab = id;
     TABS_ORDER.forEach(function(t){ TAB_DEFS[t].btn.setAttribute("aria-selected", String(t===id)); });
     var isCal = (id==="calendar");
-    chartHeadEl.hidden = isCal;
-    chartBox.hidden = isCal;
-    chartHintEl.hidden = isCal;
+    var isFunds = (id==="funds");
+    var isChart = !isCal && !isFunds;
+    chartHeadEl.hidden = !isChart;
+    chartBox.hidden = !isChart;
+    chartHintEl.hidden = !isChart;
     calendarWrapEl.hidden = !isCal;
     calHintEl.hidden = !isCal;
+    fundsWrapEl.hidden = !isFunds;
+    fundsHintEl.hidden = !isFunds;
     buildTabControls();
-    if(isCal){ renderCalendar(); } else { resize(); }
+    if(isCal){ renderCalendar(); } else if(isFunds){ renderFunds(); } else { resize(); }
     renderStats();
   }
 
   function refresh(){
-    if(state.tab==="calendar"){ renderCalendar(); } else { render(); }
+    if(state.tab==="calendar"){ renderCalendar(); }
+    else if(state.tab==="funds"){ renderFunds(); renderStats(); return; }
+    else { render(); }
     renderStats();
   }
 
@@ -1010,6 +1033,7 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[183,185,186,189,190,191,192,193,196,19
       else if(tab==="rollret") renderRangeAvgTile(tile, s, function(i){ return s.data.roll[state.rollPeriod][i]; }, true);
       else if(tab==="vol") renderRangeAvgTile(tile, s, function(i){ return s.data.vol[state.volWindow][i]; }, false);
       else if(tab==="calendar") renderCalendarTile(tile, s);
+      else if(tab==="funds") renderFundsTile(tile, s);
 
       statsEl.appendChild(tile);
     });
@@ -1153,6 +1177,104 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[183,185,186,189,190,191,192,193,196,19
       delta2.appendChild(arrow2); delta2.appendChild(val2); delta2.appendChild(since2);
       tile.appendChild(delta2);
     }
+  }
+
+  function renderFundsTile(tile, s){
+    var list = FUNDS_DATA[s.key] || [];
+    if(list.length===0){
+      var na = document.createElement("div");
+      na.className = "value tab"; na.textContent = "—";
+      tile.appendChild(na);
+      return;
+    }
+    var cheapest = list.reduce(function(a,b){ return b.ter<a.ter ? b : a; });
+    var largest = list[0]; // pre-sorted by AUM desc
+
+    var valueEl = document.createElement("div");
+    valueEl.className = "value tab";
+    valueEl.textContent = fmtNum(cheapest.ter,2) + "%";
+    tile.appendChild(valueEl);
+
+    var delta = document.createElement("div");
+    delta.className = "delta up";
+    var arrow = document.createElement("span");
+    arrow.className="arrow"; arrow.textContent="▲";
+    var since = document.createElement("span");
+    since.className="since"; since.textContent = " cheapest: " + cheapest.name;
+    delta.appendChild(arrow); delta.appendChild(since);
+    tile.appendChild(delta);
+
+    if(largest.aum!=null){
+      var delta2 = document.createElement("div");
+      delta2.className = "delta";
+      var val2 = document.createElement("span");
+      val2.textContent = "₹" + fmtNum(largest.aum,0) + " Cr";
+      var since2 = document.createElement("span");
+      since2.className="since"; since2.textContent = " largest: " + largest.name;
+      delta2.appendChild(val2); delta2.appendChild(since2);
+      tile.appendChild(delta2);
+    }
+  }
+
+  // ---------- funds comparison table ----------
+  function renderFunds(){
+    fundsWrapEl.innerHTML = "";
+    var table = document.createElement("table");
+    table.className = "caltable";
+
+    var thead = document.createElement("thead");
+    var htr = document.createElement("tr");
+    ["Fund (Direct, Growth)","TER","AUM"].forEach(function(h){
+      var th = document.createElement("th");
+      th.textContent = h;
+      htr.appendChild(th);
+    });
+    thead.appendChild(htr);
+    table.appendChild(thead);
+
+    var tbody = document.createElement("tbody");
+    SERIES.forEach(function(s){
+      if(!state.visible[s.key]) return;
+      var list = FUNDS_DATA[s.key] || [];
+      if(list.length===0) return;
+
+      var gtr = document.createElement("tr");
+      gtr.className = "fund-group-row";
+      var gtd = document.createElement("td");
+      gtd.colSpan = 3;
+      var dot = document.createElement("span");
+      dot.className="dot"; dot.style.background = s.color;
+      gtd.appendChild(dot);
+      gtd.appendChild(document.createTextNode(s.label + " — " + list.length + " funds"));
+      gtr.appendChild(gtd);
+      tbody.appendChild(gtr);
+
+      list.forEach(function(fnd){
+        var tr = document.createElement("tr");
+        var tdName = document.createElement("td");
+        tdName.className = "yr";
+        tdName.textContent = fnd.name;
+        if(fnd.src==="web"){
+          var flag = document.createElement("span");
+          flag.className = "fund-src";
+          flag.textContent = " *";
+          flag.title = "Not in AMFI's TER snapshot; sourced from INDmoney instead";
+          tdName.appendChild(flag);
+        }
+        var tdTer = document.createElement("td");
+        tdTer.className = "cell";
+        tdTer.style.background = "color-mix(in srgb, var(--good) " + Math.round((1-clamp(fnd.ter/0.8,0,1))*35) + "%, var(--surface))";
+        tdTer.textContent = fmtNum(fnd.ter,2) + "%";
+        var tdAum = document.createElement("td");
+        tdAum.style.textAlign = "right";
+        tdAum.style.fontVariantNumeric = "tabular-nums";
+        tdAum.textContent = fnd.aum!=null ? ("₹" + fnd.aum.toLocaleString("en-IN") + " Cr") : "—";
+        tr.appendChild(tdName); tr.appendChild(tdTer); tr.appendChild(tdAum);
+        tbody.appendChild(tr);
+      });
+    });
+    table.appendChild(tbody);
+    fundsWrapEl.appendChild(table);
   }
 
   // ---------- calendar returns table ----------

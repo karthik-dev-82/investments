@@ -31,6 +31,9 @@ real NIFTY 50 series, not placeholder numbers.
    * - :doc:`concepts/calendar-returns`
      - Simple year-by-year return
      - YTD, partial year
+   * - :doc:`concepts/choosing-a-fund`
+     - Which actual fund to buy, and why
+     - Direct, Growth, lock-in, AUM
 
 .. toctree::
    :maxdepth: 2
@@ -42,3 +45,4 @@ real NIFTY 50 series, not placeholder numbers.
    concepts/rolling-returns
    concepts/volatility
    concepts/calendar-returns
+   concepts/choosing-a-fund
