@@ -91,15 +91,15 @@ holding you might not personally manage the end of.
 The NRO → NRE route
 ----------------------
 
-This money is an **inheritance received in India** — India-sourced, not funds remitted
-from Australia — so under FEMA it lands in an **NRO** (Non-Resident Ordinary) account
-first, not NRE. The plan is to then transfer it into an **NRE** (Non-Resident External)
-account before investing:
+This money is **India-sourced** — not funds remitted from Australia — so under
+FEMA it lands in an **NRO** (Non-Resident Ordinary) account first, not NRE. The plan
+is to then transfer it into an **NRE** (Non-Resident External) account before
+investing:
 
-- **NRO** is for India-sourced income (rent, inheritance, dividends, sale of inherited
-  assets). Repatriating money *out* of India from NRO is capped at USD 1 million per
-  financial year and requires a CA to certify (Form 15CA/15CB) that applicable Indian
-  taxes have been settled on it.
+- **NRO** is for India-sourced income (rent, dividends, sale proceeds, and similar).
+  Repatriating money *out* of India from NRO is capped at USD 1 million per financial
+  year and requires a CA to certify (Form 15CA/15CB) that applicable Indian taxes
+  have been settled on it.
 - **NRE** is for money remitted *from abroad*. Once funds are properly transferred in
   (the NRO → NRE route is permitted, subject to the same USD 1 million/year cap and CA
   certification), they carry none of that repatriation friction going forward.
@@ -109,7 +109,7 @@ made *from* (NRO-linked vs. NRE-linked folio) affects how freely the eventual pr
 can move out of India later — relevant given the stated intent to possibly redeem, or
 possibly leave the position untouched for a daughter who may not be India-resident
 either. This page doesn't verify any of the current caps, certification steps, or
-timelines — confirm the live rules with a FEMA-aware CA before moving the inheritance
+timelines — confirm the live rules with a FEMA-aware CA before moving the money
 at all.
 
 What this page doesn't cover
