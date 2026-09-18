@@ -1,0 +1,1344 @@
+<title>NIFTY Index Terminal</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --page:      #f9f9f7;
+    --surface:   #fcfcfb;
+    --text-1:    #0b0b0b;
+    --text-2:    #52514e;
+    --text-3:    #898781;
+    --grid:      #e1e0d9;
+    --axis:      #c3c2b7;
+    --border:    rgba(11,11,11,0.10);
+    --chip-hover:rgba(11,11,11,0.05);
+    --chip-on:   rgba(11,11,11,0.06);
+    --n50:  #2a78d6;
+    --nn50: #eb6834;
+    --mc150:#1baf7a;
+    --good: #006300;
+    --bad:  #d03b3b;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --page:      #0d0d0d;
+      --surface:   #1a1a19;
+      --text-1:    #ffffff;
+      --text-2:    #c3c2b7;
+      --text-3:    #898781;
+      --grid:      #2c2c2a;
+      --axis:      #383835;
+      --border:    rgba(255,255,255,0.10);
+      --chip-hover:rgba(255,255,255,0.07);
+      --chip-on:   rgba(255,255,255,0.10);
+      --n50:  #3987e5;
+      --nn50: #d95926;
+      --mc150:#199e70;
+      --good: #0ca30c;
+      --bad:  #e66767;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --page:      #0d0d0d;
+    --surface:   #1a1a19;
+    --text-1:    #ffffff;
+    --text-2:    #c3c2b7;
+    --text-3:    #898781;
+    --grid:      #2c2c2a;
+    --axis:      #383835;
+    --border:    rgba(255,255,255,0.10);
+    --chip-hover:rgba(255,255,255,0.07);
+    --chip-on:   rgba(255,255,255,0.10);
+    --n50:  #3987e5;
+    --nn50: #d95926;
+    --mc150:#199e70;
+    --good: #0ca30c;
+    --bad:  #e66767;
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    background: var(--page);
+    color: var(--text-1);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    padding: 20px 16px 40px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono{ font-family: "IBM Plex Mono", ui-monospace, "SF Mono", Consolas, monospace; }
+  .tab{ font-variant-numeric: tabular-nums; }
+
+  .wrap{ max-width: 1080px; margin: 0 auto; display:flex; flex-direction:column; gap:18px; }
+
+  /* header */
+  header{ display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 20px; }
+  h1{
+    margin:0; font-family:"IBM Plex Mono", monospace; font-weight:700;
+    font-size: clamp(20px, 3.4vw, 27px); letter-spacing:-0.01em; text-wrap:balance;
+  }
+  h1 span{ color: var(--n50); }
+  .subtitle{ margin:4px 0 0; color: var(--text-2); font-size:13.5px; max-width:62ch; }
+  .subtitle a{ color: var(--n50); text-decoration:underline; text-underline-offset:2px; }
+  .subtitle a:hover{ text-decoration-thickness:2px; }
+  .asof{ color:var(--text-3); font-size:12px; text-align:right; white-space:nowrap; }
+  .asof b{ color:var(--text-2); font-weight:500; }
+
+  /* controls */
+  .controls{ display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; }
+  .seg{ display:inline-flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+  .seg button{
+    appearance:none; border:0; background:transparent; color:var(--text-2);
+    font:inherit; font-size:12.5px; font-weight:500; padding:7px 12px; cursor:pointer;
+    font-family:"IBM Plex Mono", monospace;
+  }
+  .seg button + button{ border-left:1px solid var(--border); }
+  .seg button[aria-pressed="true"]{ background:var(--chip-on); color:var(--text-1); }
+  .seg button:hover{ background:var(--chip-hover); }
+  .seg button:focus-visible{ outline:2px solid var(--n50); outline-offset:-2px; }
+
+  .chk{ display:inline-flex; align-items:center; gap:6px; font-size:12.5px; color:var(--text-2); cursor:pointer; user-select:none; font-family:"IBM Plex Mono",monospace;}
+  .chk input{ accent-color: var(--n50); width:14px; height:14px; }
+
+  .spacer{ flex:1 1 auto; }
+
+  /* tab bar */
+  .tabbar{ display:flex; gap:2px 18px; flex-wrap:wrap; border-bottom:1px solid var(--border); }
+  .tabbar button{
+    appearance:none; border:0; background:transparent; color:var(--text-2);
+    font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:500;
+    padding:9px 2px; cursor:pointer; position:relative; top:1px;
+    border-bottom:2px solid transparent;
+  }
+  .tabbar button[aria-selected="true"]{ color:var(--text-1); border-bottom-color:var(--n50); font-weight:600; }
+  .tabbar button:hover{ color:var(--text-1); }
+  .tabbar button:focus-visible{ outline:2px solid var(--n50); outline-offset:2px; }
+
+  .ranges{ display:inline-flex; gap:4px; flex-wrap:wrap; }
+  .ranges button{
+    appearance:none; border:1px solid var(--border); background:var(--surface); color:var(--text-2);
+    font-family:"IBM Plex Mono",monospace; font-size:12px; font-weight:500; padding:6px 10px;
+    border-radius:6px; cursor:pointer;
+  }
+  .ranges button[aria-pressed="true"]{ background:var(--chip-on); color:var(--text-1); border-color:var(--border); }
+  .ranges button:hover{ background:var(--chip-hover); }
+  .ranges button:focus-visible{ outline:2px solid var(--n50); outline-offset:1px; }
+
+  /* legend */
+  .legend{ display:flex; flex-wrap:wrap; gap:6px; }
+  .legend button{
+    appearance:none; display:inline-flex; align-items:center; gap:7px; cursor:pointer;
+    border:1px solid var(--border); background:var(--surface); border-radius:999px;
+    padding:6px 12px 6px 10px; font:inherit; font-size:12.5px; color:var(--text-1);
+    font-family:"IBM Plex Mono",monospace;
+  }
+  .legend button:hover{ background:var(--chip-hover); }
+  .legend button[aria-pressed="false"]{ color:var(--text-3); }
+  .legend button[aria-pressed="false"] .dot{ opacity:.35; }
+  .legend .dot{ width:9px; height:9px; border-radius:50%; flex:none; }
+  .legend button:focus-visible{ outline:2px solid var(--n50); outline-offset:1px; }
+
+  /* chart card */
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:14px 14px 8px;
+  }
+  .chart-head{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:0 4px 2px; flex-wrap:wrap; }
+  .range-readout{ font-size:11.5px; color:var(--text-3); font-family:"IBM Plex Mono",monospace; }
+  .reset-btn{
+    appearance:none; border:1px solid var(--border); background:transparent; color:var(--n50);
+    font-family:"IBM Plex Mono",monospace; font-size:11.5px; font-weight:600; padding:4px 9px;
+    border-radius:6px; cursor:pointer; visibility:hidden;
+  }
+  .reset-btn.show{ visibility:visible; }
+  .reset-btn:hover{ background:var(--chip-hover); }
+
+  .chart-box{ position:relative; width:100%; height:440px; touch-action:none; }
+  .chart-box canvas{ width:100%; height:100%; display:block; cursor:crosshair; }
+  .chart-hint{
+    text-align:right; font-size:10.5px; color:var(--text-3);
+    font-family:"IBM Plex Mono",monospace; padding:6px 6px 2px;
+  }
+  .chart-hint a{ color:var(--n50); }
+
+  .fund-group-row td{
+    background:var(--page); font-weight:600; color:var(--text-2);
+    padding:8px 10px 4px; border-bottom:1px solid var(--border);
+  }
+  .fund-group-row td .dot{ display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; }
+  table.caltable td.fund-src{ color:var(--text-3); font-size:10.5px; font-weight:400; text-align:center; }
+
+  .tooltip{
+    position:absolute; pointer-events:none; z-index:5; background:var(--surface);
+    border:1px solid var(--border); border-radius:8px; padding:8px 10px; font-size:12px;
+    box-shadow:0 4px 16px rgba(0,0,0,.12); min-width:150px; opacity:0; transition:opacity .08s;
+  }
+  .tooltip.show{ opacity:1; }
+  .tooltip .tdate{ font-family:"IBM Plex Mono",monospace; font-weight:600; color:var(--text-1); font-size:12px; margin-bottom:5px; }
+  .tooltip .trow{ display:flex; align-items:center; gap:6px; margin:3px 0; }
+  .tooltip .tkey{ width:14px; height:2px; border-radius:2px; flex:none; }
+  .tooltip .tname{ color:var(--text-2); font-size:11px; flex:1; }
+  .tooltip .tval{ font-family:"IBM Plex Mono",monospace; font-weight:600; color:var(--text-1); font-variant-numeric:tabular-nums; font-size:12px; }
+
+  @media (max-width:520px){ .chart-box{ height:340px; } }
+
+  /* stat tiles */
+  .stats{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; }
+  .tile{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px; }
+  .tile-head{ display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+  .tile-head .dot{ width:9px; height:9px; border-radius:50%; flex:none; }
+  .tile-head .name{ font-size:12.5px; color:var(--text-2); font-weight:500; }
+  .tile .value{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:24px; font-variant-numeric:tabular-nums; letter-spacing:-0.01em; }
+  .tile .delta{ margin-top:5px; font-family:"IBM Plex Mono",monospace; font-size:12.5px; font-variant-numeric:tabular-nums; display:flex; align-items:center; gap:4px; }
+  .tile .delta .arrow{ font-size:11px; }
+  .tile .delta.up{ color:var(--good); }
+  .tile .delta.down{ color:var(--bad); }
+  .tile .since{ color:var(--text-3); font-weight:400; }
+
+  /* calendar returns table */
+  .calendar-wrap{ max-height:620px; overflow:auto; border:1px solid var(--border); border-radius:8px; }
+  table.caltable{ width:100%; border-collapse:collapse; font-family:"IBM Plex Mono",monospace; font-size:12.5px; }
+  table.caltable thead th{
+    position:sticky; top:0; background:var(--surface); z-index:1; text-align:right;
+    padding:8px 10px; font-weight:600; color:var(--text-2); border-bottom:1px solid var(--border);
+    white-space:nowrap;
+  }
+  table.caltable thead th:first-child{ text-align:left; }
+  table.caltable thead th .dot{ display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:4px; }
+  table.caltable td{ padding:7px 10px; text-align:right; font-variant-numeric:tabular-nums; border-bottom:1px solid var(--border); }
+  table.caltable td.yr{ text-align:left; color:var(--text-2); font-weight:500; white-space:nowrap; }
+  table.caltable td.cell{ font-weight:600; }
+  table.caltable td.na{ color:var(--text-3); font-weight:400; text-align:center; }
+  table.caltable tbody tr:hover td{ filter:brightness(0.97); }
+
+  footer{ display:flex; flex-direction:column; gap:4px; color:var(--text-3); font-size:11.5px; line-height:1.6; border-top:1px solid var(--border); padding-top:14px; }
+  footer b{ color:var(--text-2); font-weight:500; }
+
+  .sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1><span>NIFTY</span> Index Terminal</h1>
+      <p class="subtitle">Daily closing levels for three NSE benchmark indices, back-tested to each index's base date. Scroll to zoom, drag to pan — switch tabs for <a href="notes/concepts/drawdown.html">drawdowns</a>, <a href="notes/concepts/calendar-returns.html">calendar-year returns</a>, <a href="notes/concepts/rolling-returns.html">rolling returns</a> and <a href="notes/concepts/volatility.html">volatility</a>. What do these mean? See the <a href="notes/index.html">notes</a>.</p>
+    </div>
+    <div class="asof" id="asof"></div>
+  </header>
+
+  <div class="tabbar" id="tabbar" role="tablist" aria-label="View"></div>
+
+  <div class="controls">
+    <div id="tabControls" style="display:flex; align-items:center; gap:10px 14px; flex-wrap:wrap;"></div>
+    <div class="spacer"></div>
+    <div class="legend" id="legend"></div>
+  </div>
+
+  <div class="card">
+    <div class="chart-head" id="chartHead">
+      <div class="ranges" id="ranges"></div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span class="range-readout" id="rangeReadout"></span>
+        <button type="button" class="reset-btn" id="resetBtn">Reset zoom</button>
+      </div>
+    </div>
+    <div class="chart-box" id="chartBox">
+      <canvas id="chart"></canvas>
+      <div class="tooltip" id="tooltip">
+        <div class="tdate" id="ttDate"></div>
+        <div id="ttRows"></div>
+      </div>
+    </div>
+    <div class="chart-hint" id="chartHint">scroll to zoom · drag to pan · double-click to reset</div>
+
+    <div class="calendar-wrap" id="calendarWrap" hidden></div>
+    <div class="chart-hint" id="calHint" hidden>† partial year (measured from index inception, not a full calendar year) · (YTD) = year to date, through the latest trading day.</div>
+
+    <div class="calendar-wrap" id="fundsWrap" hidden></div>
+    <div class="chart-hint" id="fundsHint" hidden>Direct plan, Growth option, no lock-in — sorted by AUM within each index. Excludes ELSS/tax-saver variants (3-year statutory lock-in). Expense ratio mostly from AMFI's TER disclosure (~Jul-2025); a few newer AMCs from INDmoney (Sep-2026) where AMFI has no record yet — see <a href="notes/concepts/choosing-a-fund.html">notes</a>. Not investment advice.</div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <footer>
+    <div><b>Base dates</b> (index = 1000): NIFTY 50 — 3 Nov 1995 (launched 22 Apr 1996). NIFTY Next 50 — 3 Nov 1996 (launched 1 Jan 1997). NIFTY Midcap 150 — 1 Apr 2005 (launched Apr 2016). Values before each index's launch date are NSE's back-tested reconstruction using historical constituent prices, not live-quoted levels.</div>
+    <div><b>Drawdown</b> = % below the running all-time-high close. <b>Rolling return</b> = annualized return over the trailing N years, recomputed for every trading day. <b>Volatility</b> = annualized standard deviation of daily log returns over the trailing window (×√252 trading days/year).</div>
+    <div>Source: NSE index history, via jugaad-data.</div>
+  </footer>
+</div>
+
+<script>
+/*__DATA__*/
+</script>
+<script>
+(function(){
+  "use strict";
+
+  var EPOCH_MS = Date.UTC(1990,0,1);
+  function dayToDate(d){ return new Date(EPOCH_MS + d*86400000); }
+  function dateToDay(ms){ return Math.round((ms-EPOCH_MS)/86400000); }
+  function clamp(v,lo,hi){ return Math.max(lo, Math.min(hi, v)); }
+
+  var SERIES = [
+    { key:"NIFTY 50",          label:"NIFTY 50",          short:"N50",   varName:"--n50"  },
+    { key:"NIFTY NEXT 50",     label:"NIFTY Next 50",     short:"NN50",  varName:"--nn50" },
+    { key:"NIFTY MIDCAP 150",  label:"NIFTY Midcap 150",  short:"MC150", varName:"--mc150"}
+  ];
+
+  var ROLL_PERIODS = [1,3,5,7,10];
+  var VOL_WINDOWS = [ {key:21,label:"1M"}, {key:63,label:"3M"}, {key:126,label:"6M"}, {key:252,label:"1Y"} ];
+
+  // ---------- binary search helpers ----------
+  function bisectLeft(arr, x){
+    var lo=0, hi=arr.length;
+    while(lo<hi){ var mid=(lo+hi)>>1; if(arr[mid]<x) lo=mid+1; else hi=mid; }
+    return lo;
+  }
+  function bisectRight(arr, x){
+    var lo=0, hi=arr.length;
+    while(lo<hi){ var mid=(lo+hi)>>1; if(arr[mid]<=x) lo=mid+1; else hi=mid; }
+    return lo;
+  }
+  function nearestIndex(arr, x){
+    var i = bisectLeft(arr, x);
+    if(i<=0) return 0;
+    if(i>=arr.length) return arr.length-1;
+    return (x - arr[i-1] <= arr[i]-x) ? i-1 : i;
+  }
+
+  // ---------- precompute derived series ----------
+  var raw = window.__INDEX_DATA__;
+  SERIES.forEach(function(s){
+    var d = raw[s.key];
+    var n = d.c.length;
+    s.color = getComputedStyle(document.documentElement).getPropertyValue(s.varName).trim();
+
+    // rebased: growth of 100 from this series' own first point
+    var base = d.c[0];
+    d.r = new Array(n);
+    for(var i=0;i<n;i++){ d.r[i] = (d.c[i]/base)*100; }
+
+    // drawdown: % below running all-time-high close, + date of that peak
+    d.dd = new Array(n);
+    d.peakDay = new Array(n);
+    var peak=-Infinity, peakDay=null;
+    for(i=0;i<n;i++){
+      if(d.c[i]>=peak){ peak=d.c[i]; peakDay=d.d[i]; }
+      d.dd[i] = (d.c[i]/peak - 1)*100;
+      d.peakDay[i] = peakDay;
+    }
+
+    // rolling annualized return, per lookback period (years)
+    d.roll = {};
+    ROLL_PERIODS.forEach(function(P){
+      var arr = new Array(n).fill(null);
+      var lookback = P*365.25;
+      for(var k=0;k<n;k++){
+        var target = d.d[k]-lookback;
+        if(target < d.d[0]-1) continue;
+        var j = nearestIndex(d.d, target);
+        var elapsed = d.d[k]-d.d[j];
+        if(elapsed<=0) continue;
+        var ret = d.c[k]/d.c[j];
+        if(ret<=0) continue;
+        arr[k] = (Math.pow(ret, 365.25/elapsed)-1)*100;
+      }
+      d.roll[P] = arr;
+    });
+
+    // rolling annualized volatility, per trailing trading-day window
+    d.vol = {};
+    VOL_WINDOWS.forEach(function(w){
+      var W = w.key;
+      var arr = new Array(n).fill(null);
+      var sum=0, sumsq=0;
+      for(var k=1;k<n;k++){
+        var r = Math.log(d.c[k]/d.c[k-1]);
+        sum += r; sumsq += r*r;
+        if(k-W>=1){
+          var rOld = Math.log(d.c[k-W]/d.c[k-W-1]);
+          sum -= rOld; sumsq -= rOld*rOld;
+        }
+        if(k>=W){
+          var mean = sum/W;
+          var variance = sumsq/W - mean*mean;
+          if(variance<0) variance=0;
+          arr[k] = Math.sqrt(variance)*Math.sqrt(252)*100;
+        }
+      }
+      d.vol[W] = arr;
+    });
+
+    // calendar-year returns
+    var startYear = dayToDate(d.d[0]).getUTCFullYear();
+    var lastYear = dayToDate(d.d[n-1]).getUTCFullYear();
+    var years = {};
+    for(var y=startYear; y<=lastYear; y++){
+      var endIdx = bisectRight(d.d, dateToDay(Date.UTC(y,11,31))) - 1;
+      if(endIdx<0) continue;
+      var baseIdx = (y===startYear) ? 0 : (bisectRight(d.d, dateToDay(Date.UTC(y-1,11,31))) - 1);
+      if(baseIdx<0) baseIdx=0;
+      years[y] = {
+        ret: (d.c[endIdx]/d.c[baseIdx]-1)*100,
+        partialStart: (y===startYear),
+        partialEnd: (y===lastYear)
+      };
+    }
+    d.calYears = years;
+    d.calStartYear = startYear;
+    d.calLastYear = lastYear;
+
+    s.data = d;
+  });
+
+  var FUNDS_DATA = /*__FUNDS_DATA__*/;
+
+  var FULL_MIN = Math.min.apply(null, SERIES.map(function(s){ return s.data.d[0]; }));
+  var FULL_MAX = Math.max.apply(null, SERIES.map(function(s){ return s.data.d[s.data.d.length-1]; }));
+  var CAL_MIN_YEAR = Math.min.apply(null, SERIES.map(function(s){ return s.data.calStartYear; }));
+  var CAL_MAX_YEAR = Math.max.apply(null, SERIES.map(function(s){ return s.data.calLastYear; }));
+  var MIN_SPAN = 20; // days, minimum zoom window
+
+  var state = {
+    tab: "price",         // "price" | "drawdown" | "rollret" | "vol" | "calendar"
+    mode: "level",         // "level" | "rebased" (price tab only)
+    log: false,             // price tab only
+    rollPeriod: 5,
+    volWindow: 63,
+    visible: { "NIFTY 50":true, "NIFTY NEXT 50":true, "NIFTY MIDCAP 150":true },
+    domain: [FULL_MIN, FULL_MAX]
+  };
+
+  // ---------- per-tab definitions ----------
+  var TAB_DEFS = {
+    price: {
+      id:"price", label:"Price",
+      getVal: function(s,i){ return state.mode==="level" ? s.data.c[i] : s.data.r[i]; },
+      fmtTip: function(v){ return (state.mode==="rebased" ? fmtNum(v,1) : fmtNum(v,2)); },
+      fmtTick: function(v){ var rv=Math.round(v)||0; return fmtNum(rv,0); },
+      zeroLine: function(){ return state.mode==="rebased" ? 100 : null; },
+      forceMaxZero:false, hasLog:true
+    },
+    drawdown: {
+      id:"drawdown", label:"Drawdown",
+      getVal: function(s,i){ return s.data.dd[i]; },
+      fmtTip: function(v){ return fmtNum(v,1)+"%"; },
+      fmtTick: function(v){ var rv=Math.round(v)||0; return fmtNum(rv,0)+"%"; },
+      zeroLine: function(){ return null; },
+      forceMaxZero:true, hasLog:false
+    },
+    rollret: {
+      id:"rollret", label:"Rolling Return",
+      getVal: function(s,i){ var a=s.data.roll[state.rollPeriod]; return a ? a[i] : null; },
+      fmtTip: function(v){ return (v>=0?"+":"")+fmtNum(v,1)+"%"; },
+      fmtTick: function(v){ var rv=Math.round(v)||0; return fmtNum(rv,0)+"%"; },
+      zeroLine: function(){ return 0; },
+      forceMaxZero:false, hasLog:false
+    },
+    vol: {
+      id:"vol", label:"Volatility",
+      getVal: function(s,i){ var a=s.data.vol[state.volWindow]; return a ? a[i] : null; },
+      fmtTip: function(v){ return fmtNum(v,1)+"%"; },
+      fmtTick: function(v){ var rv=Math.round(v)||0; return fmtNum(rv,0)+"%"; },
+      zeroLine: function(){ return null; },
+      forceMaxZero:false, hasLog:false
+    },
+    calendar: { id:"calendar", label:"Calendar Returns" },
+    funds: { id:"funds", label:"Funds" }
+  };
+  var TABS_ORDER = ["price","drawdown","rollret","vol","calendar","funds"];
+
+  // ---------- DOM refs ----------
+  var chartHeadEl = document.getElementById("chartHead");
+  var chartBox = document.getElementById("chartBox");
+  var chartHintEl = document.getElementById("chartHint");
+  var canvas = document.getElementById("chart");
+  var ctx = canvas.getContext("2d");
+  var tooltip = document.getElementById("tooltip");
+  var ttDate = document.getElementById("ttDate");
+  var ttRows = document.getElementById("ttRows");
+  var legendEl = document.getElementById("legend");
+  var rangesEl = document.getElementById("ranges");
+  var statsEl = document.getElementById("stats");
+  var resetBtn = document.getElementById("resetBtn");
+  var rangeReadout = document.getElementById("rangeReadout");
+  var asofEl = document.getElementById("asof");
+  var tabbarEl = document.getElementById("tabbar");
+  var tabControlsEl = document.getElementById("tabControls");
+  var calendarWrapEl = document.getElementById("calendarWrap");
+  var calHintEl = document.getElementById("calHint");
+  var fundsWrapEl = document.getElementById("fundsWrap");
+  var fundsHintEl = document.getElementById("fundsHint");
+
+  // ---------- header as-of ----------
+  asofEl.innerHTML = "";
+  var asofB = document.createElement("b");
+  asofB.textContent = fmtDate(dayToDate(FULL_MAX));
+  asofEl.appendChild(document.createTextNode("As of "));
+  asofEl.appendChild(asofB);
+  asofEl.appendChild(document.createTextNode(" · " + (FULL_MAX-FULL_MIN) + " trading-calendar days tracked"));
+
+  function fmtDate(dt){
+    return dt.toLocaleDateString("en-IN", { day:"2-digit", month:"short", year:"numeric", timeZone:"UTC" });
+  }
+  function fmtNum(v, digits){
+    return v.toLocaleString("en-IN", { minimumFractionDigits:digits, maximumFractionDigits:digits });
+  }
+
+  // ---------- legend ----------
+  SERIES.forEach(function(s){
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.setAttribute("aria-pressed","true");
+    var dot = document.createElement("span");
+    dot.className = "dot";
+    dot.style.background = s.color;
+    btn.appendChild(dot);
+    var label = document.createElement("span");
+    label.textContent = s.label;
+    btn.appendChild(label);
+    btn.addEventListener("click", function(){
+      state.visible[s.key] = !state.visible[s.key];
+      btn.setAttribute("aria-pressed", String(state.visible[s.key]));
+      refresh();
+    });
+    legendEl.appendChild(btn);
+    s.legendBtn = btn;
+  });
+
+  // ---------- tab-specific controls (built once, attached/detached per tab) ----------
+  var modeSegEl = document.createElement("div");
+  modeSegEl.className = "seg"; modeSegEl.setAttribute("role","group"); modeSegEl.setAttribute("aria-label","Value mode");
+  [["level","Index level"],["rebased","Growth of ₹100"]].forEach(function(pair){
+    var b = document.createElement("button");
+    b.type="button"; b.textContent=pair[1];
+    b.setAttribute("aria-pressed", String(pair[0]==="level"));
+    b.addEventListener("click", function(){
+      modeSegEl.querySelectorAll("button").forEach(function(bb){ bb.setAttribute("aria-pressed","false"); });
+      b.setAttribute("aria-pressed","true");
+      state.mode = pair[0];
+      refresh();
+    });
+    modeSegEl.appendChild(b);
+  });
+
+  var logLabelEl = document.createElement("label");
+  logLabelEl.className = "chk";
+  var logInput = document.createElement("input");
+  logInput.type = "checkbox"; logInput.id = "logToggle";
+  logLabelEl.appendChild(logInput);
+  logLabelEl.appendChild(document.createTextNode(" Log scale"));
+  logInput.addEventListener("change", function(){ state.log = logInput.checked; render(); });
+
+  function makeChipGroup(items, initialKey, onSelect){
+    var wrap = document.createElement("div");
+    wrap.className = "seg";
+    items.forEach(function(it){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = it.label;
+      b.setAttribute("aria-pressed", String(it.key===initialKey));
+      b.addEventListener("click", function(){
+        wrap.querySelectorAll("button").forEach(function(bb){ bb.setAttribute("aria-pressed","false"); });
+        b.setAttribute("aria-pressed","true");
+        onSelect(it.key);
+      });
+      wrap.appendChild(b);
+    });
+    return wrap;
+  }
+  var rollChipGroup = makeChipGroup(
+    ROLL_PERIODS.map(function(p){ return {key:p, label:p+"Y"}; }),
+    state.rollPeriod,
+    function(v){ state.rollPeriod=v; refresh(); }
+  );
+  var volChipGroup = makeChipGroup(
+    VOL_WINDOWS,
+    state.volWindow,
+    function(v){ state.volWindow=v; refresh(); }
+  );
+
+  function buildTabControls(){
+    tabControlsEl.innerHTML = "";
+    if(state.tab==="price"){
+      tabControlsEl.appendChild(modeSegEl);
+      tabControlsEl.appendChild(logLabelEl);
+    } else if(state.tab==="rollret"){
+      tabControlsEl.appendChild(rollChipGroup);
+    } else if(state.tab==="vol"){
+      tabControlsEl.appendChild(volChipGroup);
+    }
+  }
+
+  // ---------- tab bar ----------
+  TABS_ORDER.forEach(function(id){
+    var btn = document.createElement("button");
+    btn.type="button"; btn.setAttribute("role","tab");
+    btn.setAttribute("aria-selected", String(id==="price"));
+    btn.textContent = TAB_DEFS[id].label;
+    btn.addEventListener("click", function(){ switchTab(id); });
+    tabbarEl.appendChild(btn);
+    TAB_DEFS[id].btn = btn;
+  });
+
+  function switchTab(id){
+    if(state.tab===id) return;
+    state.tab = id;
+    TABS_ORDER.forEach(function(t){ TAB_DEFS[t].btn.setAttribute("aria-selected", String(t===id)); });
+    var isCal = (id==="calendar");
+    var isFunds = (id==="funds");
+    var isChart = !isCal && !isFunds;
+    chartHeadEl.hidden = !isChart;
+    chartBox.hidden = !isChart;
+    chartHintEl.hidden = !isChart;
+    calendarWrapEl.hidden = !isCal;
+    calHintEl.hidden = !isCal;
+    fundsWrapEl.hidden = !isFunds;
+    fundsHintEl.hidden = !isFunds;
+    buildTabControls();
+    if(isCal){ renderCalendar(); } else if(isFunds){ renderFunds(); } else { resize(); }
+    renderStats();
+  }
+
+  function refresh(){
+    if(state.tab==="calendar"){ renderCalendar(); }
+    else if(state.tab==="funds"){ renderFunds(); renderStats(); return; }
+    else { render(); }
+    renderStats();
+  }
+
+  // ---------- range presets ----------
+  var PRESETS = [
+    { label:"1Y",  days:365 },
+    { label:"5Y",  days:365*5 },
+    { label:"10Y", days:365*10 },
+    { label:"20Y", days:365*20 },
+    { label:"Max", days:null }
+  ];
+  PRESETS.forEach(function(p){
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = p.label;
+    btn.setAttribute("aria-pressed", p.label==="Max" ? "true" : "false");
+    btn.addEventListener("click", function(){
+      if(p.days===null){ state.domain=[FULL_MIN, FULL_MAX]; }
+      else {
+        var start = Math.max(FULL_MIN, FULL_MAX - p.days);
+        state.domain = [start, FULL_MAX];
+      }
+      updatePresetPressed();
+      refresh();
+    });
+    rangesEl.appendChild(btn);
+    p.btn = btn;
+  });
+  function updatePresetPressed(){
+    PRESETS.forEach(function(p){ p.btn.setAttribute("aria-pressed","false"); });
+    var span = state.domain[1]-state.domain[0];
+    var atMax = state.domain[0]<=FULL_MIN+1 && state.domain[1]>=FULL_MAX-1;
+    if(atMax){ PRESETS[PRESETS.length-1].btn.setAttribute("aria-pressed","true"); return; }
+    for(var i=0;i<PRESETS.length-1;i++){
+      if(Math.abs(span-PRESETS[i].days)<3 && state.domain[1]>=FULL_MAX-1){ PRESETS[i].btn.setAttribute("aria-pressed","true"); return; }
+    }
+  }
+  resetBtn.addEventListener("click", function(){
+    state.domain=[FULL_MIN, FULL_MAX];
+    updatePresetPressed();
+    refresh();
+  });
+
+  // ---------- layout ----------
+  var PAD = { l:64, r:14, t:14, b:26 };
+  var dpr = 1, W=0, H=0;
+
+  function resize(){
+    var rect = chartBox.getBoundingClientRect();
+    dpr = window.devicePixelRatio || 1;
+    W = Math.max(200, rect.width);
+    H = Math.max(120, rect.height);
+    canvas.width = Math.round(W*dpr);
+    canvas.height = Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    render();
+  }
+  new ResizeObserver(function(){ if(!chartBox.hidden) resize(); }).observe(chartBox);
+
+  // ---------- scales ----------
+  function xScale(day){
+    var span = state.domain[1]-state.domain[0];
+    var frac = (day - state.domain[0])/span;
+    return PAD.l + frac*(W-PAD.l-PAD.r);
+  }
+  function xInvert(px){
+    var frac = (px-PAD.l)/(W-PAD.l-PAD.r);
+    return state.domain[0] + frac*(state.domain[1]-state.domain[0]);
+  }
+  function useLog(){ return state.tab==="price" && state.log; }
+  function valTransform(v){ return useLog() ? Math.log(Math.max(v,1e-6)) : v; }
+
+  function computeYDomain(def){
+    var lo=Infinity, hi=-Infinity;
+    SERIES.forEach(function(s){
+      if(!state.visible[s.key]) return;
+      var d = s.data.d;
+      var i0 = bisectLeft(d, state.domain[0]); if(i0>0) i0--;
+      var i1 = bisectRight(d, state.domain[1]); if(i1<d.length) i1++;
+      i0=Math.max(0,i0); i1=Math.min(d.length,i1);
+      for(var i=i0;i<i1;i++){
+        var rawV = def.getVal(s,i);
+        if(rawV==null || !isFinite(rawV)) continue;
+        var v = valTransform(rawV);
+        if(v<lo) lo=v;
+        if(v>hi) hi=v;
+      }
+    });
+    if(!isFinite(lo)||!isFinite(hi)){ lo=0; hi=1; }
+    if(def.forceMaxZero){
+      hi = 0;
+      if(lo>=0) lo = -1;
+      var padB = (hi-lo)*0.08;
+      return [lo-padB, Math.max(0.5, (hi-lo)*0.02)];
+    }
+    if(lo===hi){ lo-=1; hi+=1; }
+    var pad = (hi-lo)*0.08;
+    return [lo-pad, hi+pad];
+  }
+
+  function yScale(v, yDomain){
+    var t = valTransform(v);
+    var frac = (t-yDomain[0])/(yDomain[1]-yDomain[0]);
+    return (H-PAD.b) - frac*(H-PAD.t-PAD.b);
+  }
+
+  // ---------- nice ticks ----------
+  function niceStep(span, targetCount){
+    var stepRaw = span/targetCount;
+    var mag = Math.pow(10, Math.floor(Math.log(stepRaw)/Math.LN10));
+    var norm = stepRaw/mag;
+    var step;
+    if(norm<1.5) step=1*mag; else if(norm<3) step=2*mag; else if(norm<7) step=5*mag; else step=10*mag;
+    return step;
+  }
+  function yTicksLinear(yDomain){
+    var loV = yDomain[0], hiV = yDomain[1];
+    var step = niceStep(hiV-loV, 5);
+    var start = Math.ceil(loV/step)*step;
+    var ticks=[];
+    for(var v=start; v<=hiV; v+=step){ ticks.push(v); }
+    return ticks;
+  }
+  function yTicksLog(yDomain){
+    var loV = Math.exp(yDomain[0]), hiV = Math.exp(yDomain[1]);
+    var ticks=[];
+    var startExp = Math.floor(Math.log(loV)/Math.LN10);
+    var endExp = Math.ceil(Math.log(hiV)/Math.LN10);
+    var mults = [1,2,5];
+    for(var e=startExp; e<=endExp; e++){
+      for(var m=0;m<mults.length;m++){
+        var v = mults[m]*Math.pow(10,e);
+        if(v>=loV*0.999 && v<=hiV*1.001) ticks.push(v);
+      }
+    }
+    return ticks;
+  }
+
+  function xTicks(){
+    var span = state.domain[1]-state.domain[0];
+    var target = clamp(Math.floor((W-PAD.l-PAD.r)/95), 3, 8);
+    var d0 = dayToDate(Math.round(state.domain[0]));
+    var d1 = dayToDate(Math.round(state.domain[1]));
+
+    if(span > 3*365){
+      var y0 = d0.getUTCFullYear(), y1 = d1.getUTCFullYear();
+      var steps=[1,2,5,10,20,25,50];
+      var step = steps[steps.length-1];
+      for(var s=0;s<steps.length;s++){ if(Math.ceil((y1-y0+1)/steps[s])<=target){ step=steps[s]; break; } }
+      var start = Math.ceil(y0/step)*step;
+      var ticks=[];
+      for(var y=start; y<=y1; y+=step){
+        var day = dateToDay(Date.UTC(y,0,1));
+        if(day>=state.domain[0]-1 && day<=state.domain[1]+1) ticks.push({ day:day, label:String(y) });
+      }
+      return ticks;
+    }
+    if(span > 80){
+      var m0 = d0.getUTCFullYear()*12+d0.getUTCMonth(), m1 = d1.getUTCFullYear()*12+d1.getUTCMonth();
+      var msteps=[1,2,3,6,12];
+      var mstep = msteps[msteps.length-1];
+      for(var s2=0;s2<msteps.length;s2++){ if(Math.ceil((m1-m0+1)/msteps[s2])<=target){ mstep=msteps[s2]; break; } }
+      var mstart = Math.ceil(m0/mstep)*mstep;
+      var mticks=[];
+      for(var m=mstart; m<=m1; m+=mstep){
+        var yy = Math.floor(m/12), mm = m-yy*12;
+        var day2 = dateToDay(Date.UTC(yy,mm,1));
+        if(day2>=state.domain[0]-1 && day2<=state.domain[1]+1){
+          mticks.push({ day:day2, label: dayToDate(day2).toLocaleDateString("en-IN", {month:"short", year:"numeric", timeZone:"UTC"}) });
+        }
+      }
+      return mticks;
+    }
+    var count = target;
+    var ticks3=[];
+    for(var i=0;i<count;i++){
+      var t = state.domain[0] + i*(span/(count-1));
+      ticks3.push(Math.round(t));
+    }
+    return ticks3.map(function(t){ return { day:t, label: dayToDate(t).toLocaleDateString("en-IN", {day:"2-digit", month:"short", timeZone:"UTC"}) }; });
+  }
+
+  // ---------- render ----------
+  function render(){
+    if(chartBox.hidden) return;
+    var def = TAB_DEFS[state.tab];
+    ctx.clearRect(0,0,W,H);
+    var cssVars = getComputedStyle(document.documentElement);
+    var gridColor = cssVars.getPropertyValue("--grid").trim();
+    var axisColor = cssVars.getPropertyValue("--axis").trim();
+    var textMuted = cssVars.getPropertyValue("--text-3").trim();
+
+    var yDomain = computeYDomain(def);
+
+    ctx.font = "11px 'IBM Plex Mono', monospace";
+    ctx.textBaseline = "middle";
+
+    var yticks = useLog() ? yTicksLog(yDomain) : yTicksLinear(yDomain);
+    ctx.strokeStyle = gridColor;
+    ctx.lineWidth = 1;
+    yticks.forEach(function(v){
+      var y = yScale(v, yDomain);
+      ctx.beginPath();
+      ctx.moveTo(PAD.l, Math.round(y)+0.5);
+      ctx.lineTo(W-PAD.r, Math.round(y)+0.5);
+      ctx.stroke();
+      ctx.fillStyle = textMuted;
+      ctx.textAlign = "right";
+      ctx.fillText(def.fmtTick(v), PAD.l-8, y);
+    });
+
+    var xticks = xTicks();
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    xticks.forEach(function(t){
+      var x = xScale(t.day);
+      ctx.fillStyle = textMuted;
+      ctx.fillText(t.label, x, H-PAD.b+8);
+    });
+
+    ctx.strokeStyle = axisColor;
+    ctx.beginPath();
+    ctx.moveTo(PAD.l, H-PAD.b+0.5);
+    ctx.lineTo(W-PAD.r, H-PAD.b+0.5);
+    ctx.stroke();
+
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
+    SERIES.forEach(function(s){
+      if(!state.visible[s.key]) return;
+      var d = s.data.d;
+      var i0 = bisectLeft(d, state.domain[0]); if(i0>0) i0--;
+      var i1 = bisectRight(d, state.domain[1]); if(i1<d.length) i1++;
+      i0 = Math.max(0,i0); i1 = Math.min(d.length,i1);
+      if(i1-i0<1) return;
+      ctx.beginPath();
+      ctx.strokeStyle = s.color;
+      ctx.lineWidth = 1.75;
+      var started=false;
+      for(var i=i0;i<i1;i++){
+        var raw2 = def.getVal(s,i);
+        if(raw2==null || !isFinite(raw2)){ started=false; continue; }
+        var x = xScale(d[i]);
+        var y = yScale(raw2, yDomain);
+        if(!started){ ctx.moveTo(x,y); started=true; } else { ctx.lineTo(x,y); }
+      }
+      ctx.stroke();
+    });
+
+    var zl = def.zeroLine ? def.zeroLine() : null;
+    if(zl!=null){
+      var yzl = yScale(zl, yDomain);
+      if(yzl>PAD.t && yzl<H-PAD.b){
+        ctx.setLineDash([3,3]);
+        ctx.strokeStyle = axisColor;
+        ctx.beginPath();
+        ctx.moveTo(PAD.l, yzl+0.5);
+        ctx.lineTo(W-PAD.r, yzl+0.5);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    }
+
+    rangeReadout.textContent = fmtDate(dayToDate(Math.round(state.domain[0]))) + " → " + fmtDate(dayToDate(Math.round(state.domain[1])));
+    var atMax = state.domain[0]<=FULL_MIN+1 && state.domain[1]>=FULL_MAX-1;
+    resetBtn.classList.toggle("show", !atMax);
+
+    if(hoverDay!=null) drawCrosshair(yDomain, def);
+  }
+
+  function drawCrosshair(yDomain, def){
+    var x = xScale(hoverDay);
+    if(x<PAD.l || x>W-PAD.r) return;
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--axis").trim();
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(Math.round(x)+0.5, PAD.t);
+    ctx.lineTo(Math.round(x)+0.5, H-PAD.b);
+    ctx.stroke();
+    SERIES.forEach(function(s){
+      if(!state.visible[s.key]) return;
+      var d = s.data.d;
+      if(hoverDay < d[0] || hoverDay > d[d.length-1]) return;
+      var idx = nearestIndex(d, hoverDay);
+      var v = def.getVal(s, idx);
+      if(v==null || !isFinite(v)) return;
+      var cx = xScale(d[idx]);
+      var cy = yScale(v, yDomain);
+      ctx.beginPath();
+      ctx.fillStyle = s.color;
+      ctx.arc(cx, cy, 3.5, 0, Math.PI*2);
+      ctx.fill();
+    });
+  }
+
+  // ---------- interaction: wheel zoom ----------
+  chartBox.addEventListener("wheel", function(e){
+    e.preventDefault();
+    var rect = canvas.getBoundingClientRect();
+    var mouseX = e.clientX - rect.left;
+    var frac = clamp((mouseX-PAD.l)/(W-PAD.l-PAD.r), 0, 1);
+    var span = state.domain[1]-state.domain[0];
+    var centerDay = state.domain[0] + frac*span;
+    var zoom = Math.exp(e.deltaY * 0.0015);
+    var newSpan = clamp(span*zoom, MIN_SPAN, FULL_MAX-FULL_MIN);
+    var newStart = centerDay - frac*newSpan;
+    var newEnd = newStart + newSpan;
+    if(newStart<FULL_MIN){ newStart=FULL_MIN; newEnd=newStart+newSpan; }
+    if(newEnd>FULL_MAX){ newEnd=FULL_MAX; newStart=newEnd-newSpan; }
+    state.domain = [newStart, newEnd];
+    updatePresetPressed();
+    refresh();
+  }, { passive:false });
+
+  // ---------- interaction: drag pan + hover ----------
+  var isDragging=false, dragStartX=0, dragStartDomain=null, hoverDay=null, moved=false;
+
+  chartBox.addEventListener("pointerdown", function(e){
+    isDragging=true; moved=false;
+    dragStartX = e.clientX;
+    dragStartDomain = state.domain.slice();
+    chartBox.setPointerCapture(e.pointerId);
+  });
+  chartBox.addEventListener("pointermove", function(e){
+    var rect = canvas.getBoundingClientRect();
+    var px = e.clientX - rect.left;
+    if(isDragging){
+      var dx = e.clientX - dragStartX;
+      if(Math.abs(dx)>2) moved=true;
+      var span = dragStartDomain[1]-dragStartDomain[0];
+      var dayPerPx = span/(W-PAD.l-PAD.r);
+      var shift = -dx*dayPerPx;
+      var newStart = dragStartDomain[0]+shift;
+      var newEnd = dragStartDomain[1]+shift;
+      if(newStart<FULL_MIN){ newEnd += (FULL_MIN-newStart); newStart=FULL_MIN; }
+      if(newEnd>FULL_MAX){ newStart -= (newEnd-FULL_MAX); newEnd=FULL_MAX; }
+      state.domain=[Math.max(FULL_MIN,newStart), Math.min(FULL_MAX,newEnd)];
+      updatePresetPressed();
+      render();
+      hideTooltip();
+    } else {
+      hoverDay = xInvert(px);
+      showTooltipAt(e.clientX, e.clientY, rect);
+      render();
+    }
+  });
+  window.addEventListener("pointerup", function(){
+    if(isDragging && moved) renderStats();
+    isDragging=false;
+  });
+  chartBox.addEventListener("pointerleave", function(){
+    if(!isDragging){ hoverDay=null; hideTooltip(); render(); }
+  });
+  chartBox.addEventListener("dblclick", function(){
+    state.domain=[FULL_MIN, FULL_MAX];
+    updatePresetPressed();
+    refresh();
+  });
+
+  function hideTooltip(){ tooltip.classList.remove("show"); }
+
+  function showTooltipAt(clientX, clientY, rect){
+    if(hoverDay==null || hoverDay<state.domain[0] || hoverDay>state.domain[1]){ hideTooltip(); return; }
+    var def = TAB_DEFS[state.tab];
+    var ref = SERIES[0].data.d;
+    var ri = nearestIndex(ref, hoverDay);
+    var refDay = ref[ri];
+
+    ttDate.textContent = fmtDate(dayToDate(refDay));
+    ttRows.innerHTML = "";
+    var any=false;
+    SERIES.forEach(function(s){
+      if(!state.visible[s.key]) return;
+      var d = s.data.d;
+      if(refDay < d[0] || refDay > d[d.length-1]) return;
+      var idx = nearestIndex(d, refDay);
+      var v = def.getVal(s, idx);
+      if(v==null || !isFinite(v)) return;
+      any=true;
+      var row = document.createElement("div");
+      row.className = "trow";
+      var key = document.createElement("span");
+      key.className = "tkey";
+      key.style.background = s.color;
+      var name = document.createElement("span");
+      name.className = "tname";
+      name.textContent = s.short;
+      var val = document.createElement("span");
+      val.className = "tval";
+      val.textContent = def.fmtTip(v);
+      row.appendChild(key); row.appendChild(name); row.appendChild(val);
+      ttRows.appendChild(row);
+    });
+    if(!any){ hideTooltip(); return; }
+
+    var x = xScale(refDay);
+    var left = x + 14;
+    var top = (clientY - rect.top) - 10;
+    var ttW = 170;
+    if(left + ttW > W) left = x - ttW - 14;
+    tooltip.style.left = left+"px";
+    tooltip.style.top = Math.max(4, top)+"px";
+    tooltip.classList.add("show");
+  }
+
+  // ---------- stat tiles ----------
+  function renderStats(){
+    statsEl.innerHTML = "";
+    var tab = state.tab;
+    SERIES.forEach(function(s){
+      var tile = document.createElement("div");
+      tile.className = "tile";
+
+      var head = document.createElement("div");
+      head.className = "tile-head";
+      var dot = document.createElement("span");
+      dot.className="dot"; dot.style.background = s.color;
+      var name = document.createElement("span");
+      name.className="name"; name.textContent = s.label;
+      head.appendChild(dot); head.appendChild(name);
+      tile.appendChild(head);
+
+      if(tab==="price") renderPriceTile(tile, s);
+      else if(tab==="drawdown") renderDrawdownTile(tile, s);
+      else if(tab==="rollret") renderRangeAvgTile(tile, s, function(i){ return s.data.roll[state.rollPeriod][i]; }, true);
+      else if(tab==="vol") renderRangeAvgTile(tile, s, function(i){ return s.data.vol[state.volWindow][i]; }, false);
+      else if(tab==="calendar") renderCalendarTile(tile, s);
+      else if(tab==="funds") renderFundsTile(tile, s);
+
+      statsEl.appendChild(tile);
+    });
+  }
+
+  function renderPriceTile(tile, s){
+    var d = s.data.d, c = s.data.c;
+    var latestIdx = c.length-1;
+    var valueEl = document.createElement("div");
+    valueEl.className = "value tab";
+    valueEl.textContent = fmtNum(c[latestIdx], 2);
+    tile.appendChild(valueEl);
+
+    var lo = Math.max(state.domain[0], d[0]);
+    var hi = Math.min(state.domain[1], d[d.length-1]);
+    var delta = document.createElement("div");
+    delta.className = "delta";
+    if(lo<hi){
+      var i0 = nearestIndex(d, lo);
+      var i1 = nearestIndex(d, hi);
+      var v0 = c[i0], v1 = c[i1];
+      var pct = (v1/v0-1)*100;
+      var up = pct>=0;
+      delta.classList.add(up?"up":"down");
+      var arrow = document.createElement("span");
+      arrow.className="arrow"; arrow.textContent = up ? "▲" : "▼";
+      var pctSpan = document.createElement("span");
+      pctSpan.textContent = (up?"+":"") + fmtNum(pct,1) + "%";
+      var since = document.createElement("span");
+      since.className="since"; since.textContent = " since " + fmtDate(dayToDate(d[i0]));
+      delta.appendChild(arrow); delta.appendChild(pctSpan); delta.appendChild(since);
+    } else {
+      var na = document.createElement("span");
+      na.className="since"; na.textContent="no data in shown range";
+      delta.appendChild(na);
+    }
+    tile.appendChild(delta);
+  }
+
+  function renderDrawdownTile(tile, s){
+    var d = s.data.d, dd = s.data.dd, pk = s.data.peakDay;
+    var i = dd.length-1;
+    var atPeak = dd[i] >= -0.001;
+    var valueEl = document.createElement("div");
+    valueEl.className = "value tab";
+    valueEl.textContent = fmtNum(dd[i],1) + "%";
+    tile.appendChild(valueEl);
+
+    var delta = document.createElement("div");
+    delta.className = "delta " + (atPeak ? "up" : "down");
+    var arrow = document.createElement("span");
+    arrow.className="arrow"; arrow.textContent = atPeak ? "●" : "▼";
+    var since = document.createElement("span");
+    since.className="since";
+    since.textContent = atPeak ? " at all-time high" : " off peak set " + fmtDate(dayToDate(pk[i]));
+    delta.appendChild(arrow); delta.appendChild(since);
+    tile.appendChild(delta);
+  }
+
+  function renderRangeAvgTile(tile, s, getter, directional){
+    var d = s.data.d, n = d.length;
+    var latestIdx=-1;
+    for(var i=n-1;i>=0;i--){ var v=getter(i); if(v!=null && isFinite(v)){ latestIdx=i; break; } }
+    var valueEl = document.createElement("div");
+    valueEl.className = "value tab";
+    if(latestIdx<0){ valueEl.textContent="—"; }
+    else {
+      var lv = getter(latestIdx);
+      valueEl.textContent = (directional && lv>=0 ? "+" : "") + fmtNum(lv,1) + "%";
+    }
+    tile.appendChild(valueEl);
+
+    var lo = Math.max(state.domain[0], d[0]), hi = Math.min(state.domain[1], d[n-1]);
+    var delta = document.createElement("div");
+    delta.className = "delta";
+    if(lo<hi){
+      var i0 = nearestIndex(d, lo), i1 = nearestIndex(d, hi);
+      var sum=0, count=0;
+      for(var k=i0;k<=i1;k++){ var vv=getter(k); if(vv!=null && isFinite(vv)){ sum+=vv; count++; } }
+      if(count>0){
+        var avg = sum/count;
+        if(directional) delta.classList.add(avg>=0?"up":"down");
+        if(directional){
+          var arrow = document.createElement("span");
+          arrow.className="arrow"; arrow.textContent = avg>=0?"▲":"▼";
+          delta.appendChild(arrow);
+        }
+        var val2 = document.createElement("span");
+        val2.textContent = (directional && avg>=0 ? "+" : "") + fmtNum(avg,1) + "% avg";
+        var since = document.createElement("span");
+        since.className="since"; since.textContent = ", " + fmtDate(dayToDate(d[i0])) + " → " + fmtDate(dayToDate(d[i1]));
+        delta.appendChild(val2); delta.appendChild(since);
+      } else {
+        var na = document.createElement("span");
+        na.className="since"; na.textContent="no data in shown range";
+        delta.appendChild(na);
+      }
+    } else {
+      var na2 = document.createElement("span");
+      na2.className="since"; na2.textContent="no data in shown range";
+      delta.appendChild(na2);
+    }
+    tile.appendChild(delta);
+  }
+
+  function renderCalendarTile(tile, s){
+    var years = Object.keys(s.data.calYears).map(Number);
+    var candidates = years.filter(function(y){ return !s.data.calYears[y].partialEnd; });
+    if(candidates.length===0) candidates = years;
+    var best=null, worst=null;
+    candidates.forEach(function(y){
+      var r = s.data.calYears[y].ret;
+      if(best===null || r>s.data.calYears[best].ret) best=y;
+      if(worst===null || r<s.data.calYears[worst].ret) worst=y;
+    });
+
+    var valueEl = document.createElement("div");
+    valueEl.className = "value tab";
+    valueEl.textContent = best!==null ? (fmtNum(s.data.calYears[best].ret,1)+"%") : "—";
+    tile.appendChild(valueEl);
+
+    var delta = document.createElement("div");
+    delta.className = "delta up";
+    var arrow = document.createElement("span");
+    arrow.className="arrow"; arrow.textContent="▲";
+    var since = document.createElement("span");
+    since.className="since"; since.textContent = best!==null ? (" best calendar year, " + best) : "";
+    delta.appendChild(arrow); delta.appendChild(since);
+    tile.appendChild(delta);
+
+    if(worst!==null){
+      var wr = s.data.calYears[worst].ret;
+      var delta2 = document.createElement("div");
+      delta2.className = "delta " + (wr>=0?"up":"down");
+      var arrow2 = document.createElement("span");
+      arrow2.className="arrow"; arrow2.textContent = wr>=0?"▲":"▼";
+      var val2 = document.createElement("span");
+      val2.textContent = fmtNum(wr,1)+"%";
+      var since2 = document.createElement("span");
+      since2.className="since"; since2.textContent = " worst calendar year, " + worst;
+      delta2.appendChild(arrow2); delta2.appendChild(val2); delta2.appendChild(since2);
+      tile.appendChild(delta2);
+    }
+  }
+
+  function renderFundsTile(tile, s){
+    var list = FUNDS_DATA[s.key] || [];
+    if(list.length===0){
+      var na = document.createElement("div");
+      na.className = "value tab"; na.textContent = "—";
+      tile.appendChild(na);
+      return;
+    }
+    var cheapest = list.reduce(function(a,b){ return b.ter<a.ter ? b : a; });
+    var largest = list[0]; // pre-sorted by AUM desc
+
+    var valueEl = document.createElement("div");
+    valueEl.className = "value tab";
+    valueEl.textContent = fmtNum(cheapest.ter,2) + "%";
+    tile.appendChild(valueEl);
+
+    var delta = document.createElement("div");
+    delta.className = "delta up";
+    var arrow = document.createElement("span");
+    arrow.className="arrow"; arrow.textContent="▲";
+    var since = document.createElement("span");
+    since.className="since"; since.textContent = " cheapest: " + cheapest.name;
+    delta.appendChild(arrow); delta.appendChild(since);
+    tile.appendChild(delta);
+
+    if(largest.aum!=null){
+      var delta2 = document.createElement("div");
+      delta2.className = "delta";
+      var val2 = document.createElement("span");
+      val2.textContent = "₹" + fmtNum(largest.aum,0) + " Cr";
+      var since2 = document.createElement("span");
+      since2.className="since"; since2.textContent = " largest: " + largest.name;
+      delta2.appendChild(val2); delta2.appendChild(since2);
+      tile.appendChild(delta2);
+    }
+  }
+
+  // ---------- funds comparison table ----------
+  function renderFunds(){
+    fundsWrapEl.innerHTML = "";
+    var table = document.createElement("table");
+    table.className = "caltable";
+
+    var thead = document.createElement("thead");
+    var htr = document.createElement("tr");
+    ["Fund (Direct, Growth)","TER","AUM"].forEach(function(h){
+      var th = document.createElement("th");
+      th.textContent = h;
+      htr.appendChild(th);
+    });
+    thead.appendChild(htr);
+    table.appendChild(thead);
+
+    var tbody = document.createElement("tbody");
+    SERIES.forEach(function(s){
+      if(!state.visible[s.key]) return;
+      var list = FUNDS_DATA[s.key] || [];
+      if(list.length===0) return;
+
+      var gtr = document.createElement("tr");
+      gtr.className = "fund-group-row";
+      var gtd = document.createElement("td");
+      gtd.colSpan = 3;
+      var dot = document.createElement("span");
+      dot.className="dot"; dot.style.background = s.color;
+      gtd.appendChild(dot);
+      gtd.appendChild(document.createTextNode(s.label + " — " + list.length + " funds"));
+      gtr.appendChild(gtd);
+      tbody.appendChild(gtr);
+
+      list.forEach(function(fnd){
+        var tr = document.createElement("tr");
+        var tdName = document.createElement("td");
+        tdName.className = "yr";
+        tdName.textContent = fnd.name;
+        if(fnd.src==="web"){
+          var flag = document.createElement("span");
+          flag.className = "fund-src";
+          flag.textContent = " *";
+          flag.title = "Not in AMFI's TER snapshot; sourced from INDmoney instead";
+          tdName.appendChild(flag);
+        }
+        var tdTer = document.createElement("td");
+        tdTer.className = "cell";
+        tdTer.style.background = "color-mix(in srgb, var(--good) " + Math.round((1-clamp(fnd.ter/0.8,0,1))*35) + "%, var(--surface))";
+        tdTer.textContent = fmtNum(fnd.ter,2) + "%";
+        var tdAum = document.createElement("td");
+        tdAum.style.textAlign = "right";
+        tdAum.style.fontVariantNumeric = "tabular-nums";
+        tdAum.textContent = fnd.aum!=null ? ("₹" + fnd.aum.toLocaleString("en-IN") + " Cr") : "—";
+        tr.appendChild(tdName); tr.appendChild(tdTer); tr.appendChild(tdAum);
+        tbody.appendChild(tr);
+      });
+    });
+    table.appendChild(tbody);
+    fundsWrapEl.appendChild(table);
+  }
+
+  // ---------- calendar returns table ----------
+  function renderCalendar(){
+    calendarWrapEl.innerHTML = "";
+    var table = document.createElement("table");
+    table.className = "caltable";
+
+    var thead = document.createElement("thead");
+    var htr = document.createElement("tr");
+    var thYear = document.createElement("th");
+    thYear.textContent = "Year";
+    htr.appendChild(thYear);
+    SERIES.forEach(function(s){
+      var th = document.createElement("th");
+      th.style.opacity = state.visible[s.key] ? "1" : "0.35";
+      var dot = document.createElement("span");
+      dot.className="dot"; dot.style.background = s.color;
+      th.appendChild(dot);
+      th.appendChild(document.createTextNode(" " + s.short));
+      htr.appendChild(th);
+    });
+    thead.appendChild(htr);
+    table.appendChild(thead);
+
+    var tbody = document.createElement("tbody");
+    for(var y=CAL_MAX_YEAR; y>=CAL_MIN_YEAR; y--){
+      var tr = document.createElement("tr");
+      var tdY = document.createElement("td");
+      tdY.className = "yr";
+      tdY.textContent = y + (y===CAL_MAX_YEAR ? " (YTD)" : "");
+      tr.appendChild(tdY);
+      SERIES.forEach(function(s){
+        var td = document.createElement("td");
+        td.style.opacity = state.visible[s.key] ? "1" : "0.35";
+        var e = s.data.calYears[y];
+        if(!e){
+          td.className = "cell na";
+          td.textContent = "—";
+        } else {
+          td.className = "cell";
+          var pct = e.ret;
+          var sign = pct>=0 ? "+" : "−";
+          td.textContent = sign + fmtNum(Math.abs(pct),1) + "%" + (e.partialStart ? " †" : "");
+          var isGood = pct>=0;
+          var capPct = 60;
+          var intensity = clamp(Math.abs(pct)/capPct, 0, 1);
+          var alpha = 0.10 + 0.55*intensity;
+          var baseVar = isGood ? "--good" : "--bad";
+          td.style.background = "color-mix(in srgb, var(" + baseVar + ") " + Math.round(alpha*100) + "%, var(--surface))";
+        }
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    }
+    table.appendChild(tbody);
+    calendarWrapEl.appendChild(table);
+  }
+
+  // ---------- init ----------
+  buildTabControls();
+  updatePresetPressed();
+  resize();
+  renderStats();
+  window.addEventListener("resize", function(){ if(!chartBox.hidden) resize(); });
+})();
+
+</script>
