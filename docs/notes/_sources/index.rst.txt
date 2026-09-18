@@ -33,7 +33,7 @@ real NIFTY 50 series, not placeholder numbers.
      - YTD, partial year
    * - :doc:`concepts/choosing-a-fund`
      - Which actual fund to buy, and why
-     - Direct, Growth, lock-in, AUM
+     - Direct, Growth, lock-in, NRO→NRE
 
 .. toctree::
    :maxdepth: 2

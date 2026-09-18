@@ -88,15 +88,38 @@ Neither of these is a reason to always pick the largest fund — but when two fu
 close on cost, size and the AMC's track record are a reasonable tie-breaker for a
 holding you might not personally manage the end of.
 
+The NRO → NRE route
+----------------------
+
+This money is an **inheritance received in India** — India-sourced, not funds remitted
+from Australia — so under FEMA it lands in an **NRO** (Non-Resident Ordinary) account
+first, not NRE. The plan is to then transfer it into an **NRE** (Non-Resident External)
+account before investing:
+
+- **NRO** is for India-sourced income (rent, inheritance, dividends, sale of inherited
+  assets). Repatriating money *out* of India from NRO is capped at USD 1 million per
+  financial year and requires a CA to certify (Form 15CA/15CB) that applicable Indian
+  taxes have been settled on it.
+- **NRE** is for money remitted *from abroad*. Once funds are properly transferred in
+  (the NRO → NRE route is permitted, subject to the same USD 1 million/year cap and CA
+  certification), they carry none of that repatriation friction going forward.
+
+The practical upshot for fund selection: which account the investment is ultimately
+made *from* (NRO-linked vs. NRE-linked folio) affects how freely the eventual proceeds
+can move out of India later — relevant given the stated intent to possibly redeem, or
+possibly leave the position untouched for a daughter who may not be India-resident
+either. This page doesn't verify any of the current caps, certification steps, or
+timelines — confirm the live rules with a FEMA-aware CA before moving the inheritance
+at all.
+
 What this page doesn't cover
 --------------------------------
 
-- **Whether you're eligible to invest at all.** NRI/OCI investment into Indian mutual
-  funds is routed through an NRE or NRO account under FEMA, and while most AMCs accept
-  investors resident in Australia, a few historically restrict certain overseas
-  jurisdictions (this has mostly affected US/Canada-resident investors due to FATCA
-  compliance costs, not Australia — but confirm directly with the AMC before investing,
-  don't assume from this page).
+- **Whether a given AMC accepts an Australia-resident NRI/OCI investor at all.** Most
+  do; a handful historically restrict certain overseas jurisdictions (this has mostly
+  affected US/Canada-resident investors specifically, due to FATCA compliance costs,
+  not Australia) — but confirm directly with the AMC before investing, don't assume
+  from this page.
 - **Which index, or how much to put where.** That's an asset-allocation decision, not
   a fund-selection one — the Funds tab helps you pick the cheapest, most durable
   vehicle *once* you've decided you want NIFTY 50, Next 50, or Midcap 150 exposure at
