@@ -3,6 +3,8 @@ Builds the NIFTY Index Terminal dashboard from source data + template.
 
 Reads:
   - data/indices/*.csv           (daily OHLC per index, from download_indices.py)
+  - data/baf/*.csv                (daily NAV per Balanced Advantage fund, from
+    download_baf_data.py -- plotted as extra comparison series, see BAF_FUNDS below)
   - data/index_funds_india.csv   (per-fund expense ratio / AUM, gathered by hand/research)
   - web/index_terminal.template.html  (the actual page: HTML/CSS/JS, with two
     placeholders — /*__DATA__*/ for index price data, /*__FUNDS_DATA__*/ for
@@ -39,10 +41,24 @@ INDICES = {
     "NIFTY MIDCAP 150": ROOT / "data/indices/nifty_midcap_150.csv",
 }
 
+# Actively managed Balanced Advantage / Dynamic Asset Allocation funds
+# (Direct Plan, Growth Option) plotted as extra comparison series -- not
+# index trackers, so they're kept out of INDICES / the Funds tab's
+# TER-driven index-fund comparison, but they share the same date+close
+# series shape and so plug straight into the same charts (Price, Drawdown,
+# Rolling Return, Volatility, Calendar Returns) as the indices.
+BAF_FUNDS = {
+    "HDFC Balanced Advantage Fund": ROOT / "data/baf/hdfc_balanced_advantage_fund.csv",
+    "ICICI Prudential Balanced Advantage Fund": ROOT / "data/baf/icici_prudential_balanced_advantage_fund.csv",
+    "Edelweiss Balanced Advantage Fund": ROOT / "data/baf/edelweiss_balanced_advantage_fund.csv",
+    "Nippon India Balanced Advantage Fund": ROOT / "data/baf/nippon_india_balanced_advantage_fund.csv",
+    "SBI Balanced Advantage Fund": ROOT / "data/baf/sbi_balanced_advantage_fund.csv",
+}
 
-def build_index_data():
+
+def build_price_series(paths):
     out = {}
-    for name, path in INDICES.items():
+    for name, path in paths.items():
         with open(path, newline="") as f:
             rows = list(csv.DictReader(f))
         rows.sort(key=lambda r: r["Date"])
@@ -52,6 +68,12 @@ def build_index_data():
             days.append((date(y, m, d) - EPOCH).days)
             closes.append(round(float(r["Close"]), 2))
         out[name] = {"d": days, "c": closes}
+    return out
+
+
+def build_index_data():
+    out = build_price_series(INDICES)
+    out.update(build_price_series(BAF_FUNDS))
     return out
 
 

@@ -124,3 +124,6 @@ What this page doesn't cover
   a fund-selection one — the Funds tab helps you pick the cheapest, most durable
   vehicle *once* you've decided you want NIFTY 50, Next 50, or Midcap 150 exposure at
   all.
+- **Whether to put the whole lump sum into an index fund at all, on day one.** See
+  :doc:`lumpsum-and-balanced-advantage` for the timing-risk angle and how Balanced
+  Advantage Funds fit against the same Direct/Growth/no-lock-in rules above.

@@ -1,0 +1,374 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lump-Sum Timing &amp; Balanced Advantage Funds &mdash; NIFTY Index Terminal — Notes</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=93e713b6" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Choosing a Fund" href="choosing-a-fund.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NIFTY Index Terminal — Notes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index-levels.html">Index Levels &amp; Rebasing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#the-fix-rebasing">The fix: rebasing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#log-scale">Log scale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#why-it-matters">Why it matters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="base-dates.html">Base Dates &amp; Back-tested History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="drawdown.html">Drawdown</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#worked-example-the-2020-crash">Worked example: the 2020 crash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rolling-returns.html">Rolling Returns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#why-n-1-3-5-7-10-years">Why N = 1, 3, 5, 7, 10 years</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#worked-example">Worked example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#why-it-matters-sequence-of-returns-risk">Why it matters: sequence-of-returns risk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#caveat">Caveat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="volatility.html">Volatility</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#choosing-a-window">Choosing a window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#worked-example">Worked example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="calendar-returns.html">Calendar-Year Returns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#worked-examples">Worked examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="choosing-a-fund.html">Choosing a Fund</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#direct-vs-regular">Direct vs. Regular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#growth-vs-idcw-and-why-it-matters-more-for-an-australian-tax-resident">Growth vs. IDCW — and why it matters more for an Australian tax resident</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#lock-in-why-elss-variants-are-excluded">Lock-in: why ELSS variants are excluded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#why-aum-is-shown-at-all">Why AUM is shown at all</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#the-nro-nre-route">The NRO → NRE route</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#what-this-page-doesn-t-cover">What this page doesn’t cover</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Lump-Sum Timing &amp; Balanced Advantage Funds</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-problem-this-page-is-about">The problem this page is about</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-a-balanced-advantage-fund-does-differently">What a Balanced Advantage Fund does differently</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-the-data-actually-shows">What the data actually shows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-this-fits-the-project-s-fund-rules">How this fits the project’s fund rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-s-different-from-the-index-fund-comparison">What’s different from the index-fund comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-this-isn-t-just-add-balanced-advantage-funds-to-the-funds-tab">Why this isn’t just “add balanced advantage funds to the Funds tab”</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NIFTY Index Terminal — Notes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Lump-Sum Timing &amp; Balanced Advantage Funds</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/concepts/lumpsum-and-balanced-advantage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="lump-sum-timing-balanced-advantage-funds">
+<h1>Lump-Sum Timing &amp; Balanced Advantage Funds<a class="headerlink" href="#lump-sum-timing-balanced-advantage-funds" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This page is not tax or investment advice. Past performance of the funds
+named below is not a guarantee of future results — five funds over two
+historical windows is illustrative, not exhaustive, and an actively managed
+fund’s future allocation calls can differ from its past ones. Verify
+current taxation treatment (see below) with an Australian tax adviser and
+an India-side AMC before acting on any of this.</p>
+</div>
+<section id="the-problem-this-page-is-about">
+<h2>The problem this page is about<a class="headerlink" href="#the-problem-this-page-is-about" title="Link to this heading"></a></h2>
+<p>Every other page on this site treats money as if it arrives gradually — a
+SIP, a series of contributions, dollar-cost-averaged in over years. That’s
+not this situation: the money referenced in <a class="reference internal" href="choosing-a-fund.html"><span class="doc">Choosing a Fund</span></a> arrives as
+a <strong>single lump sum on an unknown future date</strong>. Whatever the market is doing
+on that date is the price paid, in full, for the whole amount — there’s no
+averaging it out over time unless it’s deliberately staggered in afterward.</p>
+<p>That’s <strong>sequence-of-returns risk</strong>: the same average return over ten years
+can feel completely different depending on whether the first year is a crash
+or a rally, simply because of <em>when</em> the money went in. A pure equity index
+investment (<a class="reference internal" href="index-levels.html"><span class="doc">Index Levels &amp; Rebasing</span></a> onward) carries this risk fully — the
+whole sum is exposed to whatever the index does from day one.</p>
+</section>
+<section id="what-a-balanced-advantage-fund-does-differently">
+<h2>What a Balanced Advantage Fund does differently<a class="headerlink" href="#what-a-balanced-advantage-fund-does-differently" title="Link to this heading"></a></h2>
+<p>A <strong>Balanced Advantage Fund</strong> (BAF, also called Dynamic Asset Allocation)
+is an actively managed hybrid fund that shifts its own net equity exposure —
+often anywhere from roughly 30% to 80% of the portfolio — up and down based
+on a valuation model (P/E, P/B, or similar), rather than holding a fixed
+allocation. The pitch: when equity markets are expensive, the fund
+mechanically de-risks; when they’re cheap, it adds equity back. For a
+lump sum landing at an unpredictable moment, this is a structural answer to
+sequence-of-returns risk that a pure index fund has no mechanism for at all.</p>
+<p>This is a genuinely different instrument from everything else on this site.
+NIFTY 50 / Next 50 / Midcap 150 index funds are passively managed and
+low-cost because there’s no manager judgment being paid for — a BAF is the
+opposite: you’re paying for, and depending on, a manager’s allocation model.
+There is no guarantee any given BAF’s model continues to work as well as it
+has.</p>
+</section>
+<section id="what-the-data-actually-shows">
+<h2>What the data actually shows<a class="headerlink" href="#what-the-data-actually-shows" title="Link to this heading"></a></h2>
+<p>Five large Balanced Advantage Funds (Direct Plan, Growth Option) are tracked
+here: HDFC, ICICI Prudential, Edelweiss, and Nippon India all have NAV
+history back to January 2013; SBI Balanced Advantage Fund is newer, with
+history only from September 2021. That split means two separate
+apples-to-apples comparisons, not one table with a blank cell.</p>
+<p><strong>2013–2026 (four funds, ~13.7 years)</strong> — includes the 2013 taper-tantrum
+selloff, the 2015–16 correction, and the 2020 COVID crash:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 21.4%" />
+<col style="width: 21.4%" />
+<col style="width: 21.4%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Fund</p></th>
+<th class="head"><p>Max drawdown</p></th>
+<th class="head"><p>CAGR</p></th>
+<th class="head"><p>Ann. volatility</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NIFTY 50</p></td>
+<td><p>−38.4%</p></td>
+<td><p>10.4%</p></td>
+<td><p>16.2%</p></td>
+</tr>
+<tr class="row-odd"><td><p>HDFC Balanced Advantage Fund</p></td>
+<td><p>−34.2%</p></td>
+<td><p>13.6%</p></td>
+<td><p>14.5%</p></td>
+</tr>
+<tr class="row-even"><td><p>ICICI Prudential Balanced Advantage Fund</p></td>
+<td><p>−27.0%</p></td>
+<td><p>12.5%</p></td>
+<td><p>9.0%</p></td>
+</tr>
+<tr class="row-odd"><td><p>Edelweiss Balanced Advantage Fund</p></td>
+<td><p>−16.2%</p></td>
+<td><p>12.1%</p></td>
+<td><p>9.0%</p></td>
+</tr>
+<tr class="row-even"><td><p>Nippon India Balanced Advantage Fund</p></td>
+<td><p>−22.8%</p></td>
+<td><p>11.9%</p></td>
+<td><p>11.3%</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>2021–2026 (all five funds, 5.0 years)</strong> — includes the 2022 rate-hike
+correction and a 2026 drawdown, but no COVID-style crash:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.7%" />
+<col style="width: 21.4%" />
+<col style="width: 21.4%" />
+<col style="width: 21.4%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Fund</p></th>
+<th class="head"><p>Max drawdown</p></th>
+<th class="head"><p>CAGR</p></th>
+<th class="head"><p>Ann. volatility</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NIFTY 50</p></td>
+<td><p>−17.2%</p></td>
+<td><p>6.0%</p></td>
+<td><p>13.8%</p></td>
+</tr>
+<tr class="row-odd"><td><p>HDFC Balanced Advantage Fund</p></td>
+<td><p>−10.2%</p></td>
+<td><p>14.6%</p></td>
+<td><p>9.9%</p></td>
+</tr>
+<tr class="row-even"><td><p>ICICI Prudential Balanced Advantage Fund</p></td>
+<td><p>−8.2%</p></td>
+<td><p>10.7%</p></td>
+<td><p>6.4%</p></td>
+</tr>
+<tr class="row-odd"><td><p>Edelweiss Balanced Advantage Fund</p></td>
+<td><p>−11.1%</p></td>
+<td><p>9.3%</p></td>
+<td><p>8.7%</p></td>
+</tr>
+<tr class="row-even"><td><p>Nippon India Balanced Advantage Fund</p></td>
+<td><p>−8.6%</p></td>
+<td><p>9.7%</p></td>
+<td><p>7.4%</p></td>
+</tr>
+<tr class="row-odd"><td><p>SBI Balanced Advantage Fund</p></td>
+<td><p>−7.4%</p></td>
+<td><p>10.2%</p></td>
+<td><p>6.3%</p></td>
+</tr>
+</tbody>
+</table>
+<p>The same pattern holds in both windows, over two periods with different
+crash shapes (a five-week COVID crash vs. a slower 2022 grind and a 2026
+dip): every BAF’s worst drawdown was shallower than NIFTY 50’s, every BAF
+ran at meaningfully lower annualized volatility, and every BAF’s CAGR came
+out ahead of NIFTY 50’s too. That last point is the one to be most skeptical
+of: it’s not a structural guarantee of balanced advantage funds in general,
+it’s what happened to these managers’ models over the specific stretches
+they’ve been live for. A slower, grinding bear market with no sharp trigger
+to react to, or a straight-line bull run with no crash to sidestep, would
+tell a different story — and moving out of equity ahead of a rally is
+exactly the failure mode of the same de-risking mechanism that helps in a
+crash.</p>
+<p>The Drawdown tab on the <a class="reference external" href="../index.html">Index Terminal</a> has all five
+funds as toggleable series (off by default, under “Balanced Advantage
+(Direct, Growth)” in the legend) alongside the three NIFTY indices, using
+the same underwater-curve calculation described in <a class="reference internal" href="drawdown.html"><span class="doc">Drawdown</span></a> — turn
+them on to see the shape of each fund’s declines directly, not just the
+summary numbers above. The Price, Rolling Return, Volatility, and Calendar
+Returns tabs carry the same five series for the same reason.</p>
+</section>
+<section id="how-this-fits-the-project-s-fund-rules">
+<h2>How this fits the project’s fund rules<a class="headerlink" href="#how-this-fits-the-project-s-fund-rules" title="Link to this heading"></a></h2>
+<p>Everything in <a class="reference internal" href="choosing-a-fund.html"><span class="doc">Choosing a Fund</span></a> still applies:</p>
+<ul class="simple">
+<li><p><strong>Growth option only</strong> — same reasoning as index funds: an IDCW payout is
+assessable Australian income the year it’s paid, Growth defers it to
+redemption. All five funds above are Direct Plan, Growth Option.</p></li>
+<li><p><strong>No lock-in</strong> — BAFs are open-ended funds, same as the index funds
+already covered; none of the five above carry a lock-in.</p></li>
+<li><p><strong>NRO → NRE route</strong> — unchanged. Which product the money eventually buys
+doesn’t change how it lands in India or how it’s moved between accounts.</p></li>
+</ul>
+</section>
+<section id="what-s-different-from-the-index-fund-comparison">
+<h2>What’s different from the index-fund comparison<a class="headerlink" href="#what-s-different-from-the-index-fund-comparison" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Cost is not the deciding factor here.</strong> Direct-plan TER for these five
+runs 0.46%–0.85% (source: AMFI TER disclosure, ~Jul-2025 snapshot) —
+several times a NIFTY 50 index fund’s ~0.15–0.2%, because you’re paying for
+active allocation decisions, not just index replication. A higher TER
+here isn’t a red flag the way it would be on the Funds tab.</p></li>
+<li><p><strong>No tracking error concept applies</strong> — there’s no index being tracked, so
+the entire cost/quality tradeoff for an index fund doesn’t transfer.
+Manager tenure and the fund’s actual net-equity history (not shown here)
+matter more than they do for a passive fund.</p></li>
+<li><p><strong>Taxation is a genuine open question, not a settled rule.</strong> Many BAFs
+maintain equity-oriented tax treatment by keeping <em>gross</em> equity exposure
+(including derivative/hedge positions) above the ~65% threshold even while
+their <em>net</em> equity exposure swings much lower — but the exact mechanism,
+and India’s capital-gains rules for hybrid/specified funds, have changed
+more than once in recent years and should be checked against current law
+at the time of investing, not assumed from this page.</p></li>
+</ul>
+</section>
+<section id="why-this-isn-t-just-add-balanced-advantage-funds-to-the-funds-tab">
+<h2>Why this isn’t just “add balanced advantage funds to the Funds tab”<a class="headerlink" href="#why-this-isn-t-just-add-balanced-advantage-funds-to-the-funds-tab" title="Link to this heading"></a></h2>
+<p>The Funds tab’s whole model — Direct plan, sorted by AUM, excluding
+lock-in variants — assumes every row is a substitutable way to buy exposure
+to the <em>same</em> index at the lowest cost. BAFs aren’t substitutes for each
+other or for an index fund in that sense: each one is a distinct, actively
+managed strategy with its own track record. They’re deliberately kept out of
+that comparison and shown instead as their own overlay series on the
+analytical tabs, where their actual behavior — not just a cost figure — is
+what’s being compared.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="choosing-a-fund.html" class="btn btn-neutral float-left" title="Choosing a Fund" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

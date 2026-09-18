@@ -34,6 +34,9 @@ real NIFTY 50 series, not placeholder numbers.
    * - :doc:`concepts/choosing-a-fund`
      - Which actual fund to buy, and why
      - Direct, Growth, lock-in, NRO→NRE
+   * - :doc:`concepts/lumpsum-and-balanced-advantage`
+     - A lump sum's timing risk, and funds built to manage it
+     - sequence-of-returns risk, dynamic asset allocation
 
 .. toctree::
    :maxdepth: 2
@@ -46,3 +49,4 @@ real NIFTY 50 series, not placeholder numbers.
    concepts/volatility
    concepts/calendar-returns
    concepts/choosing-a-fund
+   concepts/lumpsum-and-balanced-advantage
