@@ -142,6 +142,179 @@ them on to see the shape of each fund's declines directly, not just the
 summary numbers above. The Price, Rolling Return, Volatility, and Calendar
 Returns tabs carry the same five series for the same reason.
 
+Risk-adjusted performance: beta, alpha, Sharpe, and capture ratios
+------------------------------------------------------------------------
+
+CAGR, drawdown, and volatility describe a fund on its own. The metrics below
+describe it *relative to NIFTY 50* — how much of the index's risk it's
+actually taking on, and whether the return it delivers is worth that risk.
+All are computed from daily NAV/index returns against a flat **6.5%
+annualized risk-free rate** (a simplifying assumption standing in for the
+actual historical T-bill path — treat the absolute Sharpe/Sortino/alpha
+numbers as approximate, and the *ranking between funds* as the more reliable
+signal, since a different Rf mostly shifts every fund's numbers together).
+
+.. code-block:: text
+
+   Beta        = Cov(fund_returns, NIFTY_returns) / Var(NIFTY_returns)
+   Alpha       = (fund_return − Rf) − Beta × (NIFTY_return − Rf)     [annualized]
+   Sharpe      = (fund_CAGR − Rf) / fund_annualized_volatility
+   Sortino     = (fund_CAGR − Rf) / fund_annualized_downside_deviation
+   Calmar      = fund_CAGR / |fund_max_drawdown|
+   Up-capture  = fund's compounded return over NIFTY's positive months
+                 ÷ NIFTY's compounded return over those same months
+   Down-capture = the same ratio, over NIFTY's negative months
+
+- **Beta** — sensitivity to NIFTY 50's moves. A beta of 0.5 means the fund
+  has historically moved roughly half as much as the index, in either
+  direction; it's a blend of the fund's actual net equity level and how
+  that level correlates with market direction.
+- **Alpha** — the annualized return left over after Beta explains its share.
+  A positive alpha means the fund beat what its own market exposure alone
+  would predict; this is closer to "manager skill," separate from just
+  holding less equity.
+- **Sharpe ratio** — return per unit of *total* volatility. Higher is
+  better; it doesn't distinguish an upside swing from a downside one.
+- **Sortino ratio** — the same idea, but only penalizes downside volatility.
+  Usually higher than Sharpe for the same fund, since upside swings are
+  excluded from the risk side entirely.
+- **Calmar ratio** — CAGR divided by the worst drawdown actually
+  experienced. Unlike Sharpe/Sortino, it's anchored to the single worst
+  historical event rather than the whole return distribution — closest in
+  spirit to "how did it do in the one moment that would have hurt the most."
+- **Up-/down-capture ratio** — computed on **monthly** returns (the
+  standard convention here; daily compounding of a subset of days distorts
+  the ratio) — what fraction of NIFTY's gain the fund captured during the
+  index's up months, and what fraction of NIFTY's loss it captured during
+  down months. A fund with 50% up-capture and 30% down-capture is
+  participating in half the rally but only a third of the fall — exactly
+  the asymmetry a Balanced Advantage Fund is designed to produce.
+
+**2013–2026 (four funds):**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 10 10 10 10 10 10 10 10
+
+   * - Fund
+     - Beta
+     - Alpha
+     - Corr.
+     - Sharpe
+     - Sortino
+     - Calmar
+     - Up-cap
+     - Down-cap
+   * - HDFC BAF
+     - 0.82
+     - 3.6%
+     - 0.91
+     - 0.49
+     - 0.68
+     - 0.40
+     - 87.8%
+     - 90.8%
+   * - ICICI Pru BAF
+     - 0.52
+     - 3.5%
+     - 0.94
+     - 0.66
+     - 0.92
+     - 0.46
+     - 28.7%
+     - 57.9%
+   * - Edelweiss BAF
+     - 0.50
+     - 3.2%
+     - 0.91
+     - 0.62
+     - 0.89
+     - 0.74
+     - 33.4%
+     - 67.3%
+   * - Nippon India BAF
+     - 0.62
+     - 2.6%
+     - 0.89
+     - 0.47
+     - 0.66
+     - 0.52
+     - 48.0%
+     - 81.3%
+
+**2021–2026 (all five funds):**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 10 10 10 10 10 10 10 10
+
+   * - Fund
+     - Beta
+     - Alpha
+     - Corr.
+     - Sharpe
+     - Sortino
+     - Calmar
+     - Up-cap
+     - Down-cap
+   * - HDFC BAF
+     - 0.64
+     - 7.8%
+     - 0.89
+     - 0.82
+     - 1.14
+     - 1.43
+     - 82.5%
+     - 47.2%
+   * - ICICI Pru BAF
+     - 0.42
+     - 4.0%
+     - 0.92
+     - 0.65
+     - 0.96
+     - 1.29
+     - 52.5%
+     - 31.6%
+   * - Edelweiss BAF
+     - 0.59
+     - 2.8%
+     - 0.94
+     - 0.31
+     - 0.44
+     - 0.83
+     - 65.0%
+     - 55.2%
+   * - Nippon India BAF
+     - 0.51
+     - 3.1%
+     - 0.94
+     - 0.42
+     - 0.59
+     - 1.12
+     - 58.8%
+     - 45.8%
+   * - SBI BAF
+     - 0.42
+     - 3.6%
+     - 0.91
+     - 0.57
+     - 0.82
+     - 1.37
+     - 55.5%
+     - 39.4%
+
+Read across the two windows together, not just down a single column: HDFC
+BAF runs the highest beta and the highest up-capture of the group *and* the
+highest down-capture — it behaves the most like a lower-volatility equity
+fund. ICICI Prudential and SBI sit at the other end — the lowest beta and
+the widest gap between up-capture and down-capture (in 2021–2026, ICICI
+Pru captured 52.5% of NIFTY's gains but only 31.6% of its losses) — the
+shape a Balanced Advantage Fund is supposed to have, at the cost of giving
+up more of the upside too. Neither is "the correct" answer on its own; it's
+a real tradeoff between smoothing the ride and keeping pace with equity
+returns, and it's visible directly in these numbers rather than needing to
+be taken on faith.
+
 How this fits the project's fund rules
 -------------------------------------------
 
