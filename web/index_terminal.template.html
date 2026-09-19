@@ -152,6 +152,12 @@
   .legend button[aria-pressed="false"]{ color:var(--text-3); }
   .legend button[aria-pressed="false"] .dot{ opacity:.35; }
   .legend .dot{ width:9px; height:9px; border-radius:50%; flex:none; }
+  .chart-head[hidden]{ display:none; }
+  .baf-section{ margin-top:18px; }
+  .baf-section h3{ font-size:12.5px; font-weight:600; color:var(--text-2); margin:0 0 8px; font-family:"IBM Plex Mono",monospace; }
+  .baf-section .seg{ margin-bottom:10px; }
+  .baf-section td.bench{ color:var(--text-3); font-weight:400; }
+  .baf-empty{ color:var(--text-3); font-size:12px; padding:10px 0; }
   .legend-group{
     display:flex; align-items:center; font-size:10.5px; text-transform:uppercase;
     letter-spacing:.04em; color:var(--text-3); padding:0 2px; margin-left:2px;
@@ -242,7 +248,7 @@
   <header>
     <div>
       <h1><span>NIFTY</span> Index Terminal</h1>
-      <p class="subtitle">Daily closing levels for three NSE benchmark indices, back-tested to each index's base date. Scroll to zoom, drag to pan — switch tabs for <a href="notes/concepts/drawdown.html">drawdowns</a>, <a href="notes/concepts/calendar-returns.html">calendar-year returns</a>, <a href="notes/concepts/rolling-returns.html">rolling returns</a> and <a href="notes/concepts/volatility.html">volatility</a>. What do these mean? See the <a href="notes/index.html">notes</a>.</p>
+      <p class="subtitle">Daily closing levels for three NSE benchmark indices, back-tested to each index's base date, plus five Balanced Advantage funds (Direct, Growth) as comparison series — switch them on in the legend. Scroll to zoom, drag to pan — switch tabs for <a href="notes/concepts/drawdown.html">drawdowns</a>, <a href="notes/concepts/calendar-returns.html">calendar-year returns</a>, <a href="notes/concepts/rolling-returns.html">rolling returns</a> and <a href="notes/concepts/volatility.html">volatility</a>. What do these mean? See the <a href="notes/index.html">notes</a>.</p>
     </div>
     <div class="asof" id="asof"></div>
   </header>
@@ -276,7 +282,7 @@
     <div class="chart-hint" id="calHint" hidden>† partial year (measured from index inception, not a full calendar year) · (YTD) = year to date, through the latest trading day.</div>
 
     <div class="calendar-wrap" id="fundsWrap" hidden></div>
-    <div class="chart-hint" id="fundsHint" hidden>Direct plan, Growth option, no lock-in — sorted by AUM within each index. Excludes ELSS/tax-saver variants (3-year statutory lock-in). Expense ratio mostly from AMFI's TER disclosure (~Jul-2025); a few newer AMCs from INDmoney (Sep-2026) where AMFI has no record yet — see <a href="notes/concepts/choosing-a-fund.html">notes</a>. Not investment advice.</div>
+    <div class="chart-hint" id="fundsHint" hidden>Direct plan, Growth option, no lock-in — sorted by AUM within each index. Excludes ELSS/tax-saver variants (3-year statutory lock-in). Expense ratio mostly from AMFI's TER disclosure (~Jul-2025); a few newer AMCs from INDmoney (Sep-2026) where AMFI has no record yet — see <a href="notes/concepts/choosing-a-fund.html">notes</a>. Balanced Advantage funds are actively managed, so they get a risk table instead of an AUM ranking — see <a href="notes/concepts/lumpsum-and-balanced-advantage.html">notes</a>. Not investment advice.</div>
   </div>
 
   <div class="stats" id="stats"></div>
@@ -284,7 +290,7 @@
   <footer>
     <div><b>Base dates</b> (index = 1000): NIFTY 50 — 3 Nov 1995 (launched 22 Apr 1996). NIFTY Next 50 — 3 Nov 1996 (launched 1 Jan 1997). NIFTY Midcap 150 — 1 Apr 2005 (launched Apr 2016). Values before each index's launch date are NSE's back-tested reconstruction using historical constituent prices, not live-quoted levels.</div>
     <div><b>Drawdown</b> = % below the running all-time-high close. <b>Rolling return</b> = annualized return over the trailing N years, recomputed for every trading day. <b>Volatility</b> = annualized standard deviation of daily log returns over the trailing window (×√252 trading days/year).</div>
-    <div>Source: NSE index history, via jugaad-data.</div>
+    <div>Source: NSE index history, via jugaad-data. Balanced Advantage fund NAVs: api.mfapi.in (AMFI data); expense ratios: AMFI TER disclosure (~Jul-2025).</div>
   </footer>
 </div>
 
@@ -418,6 +424,7 @@
   });
 
   var FUNDS_DATA = /*__FUNDS_DATA__*/;
+  var BAF_STATS = /*__BAF_STATS__*/;
 
   var FULL_MIN = Math.min.apply(null, SERIES.map(function(s){ return s.data.d[0]; }));
   var FULL_MAX = Math.max.apply(null, SERIES.map(function(s){ return s.data.d[s.data.d.length-1]; }));
@@ -430,6 +437,7 @@
     mode: "level",         // "level" | "rebased" (price tab only)
     log: false,             // price tab only
     rollPeriod: 5,
+    bafWindow: BAF_STATS.windows.length-1,
     volWindow: 63,
     visible: {
       "NIFTY 50":true, "NIFTY NEXT 50":true, "NIFTY MIDCAP 150":true,
@@ -1216,7 +1224,44 @@
     }
   }
 
+  var MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  function monthYear(iso){ var p = iso.split("-"); return MONTHS[+p[1]-1] + " " + p[0]; }
+  function dash(v, digits, suffix){ return v==null ? "—" : fmtNum(v,digits) + (suffix||""); }
+
+  function renderBafFundsTile(tile, s){
+    var w = BAF_STATS.windows[state.bafWindow];
+    var st = w.funds[s.key];
+    var valueEl = document.createElement("div");
+    valueEl.className = "value tab";
+    valueEl.textContent = fmtNum(BAF_STATS.ter[s.key],2) + "%";
+    tile.appendChild(valueEl);
+
+    var d1 = document.createElement("div");
+    d1.className = "delta";
+    var since1 = document.createElement("span");
+    since1.className = "since";
+    since1.textContent = "Direct TER (Growth)";
+    d1.appendChild(since1);
+    tile.appendChild(d1);
+
+    var d2 = document.createElement("div");
+    d2.className = "delta";
+    var v2 = document.createElement("span");
+    var s2 = document.createElement("span");
+    s2.className = "since";
+    if(st){
+      v2.textContent = "β " + dash(st.beta,2) + " · Sharpe " + dash(st.sharpe,2);
+      s2.textContent = " since " + monthYear(w.start);
+    } else {
+      v2.textContent = "no data";
+      s2.textContent = " — launched after " + monthYear(w.start);
+    }
+    d2.appendChild(v2); d2.appendChild(s2);
+    tile.appendChild(d2);
+  }
+
   function renderFundsTile(tile, s){
+    if(s.group==="baf"){ renderBafFundsTile(tile, s); return; }
     var list = FUNDS_DATA[s.key] || [];
     if(list.length===0){
       var na = document.createElement("div");
@@ -1256,6 +1301,12 @@
   // ---------- funds comparison table ----------
   function renderFunds(){
     fundsWrapEl.innerHTML = "";
+    var anyIndexFunds = SERIES.some(function(s){ return state.visible[s.key] && (FUNDS_DATA[s.key]||[]).length>0; });
+    if(anyIndexFunds) renderIndexFundsTable();
+    renderBafSection();
+  }
+
+  function renderIndexFundsTable(){
     var table = document.createElement("table");
     table.className = "caltable";
 
@@ -1312,6 +1363,110 @@
     });
     table.appendChild(tbody);
     fundsWrapEl.appendChild(table);
+  }
+
+  var BAF_COLS = [
+    ["TER",      "Direct-plan total expense ratio",                                  function(f){ return dash(f.ter,2,"%"); }],
+    ["CAGR",     "Compound annual growth over the window",                           function(f){ return dash(f.cagr,1,"%"); }],
+    ["Max DD",   "Worst fall from a running peak over the window",                    function(f){ return dash(f.maxdd,1,"%"); }],
+    ["Beta",     "Sensitivity to NIFTY 50 (1.0 = moves with the index)",             function(f){ return dash(f.beta,2); }],
+    ["Alpha",    "Annualized return beyond what beta alone explains",                function(f){ return dash(f.alpha,1,"%"); }],
+    ["Sharpe",   "(CAGR - risk-free) / volatility",                                  function(f){ return dash(f.sharpe,2); }],
+    ["Sortino",  "Like Sharpe, but only downside volatility counts as risk",         function(f){ return dash(f.sortino,2); }],
+    ["Calmar",   "CAGR / |max drawdown|",                                            function(f){ return dash(f.calmar,2); }],
+    ["Up-cap",   "Share of NIFTY 50's gains in its up months that the fund captured", function(f){ return dash(f.upcap,0,"%"); }],
+    ["Down-cap", "Share of NIFTY 50's losses in its down months that the fund took",  function(f){ return dash(f.downcap,0,"%"); }]
+  ];
+
+  function renderBafSection(){
+    var sect = document.createElement("div");
+    sect.className = "baf-section";
+    var h = document.createElement("h3");
+    h.textContent = "Balanced Advantage funds — risk vs NIFTY 50 (Direct, Growth)";
+    sect.appendChild(h);
+
+    var shown = SERIES.filter(function(s){ return s.group==="baf" && state.visible[s.key]; });
+    if(shown.length===0){
+      var empty = document.createElement("div");
+      empty.className = "baf-empty";
+      empty.textContent = "Switch on a Balanced Advantage fund in the legend above to see its expense ratio, beta, Sharpe and other risk stats.";
+      sect.appendChild(empty);
+      fundsWrapEl.appendChild(sect);
+      return;
+    }
+
+    var seg = document.createElement("div");
+    seg.className = "seg"; seg.setAttribute("role","group"); seg.setAttribute("aria-label","Comparison window");
+    BAF_STATS.windows.forEach(function(w, i){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = "Since " + monthYear(w.start) + " (" + Object.keys(w.funds).length + " funds)";
+      b.setAttribute("aria-pressed", String(i===state.bafWindow));
+      b.addEventListener("click", function(){ state.bafWindow = i; renderFunds(); renderStats(); });
+      seg.appendChild(b);
+    });
+    sect.appendChild(seg);
+
+    var w = BAF_STATS.windows[state.bafWindow];
+    var table = document.createElement("table");
+    table.className = "caltable";
+    var thead = document.createElement("thead");
+    var htr = document.createElement("tr");
+    var th0 = document.createElement("th"); th0.textContent = "Fund"; htr.appendChild(th0);
+    BAF_COLS.forEach(function(c){
+      var th = document.createElement("th"); th.textContent = c[0]; th.title = c[1]; htr.appendChild(th);
+    });
+    thead.appendChild(htr); table.appendChild(thead);
+
+    var tbody = document.createElement("tbody");
+    var bTr = document.createElement("tr");
+    var bName = document.createElement("td");
+    bName.className = "yr";
+    bName.textContent = "NIFTY 50 (benchmark)";
+    bTr.appendChild(bName);
+    var benchVals = { "TER":"—", "CAGR":dash(w.bench.cagr,1,"%"), "Max DD":dash(w.bench.maxdd,1,"%"), "Beta":"1.00", "Up-cap":"100%", "Down-cap":"100%" };
+    BAF_COLS.forEach(function(c){
+      var td = document.createElement("td");
+      td.className = "bench";
+      td.textContent = benchVals[c[0]] || "—";
+      bTr.appendChild(td);
+    });
+    tbody.appendChild(bTr);
+
+    shown.forEach(function(s){
+      var f = w.funds[s.key];
+      var tr = document.createElement("tr");
+      var tdName = document.createElement("td");
+      tdName.className = "yr";
+      var dot = document.createElement("span");
+      dot.className = "dot"; dot.style.background = s.color;
+      dot.style.display = "inline-block"; dot.style.width = "8px"; dot.style.height = "8px";
+      dot.style.borderRadius = "50%"; dot.style.marginRight = "6px";
+      tdName.appendChild(dot);
+      tdName.appendChild(document.createTextNode(s.key));
+      tr.appendChild(tdName);
+      if(!f){
+        var na = document.createElement("td");
+        na.className = "na"; na.colSpan = BAF_COLS.length;
+        na.textContent = "No NAV history before " + monthYear(w.start) + " — pick the later window to include this fund.";
+        tr.appendChild(na);
+      } else {
+        BAF_COLS.forEach(function(c){
+          var td = document.createElement("td");
+          td.textContent = c[2](f);
+          tr.appendChild(td);
+        });
+      }
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    sect.appendChild(table);
+
+    var note = document.createElement("div");
+    note.className = "baf-empty";
+    note.textContent = "Window: " + monthYear(w.start) + " – " + monthYear(w.end) + " (" + w.years + " yrs). Beta, alpha, Sharpe, Sortino from daily returns; capture ratios from monthly returns; risk-free rate flat " + BAF_STATS.rf.toFixed(1) + "% (a simplification). Past behaviour of actively managed funds is not a guide to future results.";
+    sect.appendChild(note);
+    fundsWrapEl.appendChild(sect);
   }
 
   // ---------- calendar returns table ----------

@@ -152,6 +152,12 @@
   .legend button[aria-pressed="false"]{ color:var(--text-3); }
   .legend button[aria-pressed="false"] .dot{ opacity:.35; }
   .legend .dot{ width:9px; height:9px; border-radius:50%; flex:none; }
+  .chart-head[hidden]{ display:none; }
+  .baf-section{ margin-top:18px; }
+  .baf-section h3{ font-size:12.5px; font-weight:600; color:var(--text-2); margin:0 0 8px; font-family:"IBM Plex Mono",monospace; }
+  .baf-section .seg{ margin-bottom:10px; }
+  .baf-section td.bench{ color:var(--text-3); font-weight:400; }
+  .baf-empty{ color:var(--text-3); font-size:12px; padding:10px 0; }
   .legend-group{
     display:flex; align-items:center; font-size:10.5px; text-transform:uppercase;
     letter-spacing:.04em; color:var(--text-3); padding:0 2px; margin-left:2px;
@@ -242,7 +248,7 @@
   <header>
     <div>
       <h1><span>NIFTY</span> Index Terminal</h1>
-      <p class="subtitle">Daily closing levels for three NSE benchmark indices, back-tested to each index's base date. Scroll to zoom, drag to pan — switch tabs for <a href="notes/concepts/drawdown.html">drawdowns</a>, <a href="notes/concepts/calendar-returns.html">calendar-year returns</a>, <a href="notes/concepts/rolling-returns.html">rolling returns</a> and <a href="notes/concepts/volatility.html">volatility</a>. What do these mean? See the <a href="notes/index.html">notes</a>.</p>
+      <p class="subtitle">Daily closing levels for three NSE benchmark indices, back-tested to each index's base date, plus five Balanced Advantage funds (Direct, Growth) as comparison series — switch them on in the legend. Scroll to zoom, drag to pan — switch tabs for <a href="notes/concepts/drawdown.html">drawdowns</a>, <a href="notes/concepts/calendar-returns.html">calendar-year returns</a>, <a href="notes/concepts/rolling-returns.html">rolling returns</a> and <a href="notes/concepts/volatility.html">volatility</a>. What do these mean? See the <a href="notes/index.html">notes</a>.</p>
     </div>
     <div class="asof" id="asof"></div>
   </header>
@@ -276,7 +282,7 @@
     <div class="chart-hint" id="calHint" hidden>† partial year (measured from index inception, not a full calendar year) · (YTD) = year to date, through the latest trading day.</div>
 
     <div class="calendar-wrap" id="fundsWrap" hidden></div>
-    <div class="chart-hint" id="fundsHint" hidden>Direct plan, Growth option, no lock-in — sorted by AUM within each index. Excludes ELSS/tax-saver variants (3-year statutory lock-in). Expense ratio mostly from AMFI's TER disclosure (~Jul-2025); a few newer AMCs from INDmoney (Sep-2026) where AMFI has no record yet — see <a href="notes/concepts/choosing-a-fund.html">notes</a>. Not investment advice.</div>
+    <div class="chart-hint" id="fundsHint" hidden>Direct plan, Growth option, no lock-in — sorted by AUM within each index. Excludes ELSS/tax-saver variants (3-year statutory lock-in). Expense ratio mostly from AMFI's TER disclosure (~Jul-2025); a few newer AMCs from INDmoney (Sep-2026) where AMFI has no record yet — see <a href="notes/concepts/choosing-a-fund.html">notes</a>. Balanced Advantage funds are actively managed, so they get a risk table instead of an AUM ranking — see <a href="notes/concepts/lumpsum-and-balanced-advantage.html">notes</a>. Not investment advice.</div>
   </div>
 
   <div class="stats" id="stats"></div>
@@ -284,7 +290,7 @@
   <footer>
     <div><b>Base dates</b> (index = 1000): NIFTY 50 — 3 Nov 1995 (launched 22 Apr 1996). NIFTY Next 50 — 3 Nov 1996 (launched 1 Jan 1997). NIFTY Midcap 150 — 1 Apr 2005 (launched Apr 2016). Values before each index's launch date are NSE's back-tested reconstruction using historical constituent prices, not live-quoted levels.</div>
     <div><b>Drawdown</b> = % below the running all-time-high close. <b>Rolling return</b> = annualized return over the trailing N years, recomputed for every trading day. <b>Volatility</b> = annualized standard deviation of daily log returns over the trailing window (×√252 trading days/year).</div>
-    <div>Source: NSE index history, via jugaad-data.</div>
+    <div>Source: NSE index history, via jugaad-data. Balanced Advantage fund NAVs: api.mfapi.in (AMFI data); expense ratios: AMFI TER disclosure (~Jul-2025).</div>
   </footer>
 </div>
 
@@ -418,6 +424,7 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[183,185,186,189,190,191,192,193,196,19
   });
 
   var FUNDS_DATA = {"NIFTY 50":[{"name":"UTI Nifty 50 Index Fund","ter":0.19,"aum":29485,"src":"amfi"},{"name":"HDFC Nifty 50 Index Fund","ter":0.2,"aum":23784,"src":"amfi"},{"name":"ICICI Prudential Nifty 50 Index Fund","ter":0.17,"aum":17254,"src":"amfi"},{"name":"SBI Nifty Index Fund","ter":0.25,"aum":13928,"src":"web"},{"name":"Navi Nifty 50 Index Fund","ter":0.06,"aum":4130,"src":"amfi"},{"name":"Nippon India Index Fund - Nifty 50","ter":0.07,"aum":3884,"src":"amfi"},{"name":"BANDHAN Nifty 50 Index Fund","ter":0.1,"aum":2797,"src":"amfi"},{"name":"Tata Nifty 50 Index Fund","ter":0.2,"aum":1707,"src":"amfi"},{"name":"Aditya Birla Sun Life Nifty 50 Index Fund","ter":0.2,"aum":1488,"src":"amfi"},{"name":"Kotak Nifty 50 Index Fund","ter":0.15,"aum":1157,"src":"amfi"},{"name":"DSP Nifty 50 Index Fund","ter":0.18,"aum":1109,"src":"amfi"},{"name":"Axis Nifty 50 Index Fund","ter":0.12,"aum":1031,"src":"amfi"},{"name":"Motilal Oswal Nifty 50 Index Fund","ter":0.15,"aum":893,"src":"amfi"},{"name":"Franklin India NSE Nifty 50 Index Fund","ter":0.24,"aum":715,"src":"amfi"},{"name":"HSBC NIFTY 50 Index Fund","ter":0.2,"aum":392,"src":"amfi"},{"name":"LIC MF Nifty 50 Index Fund","ter":0.2,"aum":366,"src":"amfi"},{"name":"Edelweiss Nifty 50 Index Fund","ter":0.05,"aum":287,"src":"amfi"},{"name":"JioBlackRock Nifty 50 Index Fund","ter":0.24,"aum":268,"src":"web"},{"name":"Mirae Asset Nifty 50 Index Fund","ter":0.08,"aum":71,"src":"web"},{"name":"Baroda BNP Paribas Nifty 50 Index Fund","ter":0.16,"aum":54,"src":"amfi"},{"name":"ANGEL ONE NIFTY 50 INDEX FUND","ter":0.25,"aum":33,"src":"web"},{"name":"Groww Nifty 50 Index Fund","ter":0.49,"aum":27,"src":"web"},{"name":"Taurus Nifty 50 Index Fund","ter":0.81,"aum":7,"src":"amfi"}],"NIFTY NEXT 50":[{"name":"ICICI Prudential Nifty Next 50 Index Fund","ter":0.31,"aum":10117,"src":"amfi"},{"name":"UTI - Nifty Next 50 Index Fund","ter":0.36,"aum":7547,"src":"amfi"},{"name":"HDFC NIFTY Next 50 index Fund","ter":0.3,"aum":2709,"src":"amfi"},{"name":"SBI Nifty Next 50 Index Fund","ter":0.32,"aum":2366,"src":"amfi"},{"name":"DSP Nifty Next 50 Index Fund","ter":0.28,"aum":1407,"src":"amfi"},{"name":"Navi Nifty Next 50 Index Fund","ter":0.12,"aum":1331,"src":"amfi"},{"name":"Kotak Nifty Next 50 Index Fund","ter":0.11,"aum":1295,"src":"amfi"},{"name":"Axis Nifty Next 50 Index Fund","ter":0.25,"aum":549,"src":"amfi"},{"name":"Motilal Oswal Nifty Next 50 Index Fund","ter":0.35,"aum":522,"src":"amfi"},{"name":"Edelweiss Nifty Next 50 Index Fund","ter":0.09,"aum":303,"src":"amfi"},{"name":"Aditya Birla Sun Life Nifty Next 50 Index Fund","ter":0.33,"aum":287,"src":"amfi"},{"name":"JioBlackRock Nifty Next 50 Index Fund","ter":0.39,"aum":223,"src":"web"},{"name":"HSBC NIFTY NEXT 50 Index Fund","ter":0.35,"aum":182,"src":"amfi"},{"name":"Tata Nifty Next 50 Index Fund","ter":0.34,"aum":125,"src":"web"},{"name":"LIC MF Nifty Next 50 Index Fund","ter":0.32,"aum":112,"src":"amfi"},{"name":"Bandhan Nifty Next 50 Index Fund","ter":0.39,"aum":36,"src":"web"},{"name":"Groww Nifty Next 50 Index Fund","ter":0.49,"aum":11,"src":"web"},{"name":"Nippon India Nifty Next 50 Junior BeES FoF","ter":0.11,"aum":null,"src":"amfi"}],"NIFTY MIDCAP 150":[{"name":"Motilal Oswal Nifty Midcap 150 Index Fund","ter":0.3,"aum":4151,"src":"amfi"},{"name":"Nippon India Nifty Midcap 150 Index Fund","ter":0.3,"aum":2845,"src":"amfi"},{"name":"ICICI Prudential Nifty Midcap 150 Index Fund","ter":0.3,"aum":1328,"src":"amfi"},{"name":"SBI Nifty Midcap 150 Index Fund","ter":0.41,"aum":1292,"src":"amfi"},{"name":"HDFC NIFTY Midcap 150 Index Fund","ter":0.3,"aum":726,"src":"amfi"},{"name":"Aditya Birla Sun Life Nifty Midcap 150 Index Fund","ter":0.44,"aum":503,"src":"amfi"},{"name":"Navi Nifty Midcap 150 Index Fund","ter":0.22,"aum":408,"src":"amfi"},{"name":"Tata Nifty Midcap 150 Index Fund","ter":0.24,"aum":332,"src":"web"},{"name":"JioBlackRock Nifty Midcap 150 Index Fund","ter":0.36,"aum":287,"src":"web"},{"name":"Bandhan Nifty Midcap 150 Index Fund","ter":0.21,"aum":92,"src":"amfi"},{"name":"UTI Nifty Midcap 150 Index Fund","ter":0.66,"aum":79,"src":"web"},{"name":"Kotak Nifty Midcap 150 Index Fund","ter":0.3887,"aum":47,"src":"web"},{"name":"DSP Nifty Midcap 150 Index Fund","ter":0.41,"aum":18,"src":"web"},{"name":"Groww Nifty Midcap 150 Index Fund","ter":0.49,"aum":16,"src":"web"}]};
+  var BAF_STATS = {"rf":6.5,"windows":[{"start":"2013-01-22","end":"2026-09-16","years":13.6,"bench":{"cagr":10.36,"maxdd":-38.44},"funds":{"HDFC Balanced Advantage Fund":{"ter":0.72,"cagr":13.59,"maxdd":-34.2,"beta":0.82,"alpha":3.64,"sharpe":0.49,"sortino":0.68,"calmar":0.4,"upcap":87.8,"downcap":90.8},"ICICI Prudential Balanced Advantage Fund":{"ter":0.85,"cagr":12.46,"maxdd":-27.03,"beta":0.52,"alpha":3.47,"sharpe":0.66,"sortino":0.92,"calmar":0.46,"upcap":28.7,"downcap":57.9},"Edelweiss Balanced Advantage Fund":{"ter":0.46,"cagr":12.07,"maxdd":-16.23,"beta":0.5,"alpha":3.22,"sharpe":0.62,"sortino":0.89,"calmar":0.74,"upcap":33.4,"downcap":67.3},"Nippon India Balanced Advantage Fund":{"ter":0.56,"cagr":11.84,"maxdd":-22.79,"beta":0.62,"alpha":2.63,"sharpe":0.47,"sortino":0.66,"calmar":0.52,"upcap":48.0,"downcap":81.3}}},{"start":"2021-09-07","end":"2026-09-16","years":5.0,"bench":{"cagr":5.96,"maxdd":-17.23},"funds":{"HDFC Balanced Advantage Fund":{"ter":0.72,"cagr":14.57,"maxdd":-10.18,"beta":0.64,"alpha":7.77,"sharpe":0.82,"sortino":1.14,"calmar":1.43,"upcap":82.5,"downcap":47.2},"ICICI Prudential Balanced Advantage Fund":{"ter":0.85,"cagr":10.63,"maxdd":-8.24,"beta":0.42,"alpha":4.02,"sharpe":0.65,"sortino":0.96,"calmar":1.29,"upcap":52.5,"downcap":31.6},"Edelweiss Balanced Advantage Fund":{"ter":0.46,"cagr":9.23,"maxdd":-11.09,"beta":0.59,"alpha":2.79,"sharpe":0.31,"sortino":0.44,"calmar":0.83,"upcap":65.0,"downcap":55.2},"Nippon India Balanced Advantage Fund":{"ter":0.56,"cagr":9.62,"maxdd":-8.58,"beta":0.51,"alpha":3.1,"sharpe":0.42,"sortino":0.59,"calmar":1.12,"upcap":58.8,"downcap":45.8},"SBI Balanced Advantage Fund":{"ter":0.68,"cagr":10.13,"maxdd":-7.39,"beta":0.42,"alpha":3.56,"sharpe":0.57,"sortino":0.82,"calmar":1.37,"upcap":55.5,"downcap":39.4}}}],"ter":{"HDFC Balanced Advantage Fund":0.72,"ICICI Prudential Balanced Advantage Fund":0.85,"Edelweiss Balanced Advantage Fund":0.46,"Nippon India Balanced Advantage Fund":0.56,"SBI Balanced Advantage Fund":0.68}};
 
   var FULL_MIN = Math.min.apply(null, SERIES.map(function(s){ return s.data.d[0]; }));
   var FULL_MAX = Math.max.apply(null, SERIES.map(function(s){ return s.data.d[s.data.d.length-1]; }));
@@ -430,6 +437,7 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[183,185,186,189,190,191,192,193,196,19
     mode: "level",         // "level" | "rebased" (price tab only)
     log: false,             // price tab only
     rollPeriod: 5,
+    bafWindow: BAF_STATS.windows.length-1,
     volWindow: 63,
     visible: {
       "NIFTY 50":true, "NIFTY NEXT 50":true, "NIFTY MIDCAP 150":true,
@@ -1216,7 +1224,44 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[183,185,186,189,190,191,192,193,196,19
     }
   }
 
+  var MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  function monthYear(iso){ var p = iso.split("-"); return MONTHS[+p[1]-1] + " " + p[0]; }
+  function dash(v, digits, suffix){ return v==null ? "—" : fmtNum(v,digits) + (suffix||""); }
+
+  function renderBafFundsTile(tile, s){
+    var w = BAF_STATS.windows[state.bafWindow];
+    var st = w.funds[s.key];
+    var valueEl = document.createElement("div");
+    valueEl.className = "value tab";
+    valueEl.textContent = fmtNum(BAF_STATS.ter[s.key],2) + "%";
+    tile.appendChild(valueEl);
+
+    var d1 = document.createElement("div");
+    d1.className = "delta";
+    var since1 = document.createElement("span");
+    since1.className = "since";
+    since1.textContent = "Direct TER (Growth)";
+    d1.appendChild(since1);
+    tile.appendChild(d1);
+
+    var d2 = document.createElement("div");
+    d2.className = "delta";
+    var v2 = document.createElement("span");
+    var s2 = document.createElement("span");
+    s2.className = "since";
+    if(st){
+      v2.textContent = "β " + dash(st.beta,2) + " · Sharpe " + dash(st.sharpe,2);
+      s2.textContent = " since " + monthYear(w.start);
+    } else {
+      v2.textContent = "no data";
+      s2.textContent = " — launched after " + monthYear(w.start);
+    }
+    d2.appendChild(v2); d2.appendChild(s2);
+    tile.appendChild(d2);
+  }
+
   function renderFundsTile(tile, s){
+    if(s.group==="baf"){ renderBafFundsTile(tile, s); return; }
     var list = FUNDS_DATA[s.key] || [];
     if(list.length===0){
       var na = document.createElement("div");
@@ -1256,6 +1301,12 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[183,185,186,189,190,191,192,193,196,19
   // ---------- funds comparison table ----------
   function renderFunds(){
     fundsWrapEl.innerHTML = "";
+    var anyIndexFunds = SERIES.some(function(s){ return state.visible[s.key] && (FUNDS_DATA[s.key]||[]).length>0; });
+    if(anyIndexFunds) renderIndexFundsTable();
+    renderBafSection();
+  }
+
+  function renderIndexFundsTable(){
     var table = document.createElement("table");
     table.className = "caltable";
 
@@ -1312,6 +1363,110 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[183,185,186,189,190,191,192,193,196,19
     });
     table.appendChild(tbody);
     fundsWrapEl.appendChild(table);
+  }
+
+  var BAF_COLS = [
+    ["TER",      "Direct-plan total expense ratio",                                  function(f){ return dash(f.ter,2,"%"); }],
+    ["CAGR",     "Compound annual growth over the window",                           function(f){ return dash(f.cagr,1,"%"); }],
+    ["Max DD",   "Worst fall from a running peak over the window",                    function(f){ return dash(f.maxdd,1,"%"); }],
+    ["Beta",     "Sensitivity to NIFTY 50 (1.0 = moves with the index)",             function(f){ return dash(f.beta,2); }],
+    ["Alpha",    "Annualized return beyond what beta alone explains",                function(f){ return dash(f.alpha,1,"%"); }],
+    ["Sharpe",   "(CAGR - risk-free) / volatility",                                  function(f){ return dash(f.sharpe,2); }],
+    ["Sortino",  "Like Sharpe, but only downside volatility counts as risk",         function(f){ return dash(f.sortino,2); }],
+    ["Calmar",   "CAGR / |max drawdown|",                                            function(f){ return dash(f.calmar,2); }],
+    ["Up-cap",   "Share of NIFTY 50's gains in its up months that the fund captured", function(f){ return dash(f.upcap,0,"%"); }],
+    ["Down-cap", "Share of NIFTY 50's losses in its down months that the fund took",  function(f){ return dash(f.downcap,0,"%"); }]
+  ];
+
+  function renderBafSection(){
+    var sect = document.createElement("div");
+    sect.className = "baf-section";
+    var h = document.createElement("h3");
+    h.textContent = "Balanced Advantage funds — risk vs NIFTY 50 (Direct, Growth)";
+    sect.appendChild(h);
+
+    var shown = SERIES.filter(function(s){ return s.group==="baf" && state.visible[s.key]; });
+    if(shown.length===0){
+      var empty = document.createElement("div");
+      empty.className = "baf-empty";
+      empty.textContent = "Switch on a Balanced Advantage fund in the legend above to see its expense ratio, beta, Sharpe and other risk stats.";
+      sect.appendChild(empty);
+      fundsWrapEl.appendChild(sect);
+      return;
+    }
+
+    var seg = document.createElement("div");
+    seg.className = "seg"; seg.setAttribute("role","group"); seg.setAttribute("aria-label","Comparison window");
+    BAF_STATS.windows.forEach(function(w, i){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = "Since " + monthYear(w.start) + " (" + Object.keys(w.funds).length + " funds)";
+      b.setAttribute("aria-pressed", String(i===state.bafWindow));
+      b.addEventListener("click", function(){ state.bafWindow = i; renderFunds(); renderStats(); });
+      seg.appendChild(b);
+    });
+    sect.appendChild(seg);
+
+    var w = BAF_STATS.windows[state.bafWindow];
+    var table = document.createElement("table");
+    table.className = "caltable";
+    var thead = document.createElement("thead");
+    var htr = document.createElement("tr");
+    var th0 = document.createElement("th"); th0.textContent = "Fund"; htr.appendChild(th0);
+    BAF_COLS.forEach(function(c){
+      var th = document.createElement("th"); th.textContent = c[0]; th.title = c[1]; htr.appendChild(th);
+    });
+    thead.appendChild(htr); table.appendChild(thead);
+
+    var tbody = document.createElement("tbody");
+    var bTr = document.createElement("tr");
+    var bName = document.createElement("td");
+    bName.className = "yr";
+    bName.textContent = "NIFTY 50 (benchmark)";
+    bTr.appendChild(bName);
+    var benchVals = { "TER":"—", "CAGR":dash(w.bench.cagr,1,"%"), "Max DD":dash(w.bench.maxdd,1,"%"), "Beta":"1.00", "Up-cap":"100%", "Down-cap":"100%" };
+    BAF_COLS.forEach(function(c){
+      var td = document.createElement("td");
+      td.className = "bench";
+      td.textContent = benchVals[c[0]] || "—";
+      bTr.appendChild(td);
+    });
+    tbody.appendChild(bTr);
+
+    shown.forEach(function(s){
+      var f = w.funds[s.key];
+      var tr = document.createElement("tr");
+      var tdName = document.createElement("td");
+      tdName.className = "yr";
+      var dot = document.createElement("span");
+      dot.className = "dot"; dot.style.background = s.color;
+      dot.style.display = "inline-block"; dot.style.width = "8px"; dot.style.height = "8px";
+      dot.style.borderRadius = "50%"; dot.style.marginRight = "6px";
+      tdName.appendChild(dot);
+      tdName.appendChild(document.createTextNode(s.key));
+      tr.appendChild(tdName);
+      if(!f){
+        var na = document.createElement("td");
+        na.className = "na"; na.colSpan = BAF_COLS.length;
+        na.textContent = "No NAV history before " + monthYear(w.start) + " — pick the later window to include this fund.";
+        tr.appendChild(na);
+      } else {
+        BAF_COLS.forEach(function(c){
+          var td = document.createElement("td");
+          td.textContent = c[2](f);
+          tr.appendChild(td);
+        });
+      }
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    sect.appendChild(table);
+
+    var note = document.createElement("div");
+    note.className = "baf-empty";
+    note.textContent = "Window: " + monthYear(w.start) + " – " + monthYear(w.end) + " (" + w.years + " yrs). Beta, alpha, Sharpe, Sortino from daily returns; capture ratios from monthly returns; risk-free rate flat " + BAF_STATS.rf.toFixed(1) + "% (a simplification). Past behaviour of actively managed funds is not a guide to future results.";
+    sect.appendChild(note);
+    fundsWrapEl.appendChild(sect);
   }
 
   // ---------- calendar returns table ----------

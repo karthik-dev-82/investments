@@ -27,12 +27,16 @@ RF_ANNUAL = 0.065
 RF_DAILY = (1 + RF_ANNUAL) ** (1 / 252) - 1
 
 FUNDS_2013 = {
-    "HDFC BAF": ROOT / "data/baf/hdfc_balanced_advantage_fund.csv",
-    "ICICI Pru BAF": ROOT / "data/baf/icici_prudential_balanced_advantage_fund.csv",
-    "Edelweiss BAF": ROOT / "data/baf/edelweiss_balanced_advantage_fund.csv",
-    "Nippon India BAF": ROOT / "data/baf/nippon_india_balanced_advantage_fund.csv",
+    "HDFC Balanced Advantage Fund": ROOT / "data/baf/hdfc_balanced_advantage_fund.csv",
+    "ICICI Prudential Balanced Advantage Fund": ROOT / "data/baf/icici_prudential_balanced_advantage_fund.csv",
+    "Edelweiss Balanced Advantage Fund": ROOT / "data/baf/edelweiss_balanced_advantage_fund.csv",
+    "Nippon India Balanced Advantage Fund": ROOT / "data/baf/nippon_india_balanced_advantage_fund.csv",
 }
-FUNDS_2021 = dict(FUNDS_2013, **{"SBI BAF": ROOT / "data/baf/sbi_balanced_advantage_fund.csv"})
+FUNDS_2021 = dict(FUNDS_2013, **{"SBI Balanced Advantage Fund": ROOT / "data/baf/sbi_balanced_advantage_fund.csv"})
+WINDOWS = [
+    ("2013-01-22", FUNDS_2013),
+    ("2021-09-07", FUNDS_2021),
+]
 BENCH_PATH = ROOT / "data/indices/nifty_50.csv"
 
 
@@ -119,12 +123,19 @@ def capture_ratios(fund_m, bench_m):
     return (up_f - 1) / (up_b - 1) * 100, (down_f - 1) / (down_b - 1) * 100
 
 
-def analyze(label, start_date, fund_paths):
+def compute(start_date, fund_paths):
+    """Returns (benchmark_stats, [fund_stats...]) for one window; rates in percent."""
     bench = load(BENCH_PATH)
     bench_dates = sorted(d for d in bench if d >= start_date)
-    print(f"\n=== {label} ===  (Rf={RF_ANNUAL * 100:.1f}% flat assumption)")
-    header = f"{'Fund':22s} {'Beta':>6s} {'Alpha':>7s} {'Corr':>6s} {'Sharpe':>7s} {'Sortino':>8s} {'Calmar':>7s} {'UpCap':>7s} {'DownCap':>8s}"
-    print(header)
+    b_cagr, years = cagr(bench_dates, bench)
+    bench_stats = {
+        "cagr": b_cagr * 100,
+        "maxdd": max_drawdown(bench_dates, bench) * 100,
+        "years": years,
+        "start": bench_dates[0],
+        "end": bench_dates[-1],
+    }
+    rows = []
     for name, path in fund_paths.items():
         fund = load(path)
         dates = sorted(set(bench_dates) & set(fund.keys()))
@@ -135,21 +146,37 @@ def analyze(label, start_date, fund_paths):
         downside = ann_downside_dev(f_rets)
         beta, alpha = beta_alpha(f_rets, b_rets)
         corr = correlation(f_rets, b_rets)
-        sharpe = (f_cagr - RF_ANNUAL) / vol
-        sortino = (f_cagr - RF_ANNUAL) / downside if downside > 0 else float("nan")
-        calmar = f_cagr / abs(dd) if dd < 0 else float("nan")
         f_m, b_m = monthly_returns(fund, dates), monthly_returns(bench, dates)
         n = min(len(f_m), len(b_m))
         up_cap, down_cap = capture_ratios(f_m[-n:], b_m[-n:])
-        print(
-            f"{name:22s} {beta:6.2f} {alpha * 100:6.2f}% {corr:6.2f} {sharpe:7.2f} "
-            f"{sortino:8.2f} {calmar:7.2f} {up_cap:6.1f}% {down_cap:7.1f}%"
+        rows.append(
+            {
+                "name": name,
+                "cagr": f_cagr * 100,
+                "maxdd": dd * 100,
+                "beta": beta,
+                "alpha": alpha * 100,
+                "corr": corr,
+                "sharpe": (f_cagr - RF_ANNUAL) / vol,
+                "sortino": (f_cagr - RF_ANNUAL) / downside if downside > 0 else float("nan"),
+                "calmar": f_cagr / abs(dd) if dd < 0 else float("nan"),
+                "upcap": up_cap,
+                "downcap": down_cap,
+            }
         )
+    return bench_stats, rows
 
 
 def main():
-    analyze("2013-2026 (13.6y)", "2013-01-22", FUNDS_2013)
-    analyze("2021-2026 (5.0y)", "2021-09-07", FUNDS_2021)
+    for start_date, fund_paths in WINDOWS:
+        bench_stats, rows = compute(start_date, fund_paths)
+        print(f"\n=== from {start_date} ({bench_stats['years']:.1f}y) ===  (Rf={RF_ANNUAL * 100:.1f}% flat assumption)")
+        print(f"{'Fund':42s} {'Beta':>6s} {'Alpha':>7s} {'Corr':>6s} {'Sharpe':>7s} {'Sortino':>8s} {'Calmar':>7s} {'UpCap':>7s} {'DownCap':>8s}")
+        for r in rows:
+            print(
+                f"{r['name']:42s} {r['beta']:6.2f} {r['alpha']:6.2f}% {r['corr']:6.2f} {r['sharpe']:7.2f} "
+                f"{r['sortino']:8.2f} {r['calmar']:7.2f} {r['upcap']:6.1f}% {r['downcap']:7.1f}%"
+            )
 
 
 if __name__ == "__main__":

@@ -6,9 +6,10 @@ Reads:
   - data/baf/*.csv                (daily NAV per Balanced Advantage fund, from
     download_baf_data.py -- plotted as extra comparison series, see BAF_FUNDS below)
   - data/index_funds_india.csv   (per-fund expense ratio / AUM, gathered by hand/research)
-  - web/index_terminal.template.html  (the actual page: HTML/CSS/JS, with two
-    placeholders — /*__DATA__*/ for index price data, /*__FUNDS_DATA__*/ for
-    the funds comparison table)
+  - web/index_terminal.template.html  (the actual page: HTML/CSS/JS, with three
+    placeholders — /*__DATA__*/ for index + BAF price data, /*__FUNDS_DATA__*/ for
+    the index-fund comparison table, /*__BAF_STATS__*/ for the Balanced Advantage
+    risk table, computed by baf_risk_stats.py)
 
 Writes:
   - web/index_terminal.html   (dev copy)
@@ -31,6 +32,8 @@ import json
 import re
 from datetime import date
 from pathlib import Path
+
+import baf_risk_stats
 
 ROOT = Path(__file__).parent
 EPOCH = date(1990, 1, 1)
@@ -104,6 +107,42 @@ def build_funds_data():
     return out
 
 
+def build_baf_stats():
+    with open(ROOT / "data/baf_funds_india.csv", newline="") as f:
+        ter = {r["fund_name"]: float(r["direct_ter_pct"]) for r in csv.DictReader(f)}
+
+    def r(v, n):
+        return None if v != v else round(v, n)  # NaN -> null
+
+    windows = []
+    for start_date, fund_paths in baf_risk_stats.WINDOWS:
+        bench, rows = baf_risk_stats.compute(start_date, fund_paths)
+        windows.append(
+            {
+                "start": bench["start"],
+                "end": bench["end"],
+                "years": round(bench["years"], 1),
+                "bench": {"cagr": r(bench["cagr"], 2), "maxdd": r(bench["maxdd"], 2)},
+                "funds": {
+                    x["name"]: {
+                        "ter": ter[x["name"]],
+                        "cagr": r(x["cagr"], 2),
+                        "maxdd": r(x["maxdd"], 2),
+                        "beta": r(x["beta"], 2),
+                        "alpha": r(x["alpha"], 2),
+                        "sharpe": r(x["sharpe"], 2),
+                        "sortino": r(x["sortino"], 2),
+                        "calmar": r(x["calmar"], 2),
+                        "upcap": r(x["upcap"], 1),
+                        "downcap": r(x["downcap"], 1),
+                    }
+                    for x in rows
+                },
+            }
+        )
+    return {"rf": baf_risk_stats.RF_ANNUAL * 100, "windows": windows, "ter": ter}
+
+
 def main():
     template = (ROOT / "web/index_terminal.template.html").read_text(encoding="utf-8")
 
@@ -112,8 +151,10 @@ def main():
 
     final = template.replace("/*__DATA__*/", "window.__INDEX_DATA__ = " + index_json + ";")
     final = final.replace("/*__FUNDS_DATA__*/", funds_json)
+    baf_json = json.dumps(build_baf_stats(), separators=(",", ":"))
+    final = final.replace("/*__BAF_STATS__*/", baf_json)
 
-    assert "__DATA__" not in final and "__FUNDS_DATA__" not in final, "placeholder left unreplaced"
+    assert "__DATA__" not in final and "__FUNDS_DATA__" not in final and "__BAF_STATS__" not in final, "placeholder left unreplaced"
 
     (ROOT / "web/index_terminal.html").write_text(final, encoding="utf-8")
     (ROOT / "docs/index.html").write_text(final, encoding="utf-8")
