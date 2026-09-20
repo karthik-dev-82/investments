@@ -1233,16 +1233,26 @@
     var st = w.funds[s.key];
     var valueEl = document.createElement("div");
     valueEl.className = "value tab";
-    valueEl.textContent = fmtNum(BAF_STATS.ter[s.key],2) + "%";
+    var c = BAF_STATS.cost[s.key];
+    valueEl.textContent = fmtNum(c.allin,2) + "%";
     tile.appendChild(valueEl);
 
     var d1 = document.createElement("div");
     d1.className = "delta";
     var since1 = document.createElement("span");
     since1.className = "since";
-    since1.textContent = "Direct TER (Growth)";
+    since1.textContent = "all-in yearly cost (BER " + fmtNum(c.ber,2) + "%)";
     d1.appendChild(since1);
     tile.appendChild(d1);
+
+    var d0 = document.createElement("div");
+    d0.className = "delta";
+    var v0 = document.createElement("span");
+    v0.textContent = "₹" + c.aum.toLocaleString("en-IN") + " Cr";
+    var s0 = document.createElement("span");
+    s0.className = "since"; s0.textContent = " AUM";
+    d0.appendChild(v0); d0.appendChild(s0);
+    tile.appendChild(d0);
 
     var d2 = document.createElement("div");
     d2.className = "delta";
@@ -1366,7 +1376,9 @@
   }
 
   var BAF_COLS = [
-    ["TER",      "Direct-plan total expense ratio",                                  function(f){ return dash(f.ter,2,"%"); }],
+    ["BER",      "Base expense ratio: the fee the AMC charges (reported separately since 1 Apr 2026)", function(f){ return dash(f.ber,2,"%"); }],
+    ["All-in",   "BER plus brokerage, transaction costs and GST/levies: the full yearly cost of holding the fund", function(f){ return dash(f.allin,2,"%"); }],
+    ["AUM",      "Fund size in Rs crore, Sep 2026",                                     function(f){ return f.aum==null ? "—" : "₹" + f.aum.toLocaleString("en-IN") + " Cr"; }],
     ["CAGR",     "Compound annual growth over the window",                           function(f){ return dash(f.cagr,1,"%"); }],
     ["Max DD",   "Worst fall from a running peak over the window",                    function(f){ return dash(f.maxdd,1,"%"); }],
     ["Beta",     "Sensitivity to NIFTY 50 (1.0 = moves with the index)",             function(f){ return dash(f.beta,2); }],
@@ -1424,7 +1436,7 @@
     bName.className = "yr";
     bName.textContent = "NIFTY 50 (benchmark)";
     bTr.appendChild(bName);
-    var benchVals = { "TER":"—", "CAGR":dash(w.bench.cagr,1,"%"), "Max DD":dash(w.bench.maxdd,1,"%"), "Beta":"1.00", "Up-cap":"100%", "Down-cap":"100%" };
+    var benchVals = { "CAGR":dash(w.bench.cagr,1,"%"), "Max DD":dash(w.bench.maxdd,1,"%"), "Beta":"1.00", "Up-cap":"100%", "Down-cap":"100%" };
     BAF_COLS.forEach(function(c){
       var td = document.createElement("td");
       td.className = "bench";
@@ -1464,7 +1476,7 @@
 
     var note = document.createElement("div");
     note.className = "baf-empty";
-    note.textContent = "Window: " + monthYear(w.start) + " – " + monthYear(w.end) + " (" + w.years + " yrs). Beta, alpha, Sharpe, Sortino from daily returns; capture ratios from monthly returns; risk-free rate flat " + BAF_STATS.rf.toFixed(1) + "% (a simplification). Past behaviour of actively managed funds is not a guide to future results.";
+    note.textContent = "Window: " + monthYear(w.start) + " – " + monthYear(w.end) + " (" + w.years + " yrs). Beta, alpha, Sharpe, Sortino from daily returns; capture ratios from monthly returns; risk-free rate flat " + BAF_STATS.rf.toFixed(1) + "% (a simplification). Costs and AUM are as of Sep 2026: Nippon India and SBI straight from the fund houses' TER files, the others from Tickertape / Groww / INDmoney because those fund houses block automated access — see notes. Past behaviour of actively managed funds is not a guide to future results.";
     sect.appendChild(note);
     fundsWrapEl.appendChild(sect);
   }

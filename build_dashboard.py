@@ -109,7 +109,15 @@ def build_funds_data():
 
 def build_baf_stats():
     with open(ROOT / "data/baf_funds_india.csv", newline="") as f:
-        ter = {r["fund_name"]: float(r["direct_ter_pct"]) for r in csv.DictReader(f)}
+        cost = {
+            r["fund_name"]: {
+                "ber": float(r["ber_pct"]),
+                "allin": float(r["all_in_pct"]),
+                "aum": int(r["aum_cr"]),
+                "asof": r["cost_as_of"],
+            }
+            for r in csv.DictReader(f)
+        }
 
     def r(v, n):
         return None if v != v else round(v, n)  # NaN -> null
@@ -125,7 +133,7 @@ def build_baf_stats():
                 "bench": {"cagr": r(bench["cagr"], 2), "maxdd": r(bench["maxdd"], 2)},
                 "funds": {
                     x["name"]: {
-                        "ter": ter[x["name"]],
+                        **cost[x["name"]],
                         "cagr": r(x["cagr"], 2),
                         "maxdd": r(x["maxdd"], 2),
                         "beta": r(x["beta"], 2),
@@ -140,7 +148,7 @@ def build_baf_stats():
                 },
             }
         )
-    return {"rf": baf_risk_stats.RF_ANNUAL * 100, "windows": windows, "ter": ter}
+    return {"rf": baf_risk_stats.RF_ANNUAL * 100, "windows": windows, "cost": cost}
 
 
 def main():

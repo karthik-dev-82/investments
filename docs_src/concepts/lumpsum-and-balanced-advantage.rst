@@ -328,14 +328,78 @@ Everything in :doc:`choosing-a-fund` still applies:
 - **NRO → NRE route** — unchanged. Which product the money eventually buys
   doesn't change how it lands in India or how it's moved between accounts.
 
+What these funds cost
+---------------------------
+
+Since 1 April 2026, under SEBI's Mutual Funds Regulations 2026, the single
+"TER" figure has been split. The **Base Expense Ratio (BER)** is the fee the
+fund house charges; brokerage, transaction costs and statutory levies
+(including GST) are now reported alongside it, and the **all-in** cost is the
+sum. Fund pages disagree with each other because some show the BER and some
+show the all-in total — for the same fund, on the same day. All figures are
+Direct plan, September 2026:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 34 12 12 16 26
+
+   * - Fund
+     - BER
+     - All-in
+     - AUM (₹ Cr)
+     - Source
+   * - HDFC Balanced Advantage Fund
+     - 0.64%
+     - 0.78%
+     - 1,07,296
+     - Tickertape, Groww
+   * - ICICI Prudential Balanced Advantage Fund
+     - 0.71%
+     - 1.04%
+     - 75,399
+     - Coin, Value Research, Groww
+   * - SBI Balanced Advantage Fund
+     - 0.62%
+     - 0.89%
+     - 41,803
+     - SBI Mutual Fund TER file
+   * - Edelweiss Balanced Advantage Fund
+     - 0.52%
+     - 0.96%
+     - 13,445
+     - Tickertape, INDmoney
+   * - Nippon India Balanced Advantage Fund
+     - 0.55%
+     - 0.88%
+     - 9,918
+     - Nippon India MF TER file
+
+Only SBI and Nippon India are read from the fund houses' own published TER
+files (each gives the full breakdown — for Nippon India: BER 0.55% + brokerage
+0.06% + transaction cost 0.01% + statutory levies 0.26% = 0.88%). HDFC, ICICI
+Prudential and Edelweiss block automated access to their disclosure pages, so
+those three come from fund-data sites; on the two funds where both could be
+compared, the sites tracked the fund houses' files to within about 0.03
+percentage points. AUM figures differ by up to about 1% between sites (for
+example HDFC ₹1,07,296 Cr on Groww vs ₹1,07,766 Cr on Tickertape), so read
+them as approximate. Costs move daily now, because brokerage and levies vary
+— treat these as a snapshot, not a fixed rate.
+
+The old figures on this project (0.46%–0.85%, from AMFI's ~Jul-2025 TER
+disclosure) were the previous single-TER basis and are **not comparable** to
+the BER, and understate what these funds cost today on an all-in basis. The
+index-fund expense ratios on the Funds tab are still on that older basis
+(with a few from September 2026), so the comparison between an index fund
+and a BAF is approximate, not like-for-like.
+
 What's different from the index-fund comparison
 ------------------------------------------------------
 
-- **Cost is not the deciding factor here.** Direct-plan TER for these five
-  runs 0.46%–0.85% (source: AMFI TER disclosure, ~Jul-2025 snapshot) —
-  several times a NIFTY 50 index fund's ~0.15–0.2%, because you're paying for
-  active allocation decisions, not just index replication. A higher TER
-  here isn't a red flag the way it would be on the Funds tab.
+- **Cost is not the deciding factor here.** These funds cost roughly
+  0.8%–1.0% a year all-in (table below) — several times a NIFTY 50 index
+  fund, because you're paying for active allocation decisions, not just index
+  replication. A higher cost here isn't a red flag the way it would be on
+  the Funds tab.
 - **No tracking error concept applies** — there's no index being tracked, so
   the entire cost/quality tradeoff for an index fund doesn't transfer.
   Manager tenure and the fund's actual net-equity history (not shown here)
@@ -356,6 +420,7 @@ lock-in variants — assumes every row is a substitutable way to buy exposure
 to the *same* index at the lowest cost. BAFs aren't substitutes for each
 other or for an index fund in that sense: each one is a distinct, actively
 managed strategy with its own track record. They're deliberately kept out of
-that comparison and shown instead as their own overlay series on the
-analytical tabs, where their actual behavior — not just a cost figure — is
-what's being compared.
+that comparison: they appear as overlay series on the analytical tabs, and in
+their own section of the Funds tab as a risk table (beta, Sharpe, drawdown and
+so on, with cost and AUM alongside) rather than a cost-and-size ranking, since
+their actual behavior — not just a cost figure — is what's being compared.

@@ -1,6 +1,6 @@
-fund_name,category,direct_ter_pct,nav_history_from,direct_ter_source
-HDFC Balanced Advantage Fund,Balanced Advantage / Dynamic Asset Allocation,0.72,2013-01-01,AMFI TER disclosure (~Jul-2025)
-ICICI Prudential Balanced Advantage Fund,Balanced Advantage / Dynamic Asset Allocation,0.85,2013-01-02,AMFI TER disclosure (~Jul-2025)
-Edelweiss Balanced Advantage Fund,Balanced Advantage / Dynamic Asset Allocation,0.46,2013-01-22,AMFI TER disclosure (~Jul-2025)
-Nippon India Balanced Advantage Fund,Balanced Advantage / Dynamic Asset Allocation,0.56,2013-01-03,AMFI TER disclosure (~Jul-2025)
-SBI Balanced Advantage Fund,Balanced Advantage / Dynamic Asset Allocation,0.68,2021-09-07,AMFI TER disclosure (~Jul-2025)
+fund_name,category,ber_pct,all_in_pct,cost_source,cost_as_of,aum_cr,aum_source,aum_as_of,legacy_ter_jul2025_pct,nav_history_from
+HDFC Balanced Advantage Fund,Balanced Advantage / Dynamic Asset Allocation,0.64,0.78,BER: Tickertape; all-in: Groww (AMC site blocks automated access),2026-09-18,107296,Groww (Tickertape shows 107766),2026-09-18,0.72,2013-01-01
+ICICI Prudential Balanced Advantage Fund,Balanced Advantage / Dynamic Asset Allocation,0.71,1.04,BER: Coin by Zerodha + Value Research; all-in: Groww (AMC site blocks automated access),2026-09-18,75399,Groww + Coin by Zerodha,2026-09-18,0.85,2013-01-02
+Edelweiss Balanced Advantage Fund,Balanced Advantage / Dynamic Asset Allocation,0.52,0.96,BER: Tickertape; all-in: INDmoney (AMC site blocks automated access),2026-09-18,13445,INDmoney (Tickertape shows 13292),2026-09-18,0.46,2013-01-22
+Nippon India Balanced Advantage Fund,Balanced Advantage / Dynamic Asset Allocation,0.55,0.88,Nippon India MF TER file (primary),2026-09-18,9918,INDmoney + Coin + Groww,2026-09-18,0.56,2013-01-03
+SBI Balanced Advantage Fund,Balanced Advantage / Dynamic Asset Allocation,0.62,0.89,SBI MF current-year TER file (primary),2026-09-20,41803,Groww + INDmoney,2026-09-18,0.68,2021-09-07
