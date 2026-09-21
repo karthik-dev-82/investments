@@ -61,6 +61,6 @@ How to read it on the chart
 -----------------------------
 
 There's no visual marker distinguishing back-tested history from live
-history on the Price tab — both are drawn identically. Treat the NIFTY
+history on the Growth tab — both are drawn identically. Treat the NIFTY
 Midcap 150 TRI before April 2016 as directionally informative but not as
 precise as the live-quoted era.

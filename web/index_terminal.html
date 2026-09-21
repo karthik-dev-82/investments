@@ -429,7 +429,7 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
 
   var state = {
     tab: "price",         // "price" | "drawdown" | "rollret" | "vol" | "calendar"
-    mode: "level",         // "level" | "rebased" (price tab only)
+    mode: "rebased",       // "level" | "rebased" (Growth tab only)
     log: false,             // price tab only
     rollPeriod: 5,
     bafWindow: BAF_STATS.windows.length-1,
@@ -462,7 +462,7 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
   // ---------- per-tab definitions ----------
   var TAB_DEFS = {
     price: {
-      id:"price", label:"Price",
+      id:"price", label:"Growth",
       getVal: function(s,i){ return state.mode==="level" ? s.data.c[i] : s.data.c[i] / rebaseInfo().base[s.key] * 100; },
       fmtTip: function(v){ return (state.mode==="rebased" ? fmtNum(v,1) : fmtNum(v,2)); },
       fmtTick: function(v){ var rv=Math.round(v)||0; return fmtNum(rv,0); },
@@ -567,10 +567,10 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
   // ---------- tab-specific controls (built once, attached/detached per tab) ----------
   var modeSegEl = document.createElement("div");
   modeSegEl.className = "seg"; modeSegEl.setAttribute("role","group"); modeSegEl.setAttribute("aria-label","Value mode");
-  [["level","TRI level"],["rebased","Growth of ₹100"]].forEach(function(pair){
+  [["rebased","Growth of ₹100"],["level","TRI level"]].forEach(function(pair){
     var b = document.createElement("button");
     b.type="button"; b.textContent=pair[1];
-    b.setAttribute("aria-pressed", String(pair[0]==="level"));
+    b.setAttribute("aria-pressed", String(pair[0]===state.mode));
     b.addEventListener("click", function(){
       modeSegEl.querySelectorAll("button").forEach(function(bb){ bb.setAttribute("aria-pressed","false"); });
       b.setAttribute("aria-pressed","true");

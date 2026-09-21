@@ -11,7 +11,7 @@ after that is relative: 35,577.90 means the index is about 28x its starting
 value of 1,256.38 (30 Jun 1999).
 
 That scaling is exactly why you **cannot compare three indices by raw level**.
-On the Terminal's Price tab, the NIFTY Next 50 TRI currently reads around
+On the Terminal's Growth tab (in its "TRI level" view), the NIFTY Next 50 TRI currently reads around
 1,04,000 while the NIFTY 50 TRI is around 35,600 — that difference says nothing
 about which index performed better. It mostly reflects that each index started
 from a different value on a *different* date (see :doc:`base-dates`), so their
@@ -38,7 +38,7 @@ them); NSE also publishes a net version that deducts tax.
 The fix: rebasing
 ------------------
 
-"Growth of ₹100" (the other toggle on the Price tab) fixes this by picking one
+"Growth of ₹100" (the Growth tab's default view; "TRI level" is the other toggle) fixes this by picking one
 common **base date** and dividing every point in every series by that series'
 value on that date, then multiplying by 100:
 

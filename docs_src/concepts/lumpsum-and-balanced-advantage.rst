@@ -150,7 +150,7 @@ funds as toggleable series (off by default, under "Balanced Advantage
 (Direct, Growth)" in the legend) alongside the three NIFTY Total Return Indices, using
 the same underwater-curve calculation described in :doc:`drawdown` — turn
 them on to see the shape of each fund's declines directly, not just the
-summary numbers above. The Price, Rolling Return, Volatility, and Calendar
+summary numbers above. The Growth, Rolling Return, Volatility, and Calendar
 Returns tabs carry the same five series for the same reason.
 
 Risk-adjusted performance: beta, alpha, Sharpe, and capture ratios
