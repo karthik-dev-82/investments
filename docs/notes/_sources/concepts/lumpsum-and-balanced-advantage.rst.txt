@@ -53,6 +53,13 @@ history back to January 2013; SBI Balanced Advantage Fund is newer, with
 history only from September 2021. That split means two separate
 apples-to-apples comparisons, not one table with a blank cell.
 
+The benchmark throughout is the **NIFTY 50 Total Return Index** (TRI: every
+dividend reinvested). A Growth-option fund keeps its dividends inside the fund,
+so its NAV is doing what a TRI does; measuring it against the plain price index
+would flatter the fund by roughly the index's dividend yield — about 1.4 points
+a year over 2013–2026 (NIFTY 50 grew 10.4% a year as a price index but 11.8%
+as a TRI).
+
 **2013–2026 (four funds, ~13.7 years)** — includes the 2013 taper-tantrum
 selloff, the 2015–16 correction, and the 2020 COVID crash:
 
@@ -64,9 +71,9 @@ selloff, the 2015–16 correction, and the 2020 COVID crash:
      - Max drawdown
      - CAGR
      - Ann. volatility
-   * - NIFTY 50
-     - −38.4%
-     - 10.4%
+   * - NIFTY 50 TRI
+     - −38.3%
+     - 11.8%
      - 16.2%
    * - HDFC Balanced Advantage Fund
      - −34.2%
@@ -96,25 +103,25 @@ correction and a 2026 drawdown, but no COVID-style crash:
      - Max drawdown
      - CAGR
      - Ann. volatility
-   * - NIFTY 50
-     - −17.2%
-     - 6.0%
+   * - NIFTY 50 TRI
+     - −16.4%
+     - 7.3%
      - 13.8%
    * - HDFC Balanced Advantage Fund
      - −10.2%
-     - 14.6%
+     - 14.7%
      - 9.9%
    * - ICICI Prudential Balanced Advantage Fund
      - −8.2%
-     - 10.7%
+     - 10.8%
      - 6.4%
    * - Edelweiss Balanced Advantage Fund
      - −11.1%
-     - 9.3%
+     - 9.4%
      - 8.7%
    * - Nippon India Balanced Advantage Fund
      - −8.6%
-     - 9.7%
+     - 9.8%
      - 7.4%
    * - SBI Balanced Advantage Fund
      - −7.4%
@@ -122,13 +129,17 @@ correction and a 2026 drawdown, but no COVID-style crash:
      - 6.3%
 
 The same pattern holds in both windows, over two periods with different
-crash shapes (a five-week COVID crash vs. a slower 2022 grind and a 2026
-dip): every BAF's worst drawdown was shallower than NIFTY 50's, every BAF
-ran at meaningfully lower annualized volatility, and every BAF's CAGR came
-out ahead of NIFTY 50's too. That last point is the one to be most skeptical
-of: it's not a structural guarantee of balanced advantage funds in general,
-it's what happened to these managers' models over the specific stretches
-they've been live for. A slower, grinding bear market with no sharp trigger
+crash shapes (a ten-week COVID crash vs. a slower 2022 grind and a 2026
+dip): every BAF's worst drawdown was shallower than NIFTY 50 TRI's, and every
+BAF ran at meaningfully lower annualized volatility. Every BAF's CAGR also came
+out ahead of the index's, but by very different margins: over 2013–2026 HDFC
+led by 1.8 points a year, ICICI Prudential by 0.7, Edelweiss by 0.3 and
+Nippon India by just 0.1 — effectively a tie — while over 2021–2026 all five led
+by 2 to 7 points. The drawdown and volatility advantage is the robust part; the
+return advantage is thin over the long window and looks much bigger in the
+recent one. It's not a structural guarantee of balanced advantage funds in
+general, it's what happened to these managers' models over the specific
+stretches they've been live for. A slower, grinding bear market with no sharp trigger
 to react to, or a straight-line bull run with no crash to sidestep, would
 tell a different story — and moving out of equity ahead of a rally is
 exactly the failure mode of the same de-risking mechanism that helps in a
@@ -136,7 +147,7 @@ crash.
 
 The Drawdown tab on the `Index Terminal <../index.html>`_ has all five
 funds as toggleable series (off by default, under "Balanced Advantage
-(Direct, Growth)" in the legend) alongside the three NIFTY indices, using
+(Direct, Growth)" in the legend) alongside the three NIFTY Total Return Indices, using
 the same underwater-curve calculation described in :doc:`drawdown` — turn
 them on to see the shape of each fund's declines directly, not just the
 summary numbers above. The Price, Rolling Return, Volatility, and Calendar
@@ -146,7 +157,7 @@ Risk-adjusted performance: beta, alpha, Sharpe, and capture ratios
 ------------------------------------------------------------------------
 
 CAGR, drawdown, and volatility describe a fund on its own. The metrics below
-describe it *relative to NIFTY 50* — how much of the index's risk it's
+describe it *relative to the NIFTY 50 TRI* — how much of the index's risk it's
 actually taking on, and whether the return it delivers is worth that risk.
 All are computed from daily NAV/index returns against a flat **6.5%
 annualized risk-free rate** (a simplifying assumption standing in for the
@@ -156,14 +167,14 @@ signal, since a different Rf mostly shifts every fund's numbers together).
 
 .. code-block:: text
 
-   Beta        = Cov(fund_returns, NIFTY_returns) / Var(NIFTY_returns)
-   Alpha       = (fund_return − Rf) − Beta × (NIFTY_return − Rf)     [annualized]
+   Beta        = Cov(fund_returns, TRI_returns) / Var(TRI_returns)
+   Alpha       = (fund_return − Rf) − Beta × (TRI_return − Rf)        [annualized]
    Sharpe      = (fund_CAGR − Rf) / fund_annualized_volatility
    Sortino     = (fund_CAGR − Rf) / fund_annualized_downside_deviation
    Calmar      = fund_CAGR / |fund_max_drawdown|
-   Up-capture  = fund's compounded return over NIFTY's positive months
-                 ÷ NIFTY's compounded return over those same months
-   Down-capture = the same ratio, over NIFTY's negative months
+   Up-capture  = fund's geometric-average monthly return in the TRI's up months
+                 ÷ the TRI's geometric-average monthly return in those months
+   Down-capture = the same ratio, over the TRI's down months
 
 - **Beta** — sensitivity to NIFTY 50's moves. A beta of 0.5 means the fund
   has historically moved roughly half as much as the index, in either
@@ -182,13 +193,12 @@ signal, since a different Rf mostly shifts every fund's numbers together).
   experienced. Unlike Sharpe/Sortino, it's anchored to the single worst
   historical event rather than the whole return distribution — closest in
   spirit to "how did it do in the one moment that would have hurt the most."
-- **Up-/down-capture ratio** — computed on **monthly** returns (the
-  standard convention here; daily compounding of a subset of days distorts
-  the ratio) — what fraction of NIFTY's gain the fund captured during the
-  index's up months, and what fraction of NIFTY's loss it captured during
-  down months. A fund with 50% up-capture and 30% down-capture is
-  participating in half the rally but only a third of the fall — exactly
-  the asymmetry a Balanced Advantage Fund is designed to produce.
+- **Up-/down-capture ratio** — computed on **monthly** returns: what
+  fraction of the index's typical gain the fund captured in the index's up
+  months, and what fraction of its typical loss in the index's down months.
+  A fund with 65% up-capture and 30% down-capture is participating in
+  two-thirds of the rally but under a third of the fall — exactly the
+  asymmetry a Balanced Advantage Fund is designed to produce.
 
 **2013–2026 (four funds):**
 
@@ -207,40 +217,40 @@ signal, since a different Rf mostly shifts every fund's numbers together).
      - Down-cap
    * - HDFC BAF
      - 0.82
-     - 3.6%
+     - 2.6%
      - 0.91
      - 0.49
      - 0.68
      - 0.40
-     - 87.8%
-     - 90.8%
+     - 94.4%
+     - 79.2%
    * - ICICI Pru BAF
      - 0.52
-     - 3.5%
+     - 2.9%
      - 0.94
-     - 0.66
-     - 0.92
+     - 0.67
+     - 0.93
      - 0.46
-     - 28.7%
-     - 57.9%
+     - 64.3%
+     - 34.7%
    * - Edelweiss BAF
      - 0.50
-     - 3.2%
+     - 2.6%
      - 0.91
-     - 0.62
-     - 0.89
-     - 0.74
-     - 33.4%
-     - 67.3%
+     - 0.63
+     - 0.90
+     - 0.75
+     - 68.3%
+     - 43.8%
    * - Nippon India BAF
      - 0.62
-     - 2.6%
+     - 1.9%
      - 0.89
-     - 0.47
-     - 0.66
+     - 0.48
+     - 0.67
      - 0.52
-     - 48.0%
-     - 81.3%
+     - 77.7%
+     - 61.2%
 
 **2021–2026 (all five funds):**
 
@@ -259,61 +269,64 @@ signal, since a different Rf mostly shifts every fund's numbers together).
      - Down-cap
    * - HDFC BAF
      - 0.64
-     - 7.8%
+     - 7.1%
      - 0.89
-     - 0.82
-     - 1.14
-     - 1.43
-     - 82.5%
-     - 47.2%
+     - 0.83
+     - 1.16
+     - 1.45
+     - 91.7%
+     - 47.4%
    * - ICICI Pru BAF
      - 0.42
-     - 4.0%
+     - 3.6%
      - 0.92
-     - 0.65
-     - 0.96
-     - 1.29
-     - 52.5%
-     - 31.6%
+     - 0.68
+     - 1.01
+     - 1.31
+     - 64.0%
+     - 26.3%
    * - Edelweiss BAF
      - 0.59
-     - 2.8%
+     - 2.2%
      - 0.94
-     - 0.31
-     - 0.44
-     - 0.83
-     - 65.0%
-     - 55.2%
+     - 0.34
+     - 0.47
+     - 0.85
+     - 74.7%
+     - 49.2%
    * - Nippon India BAF
      - 0.51
-     - 3.1%
+     - 2.6%
      - 0.94
-     - 0.42
-     - 0.59
-     - 1.12
-     - 58.8%
-     - 45.8%
+     - 0.45
+     - 0.63
+     - 1.14
+     - 70.2%
+     - 40.5%
    * - SBI BAF
      - 0.42
-     - 3.6%
+     - 3.1%
      - 0.91
-     - 0.57
-     - 0.82
-     - 1.37
-     - 55.5%
-     - 39.4%
+     - 0.59
+     - 0.85
+     - 1.38
+     - 68.3%
+     - 36.3%
 
-Read across the two windows together, not just down a single column: HDFC
-BAF runs the highest beta and the highest up-capture of the group *and* the
-highest down-capture — it behaves the most like a lower-volatility equity
-fund. ICICI Prudential and SBI sit at the other end — the lowest beta and
-the widest gap between up-capture and down-capture (in 2021–2026, ICICI
-Pru captured 52.5% of NIFTY's gains but only 31.6% of its losses) — the
-shape a Balanced Advantage Fund is supposed to have, at the cost of giving
-up more of the upside too. Neither is "the correct" answer on its own; it's
-a real tradeoff between smoothing the ride and keeping pace with equity
-returns, and it's visible directly in these numbers rather than needing to
-be taken on faith.
+Read across the two windows together, not just down a single column. Every
+fund, in both windows, captured a larger share of the index's up months than
+of its down months — the asymmetry a Balanced Advantage Fund is meant to have
+(ICICI Prudential, for example, captured 64% of the index's typical up month
+and 26% of its typical down month over 2021–2026). Beyond that they sit on a
+spectrum. HDFC is at the equity-like end: the highest beta (0.82 and 0.64)
+and the highest up-capture (94% and 92%), but also the highest down-capture
+over 2013–2026 (79%), so it gave the least protection. ICICI Prudential and
+SBI are at the defensive end: the lowest beta in the recent window (0.42
+each) and the lowest down-capture (26% and 36%), at the cost of giving up
+more of the upside (64% and 68%). Neither end is "the correct" answer on its
+own; it's a real tradeoff between smoothing the ride and keeping pace with
+equity returns, and it's visible directly in these numbers rather than needing
+to be taken on faith.
 
 How this fits the project's fund rules
 -------------------------------------------

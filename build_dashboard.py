@@ -39,9 +39,9 @@ ROOT = Path(__file__).parent
 EPOCH = date(1990, 1, 1)
 
 INDICES = {
-    "NIFTY 50": ROOT / "data/indices/nifty_50.csv",
-    "NIFTY NEXT 50": ROOT / "data/indices/nifty_next_50.csv",
-    "NIFTY MIDCAP 150": ROOT / "data/indices/nifty_midcap_150.csv",
+    "NIFTY 50": ROOT / "data/indices/nifty_50_tri.csv",
+    "NIFTY NEXT 50": ROOT / "data/indices/nifty_next_50_tri.csv",
+    "NIFTY MIDCAP 150": ROOT / "data/indices/nifty_midcap_150_tri.csv",
 }
 
 # Actively managed Balanced Advantage / Dynamic Asset Allocation funds

@@ -46,6 +46,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index-levels.html">Index Levels &amp; Rebasing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="index-levels.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#why-total-return-not-the-price-index">Why total return, not the price index</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index-levels.html#the-fix-rebasing">The fix: rebasing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index-levels.html#log-scale">Log scale</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index-levels.html#why-it-matters">Why it matters</a></li>
@@ -102,7 +103,9 @@
 <li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#the-problem-this-page-is-about">The problem this page is about</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-a-balanced-advantage-fund-does-differently">What a Balanced Advantage Fund does differently</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-the-data-actually-shows">What the data actually shows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#risk-adjusted-performance-beta-alpha-sharpe-and-capture-ratios">Risk-adjusted performance: beta, alpha, Sharpe, and capture ratios</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#how-this-fits-the-project-s-fund-rules">How this fits the project’s fund rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-these-funds-cost">What these funds cost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-s-different-from-the-index-fund-comparison">What’s different from the index-fund comparison</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#why-this-isn-t-just-add-balanced-advantage-funds-to-the-funds-tab">Why this isn’t just “add balanced advantage funds to the Funds tab”</a></li>
 </ul>
@@ -137,7 +140,7 @@
 <h1>Base Dates &amp; Back-tested History<a class="headerlink" href="#base-dates-back-tested-history" title="Link to this heading"></a></h1>
 <section id="the-simple-explanation">
 <h2>The simple explanation<a class="headerlink" href="#the-simple-explanation" title="Link to this heading"></a></h2>
-<p>Every NSE index has two distinct dates that are easy to conflate:</p>
+<p>Every NSE index has a few distinct dates that are easy to conflate:</p>
 <ul class="simple">
 <li><p><strong>Launch date</strong> — when the index actually started being calculated and
 published in real time.</p></li>
@@ -148,38 +151,38 @@ methodology backward using historical constituent prices to produce a
 continuous back-tested series — even for days before anyone was actually
 quoting the index.</p></li>
 </ul>
-<p>The Terminal’s charts default to showing the <strong>full back-tested history</strong>,
-which is why NIFTY 50 data starts in <strong>July 1990</strong> even though the index
-wasn’t launched until <strong>22 April 1996</strong> (base date 3 Nov 1995).</p>
+<p>The Terminal shows each index as a <strong>Total Return Index (TRI)</strong> (see
+<a class="reference internal" href="index-levels.html"><span class="doc">Index Levels &amp; Rebasing</span></a>), and a TRI series begins on its own date, which is neither
+the launch date nor the price index’s base date. The table shows all three.</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 27.3%" />
-<col style="width: 22.7%" />
-<col style="width: 22.7%" />
-<col style="width: 27.3%" />
+<col style="width: 25.0%" />
+<col style="width: 20.0%" />
+<col style="width: 25.0%" />
+<col style="width: 30.0%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Index</p></th>
 <th class="head"><p>Launched</p></th>
-<th class="head"><p>Base date (=1000)</p></th>
-<th class="head"><p>Earliest chart data</p></th>
+<th class="head"><p>Price index base date (=1000)</p></th>
+<th class="head"><p>TRI series starts in the Terminal</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>NIFTY 50</p></td>
 <td><p>22 Apr 1996</p></td>
 <td><p>3 Nov 1995</p></td>
-<td><p>3 Jul 1990</p></td>
+<td><p>30 Jun 1999 (1,256.38)</p></td>
 </tr>
 <tr class="row-odd"><td><p>NIFTY Next 50</p></td>
 <td><p>1 Jan 1997</p></td>
 <td><p>3 Nov 1996</p></td>
-<td><p>4 Nov 1996</p></td>
+<td><p>8 Nov 2002 (1,360.04)</p></td>
 </tr>
 <tr class="row-even"><td><p>NIFTY Midcap 150</p></td>
 <td><p>Apr 2016</p></td>
 <td><p>1 Apr 2005</p></td>
-<td><p>1 Apr 2005</p></td>
+<td><p>1 Apr 2005 (1,000.00)</p></td>
 </tr>
 </tbody>
 </table>
@@ -191,20 +194,22 @@ wasn’t launched until <strong>22 April 1996</strong> (base date 3 Nov 1995).</
 real historical stock prices run through today’s index methodology, not
 a series that was actually published and tradeable at the time. It’s
 generally trustworthy as a research approximation, but it wasn’t something
-you could have bought or benchmarked against in, say, 1992.</p></li>
-<li><p>Because each index has a different base date, their <strong>raw levels are not
-comparable</strong> — see <a class="reference internal" href="index-levels.html"><span class="doc">Index Levels &amp; Rebasing</span></a> for the fix (rebasing).</p></li>
-<li><p>NIFTY Midcap 150 in particular is a relatively new index construct (2016)
-wearing an older base date (2005) — its pre-2016 history is the most
-“synthetic” of the three in this Terminal, built from a stock universe
-definition that didn’t formally exist yet at the time.</p></li>
+you could have bought or benchmarked against at the time.</p></li>
+<li><p>Of the three, only the <strong>NIFTY Midcap 150 TRI</strong> reaches back before its
+launch date: it is a relatively new index construct (2016) whose series
+starts in 2005, so its 2005–2016 stretch is built from a stock universe
+definition that didn’t formally exist yet. The NIFTY 50 and NIFTY Next 50
+TRI series both begin after their launch dates.</p></li>
+<li><p>Because each index starts from a different value on a different date, their
+<strong>raw levels are not comparable</strong> — see <a class="reference internal" href="index-levels.html"><span class="doc">Index Levels &amp; Rebasing</span></a> for the fix
+(rebasing).</p></li>
 </ul>
 </section>
 <section id="how-to-read-it-on-the-chart">
 <h2>How to read it on the chart<a class="headerlink" href="#how-to-read-it-on-the-chart" title="Link to this heading"></a></h2>
 <p>There’s no visual marker distinguishing back-tested history from live
-history on the Price tab — both are drawn identically. Treat everything
-before the launch dates above as directionally informative but not as
+history on the Price tab — both are drawn identically. Treat the NIFTY
+Midcap 150 TRI before April 2016 as directionally informative but not as
 precise as the live-quoted era.</p>
 </section>
 </section>

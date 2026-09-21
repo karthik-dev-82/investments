@@ -26,9 +26,9 @@ Two edge cases are marked explicitly in the Calendar Returns table:
 Worked examples
 ------------------
 
-NIFTY 50's best calendar year on record is **2009 (+75.8%)** — the sharp
-rebound after the 2008 global financial crisis. Its worst is **2008
-(−51.8%)** — the crisis itself. Seeing both in the same table, one row
+The NIFTY 50 TRI's best full calendar year in the Terminal's data (which starts
+in 1999) is **2009 (+77.6%)** — the sharp rebound after the 2008 global
+financial crisis. Its worst is **2008 (−51.3%)** — the crisis itself. Seeing both in the same table, one row
 apart, is a useful reminder that the depth of a crash and the strength of
 the recovery are often two sides of the same event.
 
@@ -55,4 +55,9 @@ How to read it on the chart
 Rows are sorted most-recent-first. Cell shading is proportional to the
 size of the return — deeper green for stronger gains, deeper red for
 larger losses — capped at ±60% so that one extreme year (like 2009's
-+75.8%) doesn't wash out every other cell's shading.
++77.6%) doesn't wash out every other cell's shading.
+
+Because these are total returns, they include reinvested dividends, so they
+read a little higher than headline "price return" figures for the same index
+— and they are the like-for-like comparison for a Growth-option fund's
+calendar-year return.

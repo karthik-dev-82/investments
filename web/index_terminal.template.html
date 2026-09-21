@@ -248,7 +248,7 @@
   <header>
     <div>
       <h1><span>NIFTY</span> Index Terminal</h1>
-      <p class="subtitle">Daily closing levels for three NSE benchmark indices, back-tested to each index's base date, plus five Balanced Advantage funds (Direct, Growth) as comparison series — switch them on in the legend. Scroll to zoom, drag to pan — switch tabs for <a href="notes/concepts/drawdown.html">drawdowns</a>, <a href="notes/concepts/calendar-returns.html">calendar-year returns</a>, <a href="notes/concepts/rolling-returns.html">rolling returns</a> and <a href="notes/concepts/volatility.html">volatility</a>. What do these mean? See the <a href="notes/index.html">notes</a>.</p>
+      <p class="subtitle">Daily levels of three NSE Total Return Indices (TRI: dividends reinvested, the fair benchmark for a Growth-option fund), plus five Balanced Advantage funds (Direct, Growth) as comparison series — switch them on in the legend. Scroll to zoom, drag to pan — switch tabs for <a href="notes/concepts/drawdown.html">drawdowns</a>, <a href="notes/concepts/calendar-returns.html">calendar-year returns</a>, <a href="notes/concepts/rolling-returns.html">rolling returns</a> and <a href="notes/concepts/volatility.html">volatility</a>. What do these mean? See the <a href="notes/index.html">notes</a>.</p>
     </div>
     <div class="asof" id="asof"></div>
   </header>
@@ -288,9 +288,9 @@
   <div class="stats" id="stats"></div>
 
   <footer>
-    <div><b>Base dates</b> (index = 1000): NIFTY 50 — 3 Nov 1995 (launched 22 Apr 1996). NIFTY Next 50 — 3 Nov 1996 (launched 1 Jan 1997). NIFTY Midcap 150 — 1 Apr 2005 (launched Apr 2016). Values before each index's launch date are NSE's back-tested reconstruction using historical constituent prices, not live-quoted levels.</div>
+    <div><b>Total Return Indices</b> (gross TRI, dividends reinvested): NIFTY 50 TRI from 30 Jun 1999, NIFTY Next 50 TRI from 8 Nov 2002, NIFTY Midcap 150 TRI from 1 Apr 2005. NIFTY Midcap 150 was launched in Apr 2016, so its earlier values are NSE's back-tested reconstruction, not live-quoted levels.</div>
     <div><b>Drawdown</b> = % below the running all-time-high close. <b>Rolling return</b> = annualized return over the trailing N years, recomputed for every trading day. <b>Volatility</b> = annualized standard deviation of daily log returns over the trailing window (×√252 trading days/year).</div>
-    <div>Source: NSE index history, via jugaad-data. Balanced Advantage fund NAVs: api.mfapi.in (AMFI data); expense ratios: AMFI TER disclosure (~Jul-2025).</div>
+    <div>Source: NSE Indices TRI history, via jugaad-data. Balanced Advantage fund NAVs: api.mfapi.in (AMFI data); their costs and AUM (Sep 2026): fund-house TER files and fund-data sites, see notes.</div>
   </footer>
 </div>
 
@@ -307,9 +307,9 @@
   function clamp(v,lo,hi){ return Math.max(lo, Math.min(hi, v)); }
 
   var SERIES = [
-    { key:"NIFTY 50",          label:"NIFTY 50",          short:"N50",   varName:"--n50",  group:"index" },
-    { key:"NIFTY NEXT 50",     label:"NIFTY Next 50",     short:"NN50",  varName:"--nn50", group:"index" },
-    { key:"NIFTY MIDCAP 150",  label:"NIFTY Midcap 150",  short:"MC150", varName:"--mc150",group:"index" },
+    { key:"NIFTY 50",          label:"NIFTY 50 TRI",      short:"N50",   varName:"--n50",  group:"index" },
+    { key:"NIFTY NEXT 50",     label:"NIFTY Next 50 TRI", short:"NN50",  varName:"--nn50", group:"index" },
+    { key:"NIFTY MIDCAP 150",  label:"NIFTY Midcap 150 TRI", short:"MC150", varName:"--mc150",group:"index" },
     { key:"HDFC Balanced Advantage Fund",              label:"HDFC BAF",           short:"HDFC-BAF", varName:"--baf1", group:"baf" },
     { key:"ICICI Prudential Balanced Advantage Fund",  label:"ICICI Pru BAF",      short:"ICICI-BAF", varName:"--baf2", group:"baf" },
     { key:"Edelweiss Balanced Advantage Fund",         label:"Edelweiss BAF",      short:"EDEL-BAF",  varName:"--baf3", group:"baf" },
@@ -345,15 +345,10 @@
     var n = d.c.length;
     s.color = getComputedStyle(document.documentElement).getPropertyValue(s.varName).trim();
 
-    // rebased: growth of 100 from this series' own first point
-    var base = d.c[0];
-    d.r = new Array(n);
-    for(var i=0;i<n;i++){ d.r[i] = (d.c[i]/base)*100; }
-
     // drawdown: % below running all-time-high close, + date of that peak
     d.dd = new Array(n);
     d.peakDay = new Array(n);
-    var peak=-Infinity, peakDay=null;
+    var peak=-Infinity, peakDay=null, i;
     for(i=0;i<n;i++){
       if(d.c[i]>=peak){ peak=d.c[i]; peakDay=d.d[i]; }
       d.dd[i] = (d.c[i]/peak - 1)*100;
@@ -448,11 +443,27 @@
     domain: [FULL_MIN, FULL_MAX]
   };
 
+  // "Growth of 100": every visible line is 100 on one common date -- the left edge of the
+  // current view, or the latest launch among visible series if that is later.
+  var rebaseCache = { sig:null, day:0, base:{} };
+  function rebaseInfo(){
+    var sig = state.domain[0], mask = 0;
+    SERIES.forEach(function(s, k){ if(state.visible[s.key]) mask |= (1<<k); });
+    sig = sig + "|" + mask;
+    if(rebaseCache.sig === sig) return rebaseCache;
+    var day = state.domain[0];
+    SERIES.forEach(function(s){ if(state.visible[s.key] && s.data.d[0] > day) day = s.data.d[0]; });
+    var base = {};
+    SERIES.forEach(function(s){ base[s.key] = s.data.c[nearestIndex(s.data.d, day)]; });
+    rebaseCache = { sig:sig, day:day, base:base };
+    return rebaseCache;
+  }
+
   // ---------- per-tab definitions ----------
   var TAB_DEFS = {
     price: {
       id:"price", label:"Price",
-      getVal: function(s,i){ return state.mode==="level" ? s.data.c[i] : s.data.r[i]; },
+      getVal: function(s,i){ return state.mode==="level" ? s.data.c[i] : s.data.c[i] / rebaseInfo().base[s.key] * 100; },
       fmtTip: function(v){ return (state.mode==="rebased" ? fmtNum(v,1) : fmtNum(v,2)); },
       fmtTick: function(v){ var rv=Math.round(v)||0; return fmtNum(rv,0); },
       zeroLine: function(){ return state.mode==="rebased" ? 100 : null; },
@@ -556,7 +567,7 @@
   // ---------- tab-specific controls (built once, attached/detached per tab) ----------
   var modeSegEl = document.createElement("div");
   modeSegEl.className = "seg"; modeSegEl.setAttribute("role","group"); modeSegEl.setAttribute("aria-label","Value mode");
-  [["level","Index level"],["rebased","Growth of ₹100"]].forEach(function(pair){
+  [["level","TRI level"],["rebased","Growth of ₹100"]].forEach(function(pair){
     var b = document.createElement("button");
     b.type="button"; b.textContent=pair[1];
     b.setAttribute("aria-pressed", String(pair[0]==="level"));
@@ -834,8 +845,21 @@
   }
 
   // ---------- render ----------
+  function updateChartHint(){
+    var t = "scroll to zoom · drag to pan · double-click to reset";
+    if(state.tab==="price"){
+      if(state.mode==="rebased"){
+        t += " · every line = 100 on " + fmtDate(dayToDate(rebaseInfo().day));
+      } else if(SERIES.some(function(s){ return s.group==="baf" && state.visible[s.key]; })){
+        t += " · fund NAVs and TRI levels are on different scales — use Growth of ₹100 to compare";
+      }
+    }
+    chartHintEl.textContent = t;
+  }
+
   function render(){
     if(chartBox.hidden) return;
+    updateChartHint();
     var def = TAB_DEFS[state.tab];
     ctx.clearRect(0,0,W,H);
     var cssVars = getComputedStyle(document.documentElement);
@@ -1386,15 +1410,15 @@
     ["Sharpe",   "(CAGR - risk-free) / volatility",                                  function(f){ return dash(f.sharpe,2); }],
     ["Sortino",  "Like Sharpe, but only downside volatility counts as risk",         function(f){ return dash(f.sortino,2); }],
     ["Calmar",   "CAGR / |max drawdown|",                                            function(f){ return dash(f.calmar,2); }],
-    ["Up-cap",   "Share of NIFTY 50's gains in its up months that the fund captured", function(f){ return dash(f.upcap,0,"%"); }],
-    ["Down-cap", "Share of NIFTY 50's losses in its down months that the fund took",  function(f){ return dash(f.downcap,0,"%"); }]
+    ["Up-cap",   "Share of NIFTY 50 TRI's gains in its up months that the fund captured", function(f){ return dash(f.upcap,0,"%"); }],
+    ["Down-cap", "Share of NIFTY 50 TRI's losses in its down months that the fund took",  function(f){ return dash(f.downcap,0,"%"); }]
   ];
 
   function renderBafSection(){
     var sect = document.createElement("div");
     sect.className = "baf-section";
     var h = document.createElement("h3");
-    h.textContent = "Balanced Advantage funds — risk vs NIFTY 50 (Direct, Growth)";
+    h.textContent = "Balanced Advantage funds — risk vs NIFTY 50 TRI (Direct, Growth)";
     sect.appendChild(h);
 
     var shown = SERIES.filter(function(s){ return s.group==="baf" && state.visible[s.key]; });
@@ -1434,7 +1458,7 @@
     var bTr = document.createElement("tr");
     var bName = document.createElement("td");
     bName.className = "yr";
-    bName.textContent = "NIFTY 50 (benchmark)";
+    bName.textContent = "NIFTY 50 TRI (benchmark)";
     bTr.appendChild(bName);
     var benchVals = { "CAGR":dash(w.bench.cagr,1,"%"), "Max DD":dash(w.bench.maxdd,1,"%"), "Beta":"1.00", "Up-cap":"100%", "Down-cap":"100%" };
     BAF_COLS.forEach(function(c){

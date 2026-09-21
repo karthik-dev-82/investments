@@ -46,6 +46,7 @@
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Index Levels &amp; Rebasing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-total-return-not-the-price-index">Why total return, not the price index</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#the-fix-rebasing">The fix: rebasing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#log-scale">Log scale</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#why-it-matters">Why it matters</a></li>
@@ -102,7 +103,9 @@
 <li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#the-problem-this-page-is-about">The problem this page is about</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-a-balanced-advantage-fund-does-differently">What a Balanced Advantage Fund does differently</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-the-data-actually-shows">What the data actually shows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#risk-adjusted-performance-beta-alpha-sharpe-and-capture-ratios">Risk-adjusted performance: beta, alpha, Sharpe, and capture ratios</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#how-this-fits-the-project-s-fund-rules">How this fits the project’s fund rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-these-funds-cost">What these funds cost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-s-different-from-the-index-fund-comparison">What’s different from the index-fund comparison</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#why-this-isn-t-just-add-balanced-advantage-funds-to-the-funds-tab">Why this isn’t just “add balanced advantage funds to the Funds tab”</a></li>
 </ul>
@@ -137,38 +140,60 @@
 <h1>Index Levels &amp; Rebasing<a class="headerlink" href="#index-levels-rebasing" title="Link to this heading"></a></h1>
 <section id="the-simple-explanation">
 <h2>The simple explanation<a class="headerlink" href="#the-simple-explanation" title="Link to this heading"></a></h2>
-<p>An index level (e.g. “NIFTY 50 = 23,217.60”) is not a price you can buy — it’s
-a weighted average of its constituent stocks’ prices, scaled so that on the
-index’s <strong>base date</strong> it equals a round number, usually 1,000. Everything
-after that is relative: “23,217.60” means the index is about 23x its base-date
-value.</p>
+<p>An index level (e.g. “NIFTY 50 TRI = 35,577.90”) is not a price you can buy —
+it’s a number calculated from its constituent stocks and scaled so that it
+started from an arbitrary round-ish value on its starting date. Everything
+after that is relative: 35,577.90 means the index is about 28x its starting
+value of 1,256.38 (30 Jun 1999).</p>
 <p>That scaling is exactly why you <strong>cannot compare three indices by raw level</strong>.
-On the Terminal’s Price tab, NIFTY Next 50 currently trades around 70,000
-while NIFTY 50 is around 23,000 — that difference says nothing about which
-index performed better. It mostly reflects that each index was independently
-re-based to 1,000 on a <em>different</em> date (see <a class="reference internal" href="base-dates.html"><span class="doc">Base Dates &amp; Back-tested History</span></a>), so their raw
-levels were never on the same footing to begin with.</p>
+On the Terminal’s Price tab, the NIFTY Next 50 TRI currently reads around
+1,04,000 while the NIFTY 50 TRI is around 35,600 — that difference says nothing
+about which index performed better. It mostly reflects that each index started
+from a different value on a <em>different</em> date (see <a class="reference internal" href="base-dates.html"><span class="doc">Base Dates &amp; Back-tested History</span></a>), so their
+raw levels were never on the same footing to begin with.</p>
+</section>
+<section id="why-total-return-not-the-price-index">
+<h2>Why total return, not the price index<a class="headerlink" href="#why-total-return-not-the-price-index" title="Link to this heading"></a></h2>
+<p>Every index in the Terminal is a <strong>Total Return Index (TRI)</strong>. A price index
+only counts changes in the constituent stocks’ prices; a TRI also assumes every
+dividend the companies pay is reinvested in the index on the day it’s paid.</p>
+<p>A Growth-option mutual fund does the equivalent: it keeps whatever dividends its
+stocks pay inside the fund and lets the NAV compound. So a Growth fund’s NAV is
+directly comparable with a TRI, and <em>not</em> with the price index — comparing it
+with the price index credits the fund with dividends the index never counted.
+For NIFTY 50 the gap is about 1.4 percentage points a year (10.4% price return
+vs. 11.8% total return, Jan 2013 to Sep 2026), which is enough to change a
+conclusion. This is also the series SEBI requires funds to benchmark against.</p>
+<p>The TRI used here is the <em>gross</em> one (dividends reinvested before any tax on
+them); NSE also publishes a net version that deducts tax.</p>
 </section>
 <section id="the-fix-rebasing">
 <h2>The fix: rebasing<a class="headerlink" href="#the-fix-rebasing" title="Link to this heading"></a></h2>
-<p>“Growth of ₹100” (the other toggle on the Price tab) fixes this by dividing
-every point in a series by that series’ own first value and multiplying by
-100:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>rebased[i] = close[i] / close[0] × 100
+<p>“Growth of ₹100” (the other toggle on the Price tab) fixes this by picking one
+common <strong>base date</strong> and dividing every point in every series by that series’
+value on that date, then multiplying by 100:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>rebased[i] = close[i] / close[base date] × 100
 </pre></div>
 </div>
-<p>Now every line starts at the same place (₹100), and the <em>shape</em> of each line
-directly shows compounding growth — a line that reaches 800 turned every ₹100
-into ₹800. This is the only fair way to eyeball which index compounded faster
-over a given stretch, because the starting point is identical for all three.</p>
+<p>The base date is the left edge of whatever range you’re viewing — or, if one of
+the visible series launched later than that, the launch date of the latest one,
+so that all lines can start together. The chart’s hint line names the date.
+Every line then crosses ₹100 on the same day, and the <em>shape</em> of each line
+directly shows compounding growth from that day — a line that reaches 800 turned
+every ₹100 into ₹800. This is the only fair way to eyeball which series
+compounded faster over a given stretch, because the starting point is identical
+for all of them.</p>
+<p>Zoom to a different range and the base date moves with it, so the same series can
+look very different in a 1-year view and a 10-year view. That is the point: the
+chart always answers “what happened to ₹100 put in at the start of <em>this</em> window?”</p>
 </section>
 <section id="log-scale">
 <h2>Log scale<a class="headerlink" href="#log-scale" title="Link to this heading"></a></h2>
-<p>Over a 35-year span, an index that compounds at a roughly constant annual
+<p>Over a 27-year span, an index that compounds at a roughly constant annual
 rate traces an ever-steepening curve on a normal (“linear”) y-axis — the
-1990s look flat next to 2020s moves that are numerically much larger but
+early 2000s look flat next to 2020s moves that are numerically much larger but
 proportionally similar. Flipping on <strong>Log scale</strong> makes equal <em>percentage</em>
-moves take up equal vertical space, so a doubling in 1995 looks the same size
+moves take up equal vertical space, so a doubling in 2003 looks the same size
 as a doubling in 2020. Use log scale whenever you’re comparing growth <em>rates</em>
 across eras; use linear when you want to see today’s rupee-for-rupee moves at
 their true size.</p>

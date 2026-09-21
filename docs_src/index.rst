@@ -4,7 +4,7 @@ NIFTY Index Terminal — Notes
 Reference notes for the metrics shown in the `NIFTY Index Terminal
 <../index.html>`_ — what each chart measures, the formula behind it, and
 how to read it without getting misled. Every worked example below uses the
-real NIFTY 50 series, not placeholder numbers.
+real NIFTY 50 Total Return Index series, not placeholder numbers.
 
 .. list-table::
    :header-rows: 1
@@ -14,11 +14,11 @@ real NIFTY 50 series, not placeholder numbers.
      - What it measures
      - Key terms
    * - :doc:`concepts/index-levels`
-     - Raw level vs. "Growth of ₹100"
-     - rebasing, log scale
+     - Raw level vs. "Growth of ₹100", and why total return
+     - rebasing, log scale, TRI
    * - :doc:`concepts/base-dates`
-     - Data before an index's launch date
-     - base date, back-tested history
+     - Where each TRI series starts, and what's back-tested
+     - launch date, base date, back-tested history
    * - :doc:`concepts/drawdown`
      - Fall from the last all-time high
      - running peak, recovery time

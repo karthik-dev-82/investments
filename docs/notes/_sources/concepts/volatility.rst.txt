@@ -63,8 +63,8 @@ Choosing a window
 Worked example
 ----------------
 
-Using NIFTY 50's last 21 trading days as of 16 Sep 2026, the standard
-deviation of daily log returns, annualized, comes out to **7.5%**. Over the
+Using the NIFTY 50 TRI's last 21 trading days as of 21 Sep 2026, the standard
+deviation of daily log returns, annualized, comes out to **7.1%**. Over the
 last 252 trading days (roughly the last year), it's **13.2%** — the shorter
 window happened to catch a calmer recent stretch than the index's typical
 year.

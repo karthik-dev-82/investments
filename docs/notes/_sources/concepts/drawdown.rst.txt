@@ -21,12 +21,13 @@ you're below the surface (0%) any time you're not at a fresh high.
 Worked example: the 2020 crash
 --------------------------------
 
-NIFTY 50 peaked at **12,362.30** in mid-February 2020, then fell to
-**7,610.25** by **23 March 2020** as COVID-19 lockdowns hit — a drawdown of
-**−38.4%** in about five weeks. The index didn't reclaim its prior peak until
-**9 November 2020**, 231 days after the trough. That 231-day gap is the
+The NIFTY 50 TRI peaked at **17,349.12** on **14 January 2020**, then fell to
+**10,710.41** by **23 March 2020** as COVID-19 lockdowns hit — a drawdown of
+**−38.3%** in about ten weeks. The index didn't reclaim its prior peak until
+**6 November 2020**, 228 days after the trough. That 228-day gap is the
 **recovery time**, a number drawdown makes visible that a simple return
-chart does not.
+chart does not. (The deepest fall in the Terminal's data is the 2008 financial
+crisis: **−59.5%** from 8 January to 27 October 2008.)
 
 Why it matters
 ---------------

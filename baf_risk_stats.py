@@ -1,13 +1,15 @@
 """
-Computes beta, alpha, Sharpe, Sortino, Calmar, correlation, and up/down
-capture ratios for each Balanced Advantage Fund against NIFTY 50, over the
+Computes CAGR, volatility, max drawdown, beta, alpha, Sharpe, Sortino, Calmar,
+correlation, and up/down capture ratios for each Balanced Advantage Fund
+against the NIFTY 50 Total Return Index (TRI -- the right benchmark for a
+Growth-option fund, whose dividends stay inside the fund), over the
 two common windows used in docs_src/concepts/lumpsum-and-balanced-advantage.rst
 (2013-2026 for the four longest-running funds, 2021-2026 for all five,
 since SBI Balanced Advantage Fund only has NAV history from Sep 2021).
 
 Beta/alpha/Sharpe/Sortino/correlation use daily returns; up/down capture
-uses monthly returns (the standard convention -- compounding daily returns
-over a subset of days distorts the ratio at this many data points).
+uses monthly returns and the ratio of geometric-average monthly returns in
+the benchmark's up / down months (the standard definition).
 
 Rf is a flat 6.5% annualized assumption, not the actual historical T-bill
 path -- treat absolute Sharpe/Sortino/alpha values as approximate and the
@@ -37,7 +39,7 @@ WINDOWS = [
     ("2013-01-22", FUNDS_2013),
     ("2021-09-07", FUNDS_2021),
 ]
-BENCH_PATH = ROOT / "data/indices/nifty_50.csv"
+BENCH_PATH = ROOT / "data/indices/nifty_50_tri.csv"
 
 
 def load(path):
@@ -69,9 +71,11 @@ def cagr(dates, series):
 
 
 def ann_vol(rets):
-    n = len(rets)
-    mean = sum(rets) / n
-    return math.sqrt(sum((r - mean) ** 2 for r in rets) / n) * math.sqrt(252)
+    """Annualized volatility from simple daily returns, via log returns (as the dashboard's Volatility tab does)."""
+    logs = [math.log(1 + r) for r in rets]
+    n = len(logs)
+    mean = sum(logs) / n
+    return math.sqrt(sum((r - mean) ** 2 for r in logs) / n) * math.sqrt(252)
 
 
 def ann_downside_dev(rets):
@@ -112,24 +116,32 @@ def monthly_returns(series, dates_sorted):
 
 
 def capture_ratios(fund_m, bench_m):
-    up_f = up_b = down_f = down_b = 1.0
-    for f, b in zip(fund_m, bench_m):
-        if b > 0:
-            up_f *= 1 + f
-            up_b *= 1 + b
-        elif b < 0:
-            down_f *= 1 + f
-            down_b *= 1 + b
-    return (up_f - 1) / (up_b - 1) * 100, (down_f - 1) / (down_b - 1) * 100
+    """Standard up/down capture: ratio of geometric-average monthly returns in the
+    benchmark's up (or down) months. Compounding the whole subset and dividing
+    instead lets compounding over ~90 months dominate the ratio."""
+
+    def side(is_up):
+        pairs = [(f, b) for f, b in zip(fund_m, bench_m) if (b > 0 if is_up else b < 0)]
+        n = len(pairs)
+        pf = pb = 1.0
+        for f, b in pairs:
+            pf *= 1 + f
+            pb *= 1 + b
+        return (pf ** (1 / n) - 1) / (pb ** (1 / n) - 1) * 100
+
+    return side(True), side(False)
 
 
 def compute(start_date, fund_paths):
     """Returns (benchmark_stats, [fund_stats...]) for one window; rates in percent."""
     bench = load(BENCH_PATH)
-    bench_dates = sorted(d for d in bench if d >= start_date)
+    # Stop the benchmark where the funds' NAV history stops, so both cover the same span.
+    end_date = min(max(load(path)) for path in fund_paths.values())
+    bench_dates = sorted(d for d in bench if start_date <= d <= end_date)
     b_cagr, years = cagr(bench_dates, bench)
     bench_stats = {
         "cagr": b_cagr * 100,
+        "vol": ann_vol(to_returns(bench, bench_dates)) * 100,
         "maxdd": max_drawdown(bench_dates, bench) * 100,
         "years": years,
         "start": bench_dates[0],
@@ -153,6 +165,7 @@ def compute(start_date, fund_paths):
             {
                 "name": name,
                 "cagr": f_cagr * 100,
+                "vol": vol * 100,
                 "maxdd": dd * 100,
                 "beta": beta,
                 "alpha": alpha * 100,
@@ -171,6 +184,7 @@ def main():
     for start_date, fund_paths in WINDOWS:
         bench_stats, rows = compute(start_date, fund_paths)
         print(f"\n=== from {start_date} ({bench_stats['years']:.1f}y) ===  (Rf={RF_ANNUAL * 100:.1f}% flat assumption)")
+        print(f"NIFTY 50 TRI: CAGR {bench_stats['cagr']:.2f}%  vol {bench_stats['vol']:.2f}%  maxDD {bench_stats['maxdd']:.2f}%")
         print(f"{'Fund':42s} {'Beta':>6s} {'Alpha':>7s} {'Corr':>6s} {'Sharpe':>7s} {'Sortino':>8s} {'Calmar':>7s} {'UpCap':>7s} {'DownCap':>8s}")
         for r in rows:
             print(

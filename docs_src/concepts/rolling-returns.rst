@@ -62,17 +62,17 @@ which is itself the point:
 Worked example
 ----------------
 
-As of 16 Sep 2026, NIFTY 50 closed at **23,217.60**. Five years earlier, on
-16 Sep 2021, it closed at **17,629.50**. That's 5.00 years apart, so:
+As of 21 Sep 2026, the NIFTY 50 TRI closed at **35,577.90**. Five years earlier,
+on 21 Sep 2021, it closed at **25,154.16**. That's 5.00 years apart, so:
 
 .. code-block:: text
 
-   (23,217.60 / 17,629.50) ^ (1/5.00) − 1 = 5.7% per year
+   (35,577.90 / 25,154.16) ^ (1/5.00) − 1 = 7.2% per year
 
-That +5.7% is the 5Y rolling return plotted for 16 Sep 2026. The point
-*immediately to its left* on the chart is the same calculation done for
-15 Sep 2026 vs. 15 Sep 2021 — a different pair of dates entirely, which is
-why the line moves at all even though "5 years" never changes.
+That +7.2% is the 5Y rolling return plotted for 21 Sep 2026. The point
+*immediately to its left* on the chart is the same calculation done for the
+previous trading day — a different pair of dates entirely, which is why the
+line moves at all even though "5 years" never changes.
 
 Why it matters: sequence-of-returns risk
 -------------------------------------------
@@ -103,4 +103,4 @@ Caveat
 A point on the rolling-return line only exists once enough history has
 accumulated behind it — a 10Y line can't start until 10 years after an
 index's first data point. That's why NIFTY Midcap 150's 10Y rolling-return
-line only begins in 2015, a decade after its 2005 base date.
+line only begins in 2015, a decade after its TRI series starts in April 2005.
