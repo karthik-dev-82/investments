@@ -157,48 +157,17 @@ Risk-adjusted performance: beta, alpha, Sharpe, and capture ratios
 ------------------------------------------------------------------------
 
 CAGR, drawdown, and volatility describe a fund on its own. The metrics below
-describe it *relative to the NIFTY 50 TRI* — how much of the index's risk it's
-actually taking on, and whether the return it delivers is worth that risk.
-All are computed from daily NAV/index returns against a flat **6.5%
+describe it *relative to the NIFTY 50 TRI* — how much of the index's risk
+it's actually taking on, and whether the return it delivers is worth that
+risk. All are computed from daily NAV/index returns against a flat **6.5%
 annualized risk-free rate** (a simplifying assumption standing in for the
 actual historical T-bill path — treat the absolute Sharpe/Sortino/alpha
 numbers as approximate, and the *ranking between funds* as the more reliable
 signal, since a different Rf mostly shifts every fund's numbers together).
 
-.. code-block:: text
-
-   Beta        = Cov(fund_returns, TRI_returns) / Var(TRI_returns)
-   Alpha       = (fund_return − Rf) − Beta × (TRI_return − Rf)        [annualized]
-   Sharpe      = (fund_CAGR − Rf) / fund_annualized_volatility
-   Sortino     = (fund_CAGR − Rf) / fund_annualized_downside_deviation
-   Calmar      = fund_CAGR / |fund_max_drawdown|
-   Up-capture  = fund's geometric-average monthly return in the TRI's up months
-                 ÷ the TRI's geometric-average monthly return in those months
-   Down-capture = the same ratio, over the TRI's down months
-
-- **Beta** — sensitivity to NIFTY 50's moves. A beta of 0.5 means the fund
-  has historically moved roughly half as much as the index, in either
-  direction; it's a blend of the fund's actual net equity level and how
-  that level correlates with market direction.
-- **Alpha** — the annualized return left over after Beta explains its share.
-  A positive alpha means the fund beat what its own market exposure alone
-  would predict; this is closer to "manager skill," separate from just
-  holding less equity.
-- **Sharpe ratio** — return per unit of *total* volatility. Higher is
-  better; it doesn't distinguish an upside swing from a downside one.
-- **Sortino ratio** — the same idea, but only penalizes downside volatility.
-  Usually higher than Sharpe for the same fund, since upside swings are
-  excluded from the risk side entirely.
-- **Calmar ratio** — CAGR divided by the worst drawdown actually
-  experienced. Unlike Sharpe/Sortino, it's anchored to the single worst
-  historical event rather than the whole return distribution — closest in
-  spirit to "how did it do in the one moment that would have hurt the most."
-- **Up-/down-capture ratio** — computed on **monthly** returns: what
-  fraction of the index's typical gain the fund captured in the index's up
-  months, and what fraction of its typical loss in the index's down months.
-  A fund with 65% up-capture and 30% down-capture is participating in
-  two-thirds of the rally but under a third of the fall — exactly the
-  asymmetry a Balanced Advantage Fund is designed to produce.
+What each of these means, and what counts as a good or bad reading, is its
+own page: :doc:`risk-adjusted-metrics`. The tables below are the numbers for
+these five funds; that page is the explanation.
 
 **2013–2026 (four funds):**
 

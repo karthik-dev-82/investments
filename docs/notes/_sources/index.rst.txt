@@ -37,6 +37,9 @@ real NIFTY 50 Total Return Index series, not placeholder numbers.
    * - :doc:`concepts/lumpsum-and-balanced-advantage`
      - A lump sum's timing risk, and funds built to manage it
      - sequence-of-returns risk, dynamic asset allocation
+   * - :doc:`concepts/risk-adjusted-metrics`
+     - Beta, alpha, Sharpe/Sortino, Calmar, capture ratios — and what's good or bad
+     - risk-adjusted return, capture spread
 
 .. toctree::
    :maxdepth: 2
@@ -50,3 +53,4 @@ real NIFTY 50 Total Return Index series, not placeholder numbers.
    concepts/calendar-returns
    concepts/choosing-a-fund
    concepts/lumpsum-and-balanced-advantage
+   concepts/risk-adjusted-metrics

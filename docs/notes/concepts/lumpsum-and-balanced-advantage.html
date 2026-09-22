@@ -20,6 +20,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Risk-Adjusted Metrics: Beta, Alpha, Sharpe &amp; Capture Ratios" href="risk-adjusted-metrics.html" />
     <link rel="prev" title="Choosing a Fund" href="choosing-a-fund.html" /> 
 </head>
 
@@ -107,6 +108,18 @@
 <li class="toctree-l2"><a class="reference internal" href="#what-these-funds-cost">What these funds cost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#what-s-different-from-the-index-fund-comparison">What’s different from the index-fund comparison</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#why-this-isn-t-just-add-balanced-advantage-funds-to-the-funds-tab">Why this isn’t just “add balanced advantage funds to the Funds tab”</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="risk-adjusted-metrics.html">Risk-Adjusted Metrics: Beta, Alpha, Sharpe &amp; Capture Ratios</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#the-problem-these-metrics-solve">The problem these metrics solve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#beta">Beta</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#alpha">Alpha</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#sharpe-ratio">Sharpe ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#sortino-ratio">Sortino ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#calmar-ratio">Calmar ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#up-capture-and-down-capture-ratios">Up-capture and down-capture ratios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#reading-them-together">Reading them together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#how-to-read-this-on-the-terminal">How to read this on the Terminal</a></li>
 </ul>
 </li>
 </ul>
@@ -310,48 +323,16 @@ Returns tabs carry the same five series for the same reason.</p>
 <section id="risk-adjusted-performance-beta-alpha-sharpe-and-capture-ratios">
 <h2>Risk-adjusted performance: beta, alpha, Sharpe, and capture ratios<a class="headerlink" href="#risk-adjusted-performance-beta-alpha-sharpe-and-capture-ratios" title="Link to this heading"></a></h2>
 <p>CAGR, drawdown, and volatility describe a fund on its own. The metrics below
-describe it <em>relative to the NIFTY 50 TRI</em> — how much of the index’s risk it’s
-actually taking on, and whether the return it delivers is worth that risk.
-All are computed from daily NAV/index returns against a flat <strong>6.5%
+describe it <em>relative to the NIFTY 50 TRI</em> — how much of the index’s risk
+it’s actually taking on, and whether the return it delivers is worth that
+risk. All are computed from daily NAV/index returns against a flat <strong>6.5%
 annualized risk-free rate</strong> (a simplifying assumption standing in for the
 actual historical T-bill path — treat the absolute Sharpe/Sortino/alpha
 numbers as approximate, and the <em>ranking between funds</em> as the more reliable
 signal, since a different Rf mostly shifts every fund’s numbers together).</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Beta        = Cov(fund_returns, TRI_returns) / Var(TRI_returns)
-Alpha       = (fund_return − Rf) − Beta × (TRI_return − Rf)        [annualized]
-Sharpe      = (fund_CAGR − Rf) / fund_annualized_volatility
-Sortino     = (fund_CAGR − Rf) / fund_annualized_downside_deviation
-Calmar      = fund_CAGR / |fund_max_drawdown|
-Up-capture  = fund's geometric-average monthly return in the TRI's up months
-              ÷ the TRI's geometric-average monthly return in those months
-Down-capture = the same ratio, over the TRI's down months
-</pre></div>
-</div>
-<ul class="simple">
-<li><p><strong>Beta</strong> — sensitivity to NIFTY 50’s moves. A beta of 0.5 means the fund
-has historically moved roughly half as much as the index, in either
-direction; it’s a blend of the fund’s actual net equity level and how
-that level correlates with market direction.</p></li>
-<li><p><strong>Alpha</strong> — the annualized return left over after Beta explains its share.
-A positive alpha means the fund beat what its own market exposure alone
-would predict; this is closer to “manager skill,” separate from just
-holding less equity.</p></li>
-<li><p><strong>Sharpe ratio</strong> — return per unit of <em>total</em> volatility. Higher is
-better; it doesn’t distinguish an upside swing from a downside one.</p></li>
-<li><p><strong>Sortino ratio</strong> — the same idea, but only penalizes downside volatility.
-Usually higher than Sharpe for the same fund, since upside swings are
-excluded from the risk side entirely.</p></li>
-<li><p><strong>Calmar ratio</strong> — CAGR divided by the worst drawdown actually
-experienced. Unlike Sharpe/Sortino, it’s anchored to the single worst
-historical event rather than the whole return distribution — closest in
-spirit to “how did it do in the one moment that would have hurt the most.”</p></li>
-<li><p><strong>Up-/down-capture ratio</strong> — computed on <strong>monthly</strong> returns: what
-fraction of the index’s typical gain the fund captured in the index’s up
-months, and what fraction of its typical loss in the index’s down months.
-A fund with 65% up-capture and 30% down-capture is participating in
-two-thirds of the rally but under a third of the fall — exactly the
-asymmetry a Balanced Advantage Fund is designed to produce.</p></li>
-</ul>
+<p>What each of these means, and what counts as a good or bad reading, is its
+own page: <a class="reference internal" href="risk-adjusted-metrics.html"><span class="doc">Risk-Adjusted Metrics: Beta, Alpha, Sharpe &amp; Capture Ratios</span></a>. The tables below are the numbers for
+these five funds; that page is the explanation.</p>
 <p><strong>2013–2026 (four funds):</strong></p>
 <table class="docutils align-default">
 <colgroup>
@@ -641,6 +622,7 @@ their actual behavior — not just a cost figure — is what’s being compared.
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="choosing-a-fund.html" class="btn btn-neutral float-left" title="Choosing a Fund" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="risk-adjusted-metrics.html" class="btn btn-neutral float-right" title="Risk-Adjusted Metrics: Beta, Alpha, Sharpe &amp; Capture Ratios" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

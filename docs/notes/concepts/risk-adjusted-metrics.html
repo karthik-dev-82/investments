@@ -1,0 +1,426 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Risk-Adjusted Metrics: Beta, Alpha, Sharpe &amp; Capture Ratios &mdash; NIFTY Index Terminal — Notes</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=93e713b6" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Lump-Sum Timing &amp; Balanced Advantage Funds" href="lumpsum-and-balanced-advantage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NIFTY Index Terminal — Notes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index-levels.html">Index Levels &amp; Rebasing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#why-total-return-not-the-price-index">Why total return, not the price index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#the-fix-rebasing">The fix: rebasing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#log-scale">Log scale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#why-it-matters">Why it matters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="base-dates.html">Base Dates &amp; Back-tested History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="drawdown.html">Drawdown</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#worked-example-the-2020-crash">Worked example: the 2020 crash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rolling-returns.html">Rolling Returns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#why-n-1-3-5-7-10-years">Why N = 1, 3, 5, 7, 10 years</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#worked-example">Worked example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#why-it-matters-sequence-of-returns-risk">Why it matters: sequence-of-returns risk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#caveat">Caveat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="volatility.html">Volatility</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#choosing-a-window">Choosing a window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#worked-example">Worked example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="calendar-returns.html">Calendar-Year Returns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#worked-examples">Worked examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="choosing-a-fund.html">Choosing a Fund</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#direct-vs-regular">Direct vs. Regular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#growth-vs-idcw-and-why-it-matters-more-for-an-australian-tax-resident">Growth vs. IDCW — and why it matters more for an Australian tax resident</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#lock-in-why-elss-variants-are-excluded">Lock-in: why ELSS variants are excluded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#why-aum-is-shown-at-all">Why AUM is shown at all</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#the-nro-nre-route">The NRO → NRE route</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#what-this-page-doesn-t-cover">What this page doesn’t cover</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lumpsum-and-balanced-advantage.html">Lump-Sum Timing &amp; Balanced Advantage Funds</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#the-problem-this-page-is-about">The problem this page is about</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-a-balanced-advantage-fund-does-differently">What a Balanced Advantage Fund does differently</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-the-data-actually-shows">What the data actually shows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#risk-adjusted-performance-beta-alpha-sharpe-and-capture-ratios">Risk-adjusted performance: beta, alpha, Sharpe, and capture ratios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#how-this-fits-the-project-s-fund-rules">How this fits the project’s fund rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-these-funds-cost">What these funds cost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-s-different-from-the-index-fund-comparison">What’s different from the index-fund comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#why-this-isn-t-just-add-balanced-advantage-funds-to-the-funds-tab">Why this isn’t just “add balanced advantage funds to the Funds tab”</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Risk-Adjusted Metrics: Beta, Alpha, Sharpe &amp; Capture Ratios</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-problem-these-metrics-solve">The problem these metrics solve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#beta">Beta</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#alpha">Alpha</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sharpe-ratio">Sharpe ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sortino-ratio">Sortino ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#calmar-ratio">Calmar ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#up-capture-and-down-capture-ratios">Up-capture and down-capture ratios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reading-them-together">Reading them together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-read-this-on-the-terminal">How to read this on the Terminal</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NIFTY Index Terminal — Notes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Risk-Adjusted Metrics: Beta, Alpha, Sharpe &amp; Capture Ratios</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/concepts/risk-adjusted-metrics.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="risk-adjusted-metrics-beta-alpha-sharpe-capture-ratios">
+<h1>Risk-Adjusted Metrics: Beta, Alpha, Sharpe &amp; Capture Ratios<a class="headerlink" href="#risk-adjusted-metrics-beta-alpha-sharpe-capture-ratios" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This page is not investment advice. The “good / bad” bands below are
+commonly used industry rules of thumb, not laws of nature — they exist to
+give a number somewhere to stand, not to replace judgment. Every number
+here is backward-looking; nothing on this page predicts what a fund does
+next.</p>
+</div>
+<section id="the-problem-these-metrics-solve">
+<h2>The problem these metrics solve<a class="headerlink" href="#the-problem-these-metrics-solve" title="Link to this heading"></a></h2>
+<p>CAGR answers “how much did it grow?” It says nothing about <em>how it got
+there</em> — a fund that returned 12% a year by holding steady, moderate
+positions and one that returned 12% a year by swinging wildly between huge
+gains and huge losses are not the same investment, even though their CAGR
+is identical. Risk-adjusted metrics all do the same basic thing: they take a
+return and divide it by, or compare it against, some measure of the risk
+taken to get it — so two funds with the same return can be told apart, and
+a fund’s return can be judged against what its risk level should predict.</p>
+<p>Every metric below is illustrated with real numbers from the Terminal’s
+Balanced Advantage fund data, against the NIFTY 50 Total Return Index (TRI)
+as the benchmark — see <a class="reference internal" href="lumpsum-and-balanced-advantage.html"><span class="doc">Lump-Sum Timing &amp; Balanced Advantage Funds</span></a> for the full
+tables these are drawn from, and the caveats specific to that data (a flat
+6.5% risk-free rate assumption, small sample, backward-looking).</p>
+</section>
+<section id="beta">
+<h2>Beta<a class="headerlink" href="#beta" title="Link to this heading"></a></h2>
+<p><strong>What it measures:</strong> how much a fund moves <em>for a given move in the
+benchmark</em> — its sensitivity to the market, not its overall riskiness.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Beta = Covariance(fund_returns, benchmark_returns) / Variance(benchmark_returns)
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Beta = 1.0</strong> — moves in step with the benchmark.</p></li>
+<li><p><strong>Beta &gt; 1.0</strong> — amplifies the benchmark’s moves in both directions (a
+leveraged or high-beta equity fund).</p></li>
+<li><p><strong>Beta &lt; 1.0</strong> — dampens the benchmark’s moves in both directions.</p></li>
+<li><p><strong>Beta near 0</strong> — moves independently of the benchmark (unusual for a fund
+that holds any meaningful equity).</p></li>
+</ul>
+<p><strong>Good or bad?</strong> Beta isn’t a report card — it’s a dial, not a score. A high
+beta isn’t bad if you want full market exposure; a low beta isn’t good if
+you actually wanted equity-like returns. It only becomes informative
+alongside what the fund is <em>supposed</em> to be: ICICI Prudential Balanced
+Advantage Fund’s beta of 0.42 (2021–2026) means it’s taking under half the
+NIFTY 50’s market risk — which is the point of a Balanced Advantage Fund,
+not a flaw in it. A pure NIFTY 50 index fund with a beta far from 1.0 would
+be the concerning case, since that would mean it isn’t tracking its own
+benchmark.</p>
+</section>
+<section id="alpha">
+<h2>Alpha<a class="headerlink" href="#alpha" title="Link to this heading"></a></h2>
+<p><strong>What it measures:</strong> the return left over after Beta has explained its
+share — the part of a fund’s performance that isn’t just “it held some
+multiple of market risk.”</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Alpha = (fund_return − risk_free_rate) − Beta × (benchmark_return − risk_free_rate)
+</pre></div>
+</div>
+<p>annualized, and expressed in percentage points per year.</p>
+<ul class="simple">
+<li><p><strong>Alpha &gt; 0</strong> — the fund beat what its own market exposure alone would
+predict. This is the closest of these metrics to “manager skill” —
+security selection, timing the equity/debt shift well, or (for a BAF
+specifically) income from the arbitrage/derivative positions many of them
+run.</p></li>
+<li><p><strong>Alpha ≈ 0</strong> — the fund performed exactly as its beta would predict; no
+edge, no drag, beyond what market exposure explains.</p></li>
+<li><p><strong>Alpha &lt; 0</strong> — the fund underperformed what its beta would predict —
+costs, poor timing, or bad security selection ate into the return.</p></li>
+</ul>
+<p><strong>Good or bad?</strong> Positive is good, more positive is better — this is one of
+the few metrics on this page that’s unambiguously “higher is better,” within
+reason. The catch is persistence: alpha is measured over one historical
+stretch and is not guaranteed to repeat. HDFC Balanced Advantage Fund’s
++2.6%/year alpha (2013–2026) and ICICI Prudential’s +2.9%/year over the same
+window are both genuinely good numbers for that period; neither is a promise
+about the next one.</p>
+</section>
+<section id="sharpe-ratio">
+<h2>Sharpe ratio<a class="headerlink" href="#sharpe-ratio" title="Link to this heading"></a></h2>
+<p><strong>What it measures:</strong> return earned per unit of <em>total</em> volatility — the
+oldest and most widely quoted risk-adjusted metric.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Sharpe = (fund_CAGR − risk_free_rate) / fund_annualized_volatility
+</pre></div>
+</div>
+<p><strong>Common rule-of-thumb bands</strong> (return per unit of volatility, annualized):</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Sharpe</p></th>
+<th class="head"><p>Read as</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>&lt; 0</p></td>
+<td><p>Underperformed the risk-free rate — taking risk for a worse-than-safe return.</p></td>
+</tr>
+<tr class="row-odd"><td><p>0 – 1</p></td>
+<td><p>Sub-par: some excess return, but not much per unit of risk taken.</p></td>
+</tr>
+<tr class="row-even"><td><p>1 – 2</p></td>
+<td><p>Good — a widely used threshold for “acceptable” risk-adjusted return.</p></td>
+</tr>
+<tr class="row-odd"><td><p>2 – 3</p></td>
+<td><p>Very good.</p></td>
+</tr>
+<tr class="row-even"><td><p>&gt; 3</p></td>
+<td><p>Excellent — rare over a long window; treat a very high Sharpe with
+some skepticism rather than taking it at face value.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Every Balanced Advantage fund tracked here sits in the 0.3–0.8 range across
+both windows — a moderate reading, not a spectacular one, because BAFs give
+up some upside to reduce volatility rather than maximizing return per unit
+of risk in an unconstrained way.</p>
+<p><strong>Limitation:</strong> Sharpe penalizes upside volatility exactly as much as
+downside volatility — a fund that only ever had spectacular up months would
+still score lower than a boringly steady one with the same average return.
+That’s what Sortino fixes.</p>
+</section>
+<section id="sortino-ratio">
+<h2>Sortino ratio<a class="headerlink" href="#sortino-ratio" title="Link to this heading"></a></h2>
+<p><strong>What it measures:</strong> the same idea as Sharpe, but only downside deviation
+counts as “risk” — upside swings are excluded entirely.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Sortino = (fund_CAGR − risk_free_rate) / fund_annualized_downside_deviation
+</pre></div>
+</div>
+<p>Because the denominator only counts bad moves, Sortino is almost always
+higher than Sharpe for the same fund — HDFC Balanced Advantage Fund reads
+0.49 Sharpe vs. 0.68 Sortino over 2013–2026, for example. The same bands
+used for Sharpe are commonly applied to Sortino too, but because it’s
+measuring a narrower kind of risk, a “good” Sortino number runs a bit higher
+than a “good” Sharpe number for a similar fund.</p>
+<p><strong>Good or bad?</strong> Same direction as Sharpe (higher is better), but compare
+Sortino to Sortino and Sharpe to Sharpe — the two aren’t on the same scale,
+so a fund’s 0.9 Sortino isn’t directly comparable to another fund’s 0.7
+Sharpe.</p>
+</section>
+<section id="calmar-ratio">
+<h2>Calmar ratio<a class="headerlink" href="#calmar-ratio" title="Link to this heading"></a></h2>
+<p><strong>What it measures:</strong> CAGR divided by the single worst drawdown actually
+experienced — return per unit of the worst pain, rather than per unit of
+day-to-day wobble.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Calmar = fund_CAGR / |fund_max_drawdown|
+</pre></div>
+</div>
+<p><strong>Common rule-of-thumb bands:</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Calmar</p></th>
+<th class="head"><p>Read as</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>&lt; 1</p></td>
+<td><p>Weak — the worst drawdown was large relative to the return earned.</p></td>
+</tr>
+<tr class="row-odd"><td><p>1 – 3</p></td>
+<td><p>Good — a widely used range for “acceptable to strong.”</p></td>
+</tr>
+<tr class="row-even"><td><p>&gt; 3</p></td>
+<td><p>Excellent.</p></td>
+</tr>
+</tbody>
+</table>
+<p>This is the metric where the Balanced Advantage funds look best: several
+sit above 1.0, and HDFC Balanced Advantage Fund reaches 1.45 over
+2021–2026, against NIFTY 50 TRI’s own Calmar of roughly 0.3–0.45 across the
+two windows. It’s also the metric most dominated by a single historical
+event — change the worst drawdown and the whole number moves, unlike
+Sharpe/Sortino which reflect the whole return distribution.</p>
+</section>
+<section id="up-capture-and-down-capture-ratios">
+<h2>Up-capture and down-capture ratios<a class="headerlink" href="#up-capture-and-down-capture-ratios" title="Link to this heading"></a></h2>
+<p><strong>What it measures:</strong> what fraction of the benchmark’s <em>typical</em> gain a fund
+captured during the benchmark’s up months, and what fraction of its typical
+loss it captured during the benchmark’s down months.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Up-capture   = fund's geometric-average monthly return in the benchmark's up months
+               ÷ the benchmark's geometric-average monthly return in those months
+Down-capture = the same ratio, over the benchmark's down months
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Up-capture &gt; 100%</strong> — the fund gained <em>more</em> than the benchmark, on
+average, in the benchmark’s good months.</p></li>
+<li><p><strong>Down-capture &lt; 100%</strong> — the fund lost <em>less</em> than the benchmark, on
+average, in the benchmark’s bad months.</p></li>
+</ul>
+<p><strong>Good or bad?</strong> Look at the two together, not either alone — the gap
+between them (sometimes called the “capture spread”) is what tells you
+whether a fund’s risk-reduction is real or just a slower version of the same
+ride. ICICI Prudential Balanced Advantage Fund’s 64% up-capture and 26%
+down-capture (2021–2026) is a wide, favorable spread: participating in
+roughly two-thirds of the rallies while giving back only a quarter of the
+falls. HDFC Balanced Advantage Fund’s 92%/47% over the same window is a
+narrower spread at a higher level — it captures nearly all of the upside,
+but also more of the downside, than ICICI Prudential does. Neither pattern
+is objectively better; they’re different tradeoffs between smoothing the
+ride and keeping pace with the market.</p>
+<p>A fund with a <em>negative</em> spread — down-capture higher than up-capture —
+would be a red flag: it would mean the fund participates more in the
+benchmark’s bad months than its good ones, the opposite of what an
+actively-managed defensive fund should do.</p>
+</section>
+<section id="reading-them-together">
+<h2>Reading them together<a class="headerlink" href="#reading-them-together" title="Link to this heading"></a></h2>
+<p>No single metric here tells the whole story, and the Terminal’s own data
+makes that concrete:</p>
+<ul class="simple">
+<li><p><strong>HDFC Balanced Advantage Fund</strong> — high beta (0.82 / 0.64 across the two
+windows), high up-<em>and</em>-down capture, but also positive alpha. It behaves
+close to the market on both sides, and adds a genuine edge on top — which
+is how it ends up beating NIFTY 50 TRI outright despite being a “defensive”
+category fund. See <a class="reference internal" href="lumpsum-and-balanced-advantage.html"><span class="doc">Lump-Sum Timing &amp; Balanced Advantage Funds</span></a> for the full
+numbers.</p></li>
+<li><p><strong>ICICI Prudential Balanced Advantage Fund</strong> — low beta (0.52 / 0.42),
+a wide up/down capture spread, and volatility around half the index’s.
+It doesn’t need to match the index’s average return to match its
+long-run outcome, because it avoids much of the volatility drag that a
+higher-volatility path pays in lost compounding.</p></li>
+</ul>
+<p>Reading Beta, Alpha, Sharpe/Sortino, Calmar and the capture ratios side by
+side, for the same fund, is what turns “the fund did well” into “the fund
+did well <em>because</em> of this, and gave up <em>that</em> to do it” — which is the
+actual decision a lump-sum allocation has to make.</p>
+</section>
+<section id="how-to-read-this-on-the-terminal">
+<h2>How to read this on the Terminal<a class="headerlink" href="#how-to-read-this-on-the-terminal" title="Link to this heading"></a></h2>
+<p>The Funds tab’s Balanced Advantage risk table on the <a class="reference external" href="../index.html">Index Terminal</a> shows Beta, Alpha, Sharpe, Sortino, Calmar, Up-cap and
+Down-cap for every fund switched on in the legend, for either of the two
+comparison windows — hover any column header for a one-line reminder of
+what it means. This page is the longer explanation;
+<a class="reference internal" href="lumpsum-and-balanced-advantage.html"><span class="doc">Lump-Sum Timing &amp; Balanced Advantage Funds</span></a> is the applied discussion of what
+these numbers say about deploying a lump sum.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="lumpsum-and-balanced-advantage.html" class="btn btn-neutral float-left" title="Lump-Sum Timing &amp; Balanced Advantage Funds" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
