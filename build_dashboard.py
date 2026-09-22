@@ -34,6 +34,7 @@ from datetime import date
 from pathlib import Path
 
 import baf_risk_stats
+import multiasset_risk_stats
 
 ROOT = Path(__file__).parent
 EPOCH = date(1990, 1, 1)
@@ -107,9 +108,9 @@ def build_funds_data():
     return out
 
 
-def build_baf_stats():
-    with open(ROOT / "data/baf_funds_india.csv", newline="") as f:
-        cost = {
+def build_fund_cost(csv_path):
+    with open(csv_path, newline="") as f:
+        return {
             r["fund_name"]: {
                 "ber": float(r["ber_pct"]),
                 "allin": float(r["all_in_pct"]),
@@ -118,6 +119,10 @@ def build_baf_stats():
             }
             for r in csv.DictReader(f)
         }
+
+
+def build_baf_stats():
+    cost = build_fund_cost(ROOT / "data/baf_funds_india.csv")
 
     def r(v, n):
         return None if v != v else round(v, n)  # NaN -> null
@@ -151,6 +156,39 @@ def build_baf_stats():
     return {"rf": baf_risk_stats.RF_ANNUAL * 100, "windows": windows, "cost": cost}
 
 
+def build_multiasset_stats():
+    cost = build_fund_cost(ROOT / "data/multiasset_funds_india.csv")
+
+    def r(v, n):
+        return None if v != v else round(v, n)
+
+    start_date, fund_paths = multiasset_risk_stats.WINDOWS[0]
+    bench, rows = multiasset_risk_stats.compute(start_date, fund_paths)
+    funds = {
+        x["name"]: {
+            **cost[x["name"]],
+            "cagr": r(x["cagr"], 2),
+            "maxdd": r(x["maxdd"], 2),
+            "beta": r(x["beta"], 2),
+            "alpha": r(x["alpha"], 2),
+            "sharpe": r(x["sharpe"], 2),
+            "sortino": r(x["sortino"], 2),
+            "calmar": r(x["calmar"], 2),
+            "upcap": r(x["upcap"], 1),
+            "downcap": r(x["downcap"], 1),
+        }
+        for x in rows
+    }
+    return {
+        "rf": multiasset_risk_stats.RF_ANNUAL * 100,
+        "start": bench["start"],
+        "end": bench["end"],
+        "years": round(bench["years"], 1),
+        "bench": {"cagr": r(bench["cagr"], 2), "maxdd": r(bench["maxdd"], 2)},
+        "funds": funds,
+    }
+
+
 def main():
     template = (ROOT / "web/index_terminal.template.html").read_text(encoding="utf-8")
 
@@ -161,8 +199,11 @@ def main():
     final = final.replace("/*__FUNDS_DATA__*/", funds_json)
     baf_json = json.dumps(build_baf_stats(), separators=(",", ":"))
     final = final.replace("/*__BAF_STATS__*/", baf_json)
+    multiasset_json = json.dumps(build_multiasset_stats(), separators=(",", ":"))
+    final = final.replace("/*__MULTIASSET_STATS__*/", multiasset_json)
 
-    assert "__DATA__" not in final and "__FUNDS_DATA__" not in final and "__BAF_STATS__" not in final, "placeholder left unreplaced"
+    placeholders = ("__DATA__", "__FUNDS_DATA__", "__BAF_STATS__", "__MULTIASSET_STATS__")
+    assert not any(p in final for p in placeholders), "placeholder left unreplaced"
 
     (ROOT / "web/index_terminal.html").write_text(final, encoding="utf-8")
     (ROOT / "docs/index.html").write_text(final, encoding="utf-8")

@@ -40,6 +40,9 @@ real NIFTY 50 Total Return Index series, not placeholder numbers.
    * - :doc:`concepts/risk-adjusted-metrics`
      - Beta, alpha, Sharpe/Sortino, Calmar, capture ratios — and what's good or bad
      - risk-adjusted return, capture spread
+   * - :doc:`concepts/multi-asset-funds`
+     - Equity + debt + gold funds, and how they compare to NIFTY 50 and BAFs
+     - multi asset allocation, gold
 
 .. toctree::
    :maxdepth: 2
@@ -54,3 +57,4 @@ real NIFTY 50 Total Return Index series, not placeholder numbers.
    concepts/choosing-a-fund
    concepts/lumpsum-and-balanced-advantage
    concepts/risk-adjusted-metrics
+   concepts/multi-asset-funds

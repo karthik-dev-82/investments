@@ -282,7 +282,7 @@
     <div class="chart-hint" id="calHint" hidden>† partial year (measured from index inception, not a full calendar year) · (YTD) = year to date, through the latest trading day.</div>
 
     <div class="calendar-wrap" id="fundsWrap" hidden></div>
-    <div class="chart-hint" id="fundsHint" hidden>Direct plan, Growth option, no lock-in — sorted by AUM within each index. Excludes ELSS/tax-saver variants (3-year statutory lock-in). Expense ratio mostly from AMFI's TER disclosure (~Jul-2025); a few newer AMCs from INDmoney (Sep-2026) where AMFI has no record yet — see <a href="notes/concepts/choosing-a-fund.html">notes</a>. Balanced Advantage funds are actively managed, so they get a risk table (beta, alpha, Sharpe, capture ratios — <a href="notes/concepts/risk-adjusted-metrics.html">what these mean</a>) instead of an AUM ranking — see <a href="notes/concepts/lumpsum-and-balanced-advantage.html">notes</a>. Not investment advice.</div>
+    <div class="chart-hint" id="fundsHint" hidden>Direct plan, Growth option, no lock-in — sorted by AUM within each index. Excludes ELSS/tax-saver variants (3-year statutory lock-in). Expense ratio mostly from AMFI's TER disclosure (~Jul-2025); a few newer AMCs from INDmoney (Sep-2026) where AMFI has no record yet — see <a href="notes/concepts/choosing-a-fund.html">notes</a>. Balanced Advantage and Multi Asset funds are actively managed, so they get a risk table (beta, alpha, Sharpe, capture ratios — <a href="notes/concepts/risk-adjusted-metrics.html">what these mean</a>) instead of an AUM ranking — see <a href="notes/concepts/lumpsum-and-balanced-advantage.html">notes</a>. The Multi Asset table covers 6 of 27 funds in that category — see <a href="notes/concepts/multi-asset-funds.html">which, and why</a>. Not investment advice.</div>
   </div>
 
   <div class="stats" id="stats"></div>
@@ -420,6 +420,7 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
 
   var FUNDS_DATA = {"NIFTY 50":[{"name":"UTI Nifty 50 Index Fund","ter":0.19,"aum":29485,"src":"amfi"},{"name":"HDFC Nifty 50 Index Fund","ter":0.2,"aum":23784,"src":"amfi"},{"name":"ICICI Prudential Nifty 50 Index Fund","ter":0.17,"aum":17254,"src":"amfi"},{"name":"SBI Nifty Index Fund","ter":0.25,"aum":13928,"src":"web"},{"name":"Navi Nifty 50 Index Fund","ter":0.06,"aum":4130,"src":"amfi"},{"name":"Nippon India Index Fund - Nifty 50","ter":0.07,"aum":3884,"src":"amfi"},{"name":"BANDHAN Nifty 50 Index Fund","ter":0.1,"aum":2797,"src":"amfi"},{"name":"Tata Nifty 50 Index Fund","ter":0.2,"aum":1707,"src":"amfi"},{"name":"Aditya Birla Sun Life Nifty 50 Index Fund","ter":0.2,"aum":1488,"src":"amfi"},{"name":"Kotak Nifty 50 Index Fund","ter":0.15,"aum":1157,"src":"amfi"},{"name":"DSP Nifty 50 Index Fund","ter":0.18,"aum":1109,"src":"amfi"},{"name":"Axis Nifty 50 Index Fund","ter":0.12,"aum":1031,"src":"amfi"},{"name":"Motilal Oswal Nifty 50 Index Fund","ter":0.15,"aum":893,"src":"amfi"},{"name":"Franklin India NSE Nifty 50 Index Fund","ter":0.24,"aum":715,"src":"amfi"},{"name":"HSBC NIFTY 50 Index Fund","ter":0.2,"aum":392,"src":"amfi"},{"name":"LIC MF Nifty 50 Index Fund","ter":0.2,"aum":366,"src":"amfi"},{"name":"Edelweiss Nifty 50 Index Fund","ter":0.05,"aum":287,"src":"amfi"},{"name":"JioBlackRock Nifty 50 Index Fund","ter":0.24,"aum":268,"src":"web"},{"name":"Mirae Asset Nifty 50 Index Fund","ter":0.08,"aum":71,"src":"web"},{"name":"Baroda BNP Paribas Nifty 50 Index Fund","ter":0.16,"aum":54,"src":"amfi"},{"name":"ANGEL ONE NIFTY 50 INDEX FUND","ter":0.25,"aum":33,"src":"web"},{"name":"Groww Nifty 50 Index Fund","ter":0.49,"aum":27,"src":"web"},{"name":"Taurus Nifty 50 Index Fund","ter":0.81,"aum":7,"src":"amfi"}],"NIFTY NEXT 50":[{"name":"ICICI Prudential Nifty Next 50 Index Fund","ter":0.31,"aum":10117,"src":"amfi"},{"name":"UTI - Nifty Next 50 Index Fund","ter":0.36,"aum":7547,"src":"amfi"},{"name":"HDFC NIFTY Next 50 index Fund","ter":0.3,"aum":2709,"src":"amfi"},{"name":"SBI Nifty Next 50 Index Fund","ter":0.32,"aum":2366,"src":"amfi"},{"name":"DSP Nifty Next 50 Index Fund","ter":0.28,"aum":1407,"src":"amfi"},{"name":"Navi Nifty Next 50 Index Fund","ter":0.12,"aum":1331,"src":"amfi"},{"name":"Kotak Nifty Next 50 Index Fund","ter":0.11,"aum":1295,"src":"amfi"},{"name":"Axis Nifty Next 50 Index Fund","ter":0.25,"aum":549,"src":"amfi"},{"name":"Motilal Oswal Nifty Next 50 Index Fund","ter":0.35,"aum":522,"src":"amfi"},{"name":"Edelweiss Nifty Next 50 Index Fund","ter":0.09,"aum":303,"src":"amfi"},{"name":"Aditya Birla Sun Life Nifty Next 50 Index Fund","ter":0.33,"aum":287,"src":"amfi"},{"name":"JioBlackRock Nifty Next 50 Index Fund","ter":0.39,"aum":223,"src":"web"},{"name":"HSBC NIFTY NEXT 50 Index Fund","ter":0.35,"aum":182,"src":"amfi"},{"name":"Tata Nifty Next 50 Index Fund","ter":0.34,"aum":125,"src":"web"},{"name":"LIC MF Nifty Next 50 Index Fund","ter":0.32,"aum":112,"src":"amfi"},{"name":"Bandhan Nifty Next 50 Index Fund","ter":0.39,"aum":36,"src":"web"},{"name":"Groww Nifty Next 50 Index Fund","ter":0.49,"aum":11,"src":"web"},{"name":"Nippon India Nifty Next 50 Junior BeES FoF","ter":0.11,"aum":null,"src":"amfi"}],"NIFTY MIDCAP 150":[{"name":"Motilal Oswal Nifty Midcap 150 Index Fund","ter":0.3,"aum":4151,"src":"amfi"},{"name":"Nippon India Nifty Midcap 150 Index Fund","ter":0.3,"aum":2845,"src":"amfi"},{"name":"ICICI Prudential Nifty Midcap 150 Index Fund","ter":0.3,"aum":1328,"src":"amfi"},{"name":"SBI Nifty Midcap 150 Index Fund","ter":0.41,"aum":1292,"src":"amfi"},{"name":"HDFC NIFTY Midcap 150 Index Fund","ter":0.3,"aum":726,"src":"amfi"},{"name":"Aditya Birla Sun Life Nifty Midcap 150 Index Fund","ter":0.44,"aum":503,"src":"amfi"},{"name":"Navi Nifty Midcap 150 Index Fund","ter":0.22,"aum":408,"src":"amfi"},{"name":"Tata Nifty Midcap 150 Index Fund","ter":0.24,"aum":332,"src":"web"},{"name":"JioBlackRock Nifty Midcap 150 Index Fund","ter":0.36,"aum":287,"src":"web"},{"name":"Bandhan Nifty Midcap 150 Index Fund","ter":0.21,"aum":92,"src":"amfi"},{"name":"UTI Nifty Midcap 150 Index Fund","ter":0.66,"aum":79,"src":"web"},{"name":"Kotak Nifty Midcap 150 Index Fund","ter":0.3887,"aum":47,"src":"web"},{"name":"DSP Nifty Midcap 150 Index Fund","ter":0.41,"aum":18,"src":"web"},{"name":"Groww Nifty Midcap 150 Index Fund","ter":0.49,"aum":16,"src":"web"}]};
   var BAF_STATS = {"rf":6.5,"windows":[{"start":"2013-01-22","end":"2026-09-18","years":13.7,"bench":{"cagr":11.76,"maxdd":-38.27},"funds":{"HDFC Balanced Advantage Fund":{"ber":0.64,"allin":0.78,"aum":107296,"asof":"2026-09-18","cagr":13.64,"maxdd":-34.2,"beta":0.82,"alpha":2.64,"sharpe":0.49,"sortino":0.68,"calmar":0.4,"upcap":94.4,"downcap":79.2},"ICICI Prudential Balanced Advantage Fund":{"ber":0.71,"allin":1.04,"aum":75399,"asof":"2026-09-18","cagr":12.53,"maxdd":-27.03,"beta":0.52,"alpha":2.86,"sharpe":0.67,"sortino":0.93,"calmar":0.46,"upcap":64.3,"downcap":34.7},"Edelweiss Balanced Advantage Fund":{"ber":0.52,"allin":0.96,"aum":13445,"asof":"2026-09-18","cagr":12.15,"maxdd":-16.23,"beta":0.5,"alpha":2.63,"sharpe":0.63,"sortino":0.9,"calmar":0.75,"upcap":68.3,"downcap":43.8},"Nippon India Balanced Advantage Fund":{"ber":0.55,"allin":0.88,"aum":9918,"asof":"2026-09-18","cagr":11.91,"maxdd":-22.79,"beta":0.62,"alpha":1.89,"sharpe":0.48,"sortino":0.67,"calmar":0.52,"upcap":77.7,"downcap":61.2}}},{"start":"2021-09-07","end":"2026-09-18","years":5.0,"bench":{"cagr":7.33,"maxdd":-16.44},"funds":{"HDFC Balanced Advantage Fund":{"ber":0.64,"allin":0.78,"aum":107296,"asof":"2026-09-18","cagr":14.72,"maxdd":-10.18,"beta":0.64,"alpha":7.06,"sharpe":0.83,"sortino":1.16,"calmar":1.45,"upcap":91.7,"downcap":47.4},"ICICI Prudential Balanced Advantage Fund":{"ber":0.71,"allin":1.04,"aum":75399,"asof":"2026-09-18","cagr":10.83,"maxdd":-8.24,"beta":0.42,"alpha":3.64,"sharpe":0.68,"sortino":1.01,"calmar":1.31,"upcap":64.0,"downcap":26.3},"Edelweiss Balanced Advantage Fund":{"ber":0.52,"allin":0.96,"aum":13445,"asof":"2026-09-18","cagr":9.43,"maxdd":-11.09,"beta":0.59,"alpha":2.2,"sharpe":0.34,"sortino":0.47,"calmar":0.85,"upcap":74.7,"downcap":49.2},"Nippon India Balanced Advantage Fund":{"ber":0.55,"allin":0.88,"aum":9918,"asof":"2026-09-18","cagr":9.81,"maxdd":-8.58,"beta":0.51,"alpha":2.61,"sharpe":0.45,"sortino":0.63,"calmar":1.14,"upcap":70.2,"downcap":40.5},"SBI Balanced Advantage Fund":{"ber":0.62,"allin":0.89,"aum":41803,"asof":"2026-09-20","cagr":10.23,"maxdd":-7.39,"beta":0.42,"alpha":3.1,"sharpe":0.59,"sortino":0.85,"calmar":1.38,"upcap":68.3,"downcap":36.3}}}],"cost":{"HDFC Balanced Advantage Fund":{"ber":0.64,"allin":0.78,"aum":107296,"asof":"2026-09-18"},"ICICI Prudential Balanced Advantage Fund":{"ber":0.71,"allin":1.04,"aum":75399,"asof":"2026-09-18"},"Edelweiss Balanced Advantage Fund":{"ber":0.52,"allin":0.96,"aum":13445,"asof":"2026-09-18"},"Nippon India Balanced Advantage Fund":{"ber":0.55,"allin":0.88,"aum":9918,"asof":"2026-09-18"},"SBI Balanced Advantage Fund":{"ber":0.62,"allin":0.89,"aum":41803,"asof":"2026-09-20"}}};
+  var MULTIASSET_STATS = {"rf":6.5,"start":"2013-03-19","end":"2026-09-18","years":13.5,"bench":{"cagr":12.32,"maxdd":-38.27},"funds":{"HDFC Multi Asset Allocation Fund":{"ber":0.72,"allin":1.01,"aum":6031,"asof":"2026-09-22","cagr":11.64,"maxdd":-27.08,"beta":0.43,"alpha":2.42,"sharpe":0.63,"sortino":0.88,"calmar":0.43,"upcap":56.2,"downcap":27.6},"Axis Multi Asset Allocation Fund":{"ber":0.65,"allin":1.4,"aum":2611,"asof":"2026-09-22","cagr":11.38,"maxdd":-27.42,"beta":0.55,"alpha":1.48,"sharpe":0.46,"sortino":0.64,"calmar":0.42,"upcap":64.8,"downcap":44.5},"ICICI Prudential Multi Asset Allocation Fund":{"ber":0.55,"allin":0.83,"aum":87833,"asof":"2026-09-21","cagr":16.54,"maxdd":-30.61,"beta":0.64,"alpha":5.64,"sharpe":0.85,"sortino":1.2,"calmar":0.54,"upcap":83.8,"downcap":46.9},"UTI Multi Asset Allocation Fund":{"ber":0.48,"allin":0.73,"aum":7063,"asof":"2026-09-21","cagr":10.75,"maxdd":-25.02,"beta":0.59,"alpha":0.66,"sharpe":0.41,"sortino":0.56,"calmar":0.43,"upcap":63.8,"downcap":46.1},"Quant Multi Asset Allocation Fund":{"ber":0.56,"allin":1.18,"aum":6527,"asof":"2026-09-22","cagr":15.93,"maxdd":-32.57,"beta":0.35,"alpha":7.02,"sharpe":0.88,"sortino":1.24,"calmar":0.49,"upcap":60.8,"downcap":10.5},"SBI Multi Asset Allocation Fund":{"ber":0.49,"allin":0.68,"aum":20935,"asof":"2026-09-20","cagr":12.33,"maxdd":-17.59,"beta":0.29,"alpha":3.98,"sharpe":0.88,"sortino":1.26,"calmar":0.7,"upcap":47.2,"downcap":7.2}}};
 
   var FULL_MIN = Math.min.apply(null, SERIES.map(function(s){ return s.data.d[0]; }));
   var FULL_MAX = Math.max.apply(null, SERIES.map(function(s){ return s.data.d[s.data.d.length-1]; }));
@@ -1338,6 +1339,7 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
     var anyIndexFunds = SERIES.some(function(s){ return state.visible[s.key] && (FUNDS_DATA[s.key]||[]).length>0; });
     if(anyIndexFunds) renderIndexFundsTable();
     renderBafSection();
+    renderMultiAssetSection();
   }
 
   function renderIndexFundsTable(){
@@ -1501,6 +1503,63 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
     var note = document.createElement("div");
     note.className = "baf-empty";
     note.textContent = "Window: " + monthYear(w.start) + " – " + monthYear(w.end) + " (" + w.years + " yrs). Beta, alpha, Sharpe, Sortino from daily returns; capture ratios from monthly returns; risk-free rate flat " + BAF_STATS.rf.toFixed(1) + "% (a simplification). Costs and AUM are as of Sep 2026: Nippon India and SBI straight from the fund houses' TER files, the others from Tickertape / Groww / INDmoney because those fund houses block automated access — see notes. Past behaviour of actively managed funds is not a guide to future results.";
+    sect.appendChild(note);
+    fundsWrapEl.appendChild(sect);
+  }
+
+  function renderMultiAssetSection(){
+    var sect = document.createElement("div");
+    sect.className = "baf-section";
+    var h = document.createElement("h3");
+    h.textContent = "Multi Asset funds \u2014 risk vs NIFTY 50 TRI (Direct, Growth)";
+    sect.appendChild(h);
+
+    var m = MULTIASSET_STATS;
+    var table = document.createElement("table");
+    table.className = "caltable";
+    var thead = document.createElement("thead");
+    var htr = document.createElement("tr");
+    var th0 = document.createElement("th"); th0.textContent = "Fund"; htr.appendChild(th0);
+    BAF_COLS.forEach(function(c){
+      var th = document.createElement("th"); th.textContent = c[0]; th.title = c[1]; htr.appendChild(th);
+    });
+    thead.appendChild(htr); table.appendChild(thead);
+
+    var tbody = document.createElement("tbody");
+    var bTr = document.createElement("tr");
+    var bName = document.createElement("td");
+    bName.className = "yr";
+    bName.textContent = "NIFTY 50 TRI (benchmark)";
+    bTr.appendChild(bName);
+    var benchVals = { "CAGR":dash(m.bench.cagr,1,"%"), "Max DD":dash(m.bench.maxdd,1,"%"), "Beta":"1.00", "Up-cap":"100%", "Down-cap":"100%" };
+    BAF_COLS.forEach(function(c){
+      var td = document.createElement("td");
+      td.className = "bench";
+      td.textContent = benchVals[c[0]] || "\u2014";
+      bTr.appendChild(td);
+    });
+    tbody.appendChild(bTr);
+
+    Object.keys(m.funds).forEach(function(name){
+      var f = m.funds[name];
+      var tr = document.createElement("tr");
+      var tdName = document.createElement("td");
+      tdName.className = "yr";
+      tdName.textContent = name;
+      tr.appendChild(tdName);
+      BAF_COLS.forEach(function(c){
+        var td = document.createElement("td");
+        td.textContent = c[2](f);
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    sect.appendChild(table);
+
+    var note = document.createElement("div");
+    note.className = "baf-empty";
+    note.textContent = "Window: " + monthYear(m.start) + " \u2013 " + monthYear(m.end) + " (" + m.years + " yrs). Covers 6 of 27 Multi Asset Allocation funds \u2014 the ones with NAV history back to the 2013 Direct-plan era; see notes for which funds are missing and why. Same method as the Balanced Advantage table above (risk-free rate flat " + m.rf.toFixed(1) + "%). Past behaviour of actively managed funds is not a guide to future results.";
     sect.appendChild(note);
     fundsWrapEl.appendChild(sect);
   }

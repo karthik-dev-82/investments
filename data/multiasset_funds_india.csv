@@ -1,0 +1,7 @@
+fund_name,category,ber_pct,all_in_pct,cost_source,cost_as_of,aum_cr,aum_source,aum_as_of,nav_history_from
+HDFC Multi Asset Allocation Fund,Multi Asset Allocation,0.72,1.01,BER: Tickertape; all-in: INDmoney (AMC site blocks automated access),2026-09-22,6031,Tickertape + INDmoney,2026-09-22,2013-01-01
+Axis Multi Asset Allocation Fund,Multi Asset Allocation,0.65,1.40,BER: Tickertape; all-in: INDmoney (AMC site blocks automated access),2026-09-22,2611,Tickertape + INDmoney,2026-09-22,2013-01-02
+ICICI Prudential Multi Asset Allocation Fund,Multi Asset Allocation,0.55,0.83,BER: Tickertape; all-in: INDmoney (AMC site blocks automated access),2026-09-21,87833,Tickertape + INDmoney,2026-09-21,2013-01-02
+UTI Multi Asset Allocation Fund,Multi Asset Allocation,0.48,0.73,BER: Tickertape; all-in: INDmoney (AMC site blocks automated access),2026-09-21,7063,Tickertape + INDmoney,2026-09-21,2013-01-02
+Quant Multi Asset Allocation Fund,Multi Asset Allocation,0.56,1.18,BER: Tickertape; all-in: INDmoney (AMC site blocks automated access),2026-09-22,6527,Tickertape + INDmoney,2026-09-22,2013-01-07
+SBI Multi Asset Allocation Fund,Multi Asset Allocation,0.49,0.68,SBI MF current-year TER file (primary),2026-09-20,20935,Tickertape,2026-09-21,2013-03-19

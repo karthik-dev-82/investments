@@ -1,0 +1,449 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multi Asset Funds &mdash; NIFTY Index Terminal — Notes</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=93e713b6" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Risk-Adjusted Metrics: Beta, Alpha, Sharpe &amp; Capture Ratios" href="risk-adjusted-metrics.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NIFTY Index Terminal — Notes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index-levels.html">Index Levels &amp; Rebasing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#why-total-return-not-the-price-index">Why total return, not the price index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#the-fix-rebasing">The fix: rebasing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#log-scale">Log scale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#why-it-matters">Why it matters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="base-dates.html">Base Dates &amp; Back-tested History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="drawdown.html">Drawdown</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#worked-example-the-2020-crash">Worked example: the 2020 crash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rolling-returns.html">Rolling Returns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#why-n-1-3-5-7-10-years">Why N = 1, 3, 5, 7, 10 years</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#worked-example">Worked example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#why-it-matters-sequence-of-returns-risk">Why it matters: sequence-of-returns risk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#caveat">Caveat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="volatility.html">Volatility</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#choosing-a-window">Choosing a window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#worked-example">Worked example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="calendar-returns.html">Calendar-Year Returns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#worked-examples">Worked examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="choosing-a-fund.html">Choosing a Fund</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#direct-vs-regular">Direct vs. Regular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#growth-vs-idcw-and-why-it-matters-more-for-an-australian-tax-resident">Growth vs. IDCW — and why it matters more for an Australian tax resident</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#lock-in-why-elss-variants-are-excluded">Lock-in: why ELSS variants are excluded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#why-aum-is-shown-at-all">Why AUM is shown at all</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#the-nro-nre-route">The NRO → NRE route</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#what-this-page-doesn-t-cover">What this page doesn’t cover</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lumpsum-and-balanced-advantage.html">Lump-Sum Timing &amp; Balanced Advantage Funds</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#the-problem-this-page-is-about">The problem this page is about</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-a-balanced-advantage-fund-does-differently">What a Balanced Advantage Fund does differently</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-the-data-actually-shows">What the data actually shows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#risk-adjusted-performance-beta-alpha-sharpe-and-capture-ratios">Risk-adjusted performance: beta, alpha, Sharpe, and capture ratios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#how-this-fits-the-project-s-fund-rules">How this fits the project’s fund rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-these-funds-cost">What these funds cost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-s-different-from-the-index-fund-comparison">What’s different from the index-fund comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#why-this-isn-t-just-add-balanced-advantage-funds-to-the-funds-tab">Why this isn’t just “add balanced advantage funds to the Funds tab”</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="risk-adjusted-metrics.html">Risk-Adjusted Metrics: Beta, Alpha, Sharpe &amp; Capture Ratios</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#the-problem-these-metrics-solve">The problem these metrics solve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#beta">Beta</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#alpha">Alpha</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#sharpe-ratio">Sharpe ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#sortino-ratio">Sortino ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#calmar-ratio">Calmar ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#up-capture-and-down-capture-ratios">Up-capture and down-capture ratios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#reading-them-together">Reading them together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#how-to-read-this-on-the-terminal">How to read this on the Terminal</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Multi Asset Funds</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#risk-adjusted-performance-vs-nifty-50-tri">Risk-adjusted performance vs NIFTY 50 TRI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cost-and-size">Cost and size</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-this-page-doesn-t-cover">What this page doesn’t cover</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NIFTY Index Terminal — Notes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Multi Asset Funds</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/concepts/multi-asset-funds.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="multi-asset-funds">
+<h1>Multi Asset Funds<a class="headerlink" href="#multi-asset-funds" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This page is not investment advice. Six funds over one historical window
+is illustrative, not exhaustive — see “What this page doesn’t cover”
+below for the other 21 funds in this category and why they’re not here.
+Past performance of the funds named is not a guarantee of future results.</p>
+</div>
+<section id="the-simple-explanation">
+<h2>The simple explanation<a class="headerlink" href="#the-simple-explanation" title="Link to this heading"></a></h2>
+<p>A <strong>Multi Asset Allocation Fund</strong> is a SEBI-defined hybrid category that must
+hold at least three asset classes, at least 10% each — typically equity,
+debt, and gold (or silver, or exchange-traded commodity derivatives), rather
+than the equity-and-debt-only mix a <a class="reference internal" href="lumpsum-and-balanced-advantage.html"><span class="doc">Balanced Advantage Fund</span></a> runs. The equity and debt sleeves work the
+same way a BAF’s do; the difference is the third leg.</p>
+<p>Gold’s role here isn’t “another return stream” so much as a genuinely
+different one: it tends to do well precisely when equity is under stress
+(a flight to safety, currency weakness, geopolitical shocks), so adding it
+can smooth a portfolio’s ride in a way that shifting between equity and debt
+alone can’t fully replicate. It’s also a tailwind that isn’t guaranteed to
+repeat — gold had an unusually strong run through 2023–2025, and every
+number on this page sits inside a window that includes it. A stretch where
+gold is flat or falling would tell a different story.</p>
+<p>Everything in <a class="reference internal" href="choosing-a-fund.html"><span class="doc">Choosing a Fund</span></a> still applies — Direct plan, Growth
+option, no lock-in — and the <a class="reference internal" href="risk-adjusted-metrics.html"><span class="doc">Risk-Adjusted Metrics: Beta, Alpha, Sharpe &amp; Capture Ratios</span></a> page explains what
+Beta, Alpha, Sharpe, Sortino, Calmar, and the capture ratios below mean and
+what counts as a good or bad reading; this page doesn’t repeat those
+definitions.</p>
+</section>
+<section id="risk-adjusted-performance-vs-nifty-50-tri">
+<h2>Risk-adjusted performance vs NIFTY 50 TRI<a class="headerlink" href="#risk-adjusted-performance-vs-nifty-50-tri" title="Link to this heading"></a></h2>
+<p>Six funds have Direct-plan NAV history back to the 2013 mandate (see below
+for the other 21). The common window is March 2013 – September 2026, 13.5
+years, against the NIFTY 50 TRI:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 8.3%" />
+<col style="width: 8.3%" />
+<col style="width: 8.3%" />
+<col style="width: 8.3%" />
+<col style="width: 8.3%" />
+<col style="width: 8.3%" />
+<col style="width: 8.3%" />
+<col style="width: 8.3%" />
+<col style="width: 8.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Fund</p></th>
+<th class="head"><p>CAGR</p></th>
+<th class="head"><p>Max DD</p></th>
+<th class="head"><p>Beta</p></th>
+<th class="head"><p>Alpha</p></th>
+<th class="head"><p>Sharpe</p></th>
+<th class="head"><p>Sortino</p></th>
+<th class="head"><p>Calmar</p></th>
+<th class="head"><p>Up-cap</p></th>
+<th class="head"><p>Down-cap</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NIFTY 50 TRI</p></td>
+<td><p>12.3%</p></td>
+<td><p>−38.3%</p></td>
+<td><p>1.00</p></td>
+<td><p>—</p></td>
+<td><p>—</p></td>
+<td><p>—</p></td>
+<td><p>—</p></td>
+<td><p>100%</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>HDFC Multi Asset Allocation Fund</p></td>
+<td><p>11.6%</p></td>
+<td><p>−27.1%</p></td>
+<td><p>0.43</p></td>
+<td><p>2.4%</p></td>
+<td><p>0.63</p></td>
+<td><p>0.88</p></td>
+<td><p>0.43</p></td>
+<td><p>56%</p></td>
+<td><p>28%</p></td>
+</tr>
+<tr class="row-even"><td><p>Axis Multi Asset Allocation Fund</p></td>
+<td><p>11.4%</p></td>
+<td><p>−27.4%</p></td>
+<td><p>0.55</p></td>
+<td><p>1.5%</p></td>
+<td><p>0.46</p></td>
+<td><p>0.64</p></td>
+<td><p>0.42</p></td>
+<td><p>65%</p></td>
+<td><p>45%</p></td>
+</tr>
+<tr class="row-odd"><td><p>ICICI Prudential Multi Asset Allocation Fund</p></td>
+<td><p>16.5%</p></td>
+<td><p>−30.6%</p></td>
+<td><p>0.64</p></td>
+<td><p>5.6%</p></td>
+<td><p>0.85</p></td>
+<td><p>1.20</p></td>
+<td><p>0.54</p></td>
+<td><p>84%</p></td>
+<td><p>47%</p></td>
+</tr>
+<tr class="row-even"><td><p>UTI Multi Asset Allocation Fund</p></td>
+<td><p>10.8%</p></td>
+<td><p>−25.0%</p></td>
+<td><p>0.59</p></td>
+<td><p>0.7%</p></td>
+<td><p>0.41</p></td>
+<td><p>0.56</p></td>
+<td><p>0.43</p></td>
+<td><p>64%</p></td>
+<td><p>46%</p></td>
+</tr>
+<tr class="row-odd"><td><p>Quant Multi Asset Allocation Fund</p></td>
+<td><p>15.9%</p></td>
+<td><p>−32.6%</p></td>
+<td><p>0.35</p></td>
+<td><p>7.0%</p></td>
+<td><p>0.88</p></td>
+<td><p>1.24</p></td>
+<td><p>0.49</p></td>
+<td><p>61%</p></td>
+<td><p>11%</p></td>
+</tr>
+<tr class="row-even"><td><p>SBI Multi Asset Allocation Fund</p></td>
+<td><p>12.3%</p></td>
+<td><p>−17.6%</p></td>
+<td><p>0.29</p></td>
+<td><p>4.0%</p></td>
+<td><p>0.88</p></td>
+<td><p>1.26</p></td>
+<td><p>0.70</p></td>
+<td><p>47%</p></td>
+<td><p>7%</p></td>
+</tr>
+</tbody>
+</table>
+<p>A few things stand out:</p>
+<ul class="simple">
+<li><p><strong>ICICI Prudential and Quant beat NIFTY 50 TRI’s CAGR outright</strong> (16.5%
+and 15.9% vs. 12.3%) while running roughly a third of its volatility and
+a noticeably shallower drawdown — a much stronger showing than any
+Balanced Advantage fund managed over the same stretch. Quant’s low
+correlation (0.54, against 0.85–0.91 for the others) means its return
+pattern has genuinely little to do with what NIFTY 50 was doing on a
+given day — consistent with a fund that leans harder on the non-equity
+legs — which is also why its numbers deserve more skepticism about
+whether they repeat, not less.</p></li>
+<li><p><strong>SBI is the standout on downside protection</strong>: −17.6% max drawdown
+against the index’s −38.3%, and a down-capture of just 7% — in the
+index’s typical bad month, this fund barely moved. It did that while
+still matching the index’s 13.5-year CAGR almost exactly (12.3% vs.
+12.3%), the same volatility-drag story told on the
+<a class="reference internal" href="risk-adjusted-metrics.html"><span class="doc">Risk-Adjusted Metrics: Beta, Alpha, Sharpe &amp; Capture Ratios</span></a> page for ICICI Prudential’s Balanced
+Advantage Fund.</p></li>
+<li><p><strong>HDFC, Axis, and UTI trail the index on raw return</strong> while taking on
+much less risk (beta 0.43–0.59, drawdowns 25–27% vs. 38%) — a real
+tradeoff, not a flaw, and the more typical outcome in this category:
+ICICI Prudential and Quant’s outright outperformance is the exception
+here, not the rule.</p></li>
+</ul>
+<p>The Funds tab on the <a class="reference external" href="../index.html">Index Terminal</a> has this same table,
+directly below the Balanced Advantage section, using the identical method
+(daily returns for Beta/Alpha/Sharpe/Sortino/Correlation, monthly returns
+for the capture ratios, a flat 6.5% risk-free rate).</p>
+</section>
+<section id="cost-and-size">
+<h2>Cost and size<a class="headerlink" href="#cost-and-size" title="Link to this heading"></a></h2>
+<p>Direct plan, September 2026:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 34.0%" />
+<col style="width: 12.0%" />
+<col style="width: 12.0%" />
+<col style="width: 16.0%" />
+<col style="width: 26.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Fund</p></th>
+<th class="head"><p>BER</p></th>
+<th class="head"><p>All-in</p></th>
+<th class="head"><p>AUM (₹ Cr)</p></th>
+<th class="head"><p>Source</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>HDFC Multi Asset Allocation Fund</p></td>
+<td><p>0.72%</p></td>
+<td><p>1.01%</p></td>
+<td><p>6,031</p></td>
+<td><p>Tickertape, INDmoney</p></td>
+</tr>
+<tr class="row-odd"><td><p>Axis Multi Asset Allocation Fund</p></td>
+<td><p>0.65%</p></td>
+<td><p>1.40%</p></td>
+<td><p>2,611</p></td>
+<td><p>Tickertape, INDmoney</p></td>
+</tr>
+<tr class="row-even"><td><p>ICICI Prudential Multi Asset Allocation Fund</p></td>
+<td><p>0.55%</p></td>
+<td><p>0.83%</p></td>
+<td><p>87,833</p></td>
+<td><p>Tickertape, INDmoney</p></td>
+</tr>
+<tr class="row-odd"><td><p>UTI Multi Asset Allocation Fund</p></td>
+<td><p>0.48%</p></td>
+<td><p>0.73%</p></td>
+<td><p>7,063</p></td>
+<td><p>Tickertape, INDmoney</p></td>
+</tr>
+<tr class="row-even"><td><p>Quant Multi Asset Allocation Fund</p></td>
+<td><p>0.56%</p></td>
+<td><p>1.18%</p></td>
+<td><p>6,527</p></td>
+<td><p>Tickertape, INDmoney</p></td>
+</tr>
+<tr class="row-odd"><td><p>SBI Multi Asset Allocation Fund</p></td>
+<td><p>0.49%</p></td>
+<td><p>0.68%</p></td>
+<td><p>20,935</p></td>
+<td><p>SBI Mutual Fund TER file (primary)</p></td>
+</tr>
+</tbody>
+</table>
+<p>Only SBI is read from the fund house’s own published TER file; the AMC sites
+for the other five block automated access, so those five are cross-checked
+between Tickertape (which reads as the BER) and INDmoney (the all-in figure)
+— see <a class="reference internal" href="lumpsum-and-balanced-advantage.html"><span class="doc">Lump-Sum Timing &amp; Balanced Advantage Funds</span></a> for the same BER/all-in split
+explained in full. ICICI Prudential Multi Asset Allocation Fund is, by a
+wide margin, the largest fund in this table — nearly 13× the next-largest
+(SBI) and over 30× the smallest (Axis).</p>
+</section>
+<section id="what-this-page-doesn-t-cover">
+<h2>What this page doesn’t cover<a class="headerlink" href="#what-this-page-doesn-t-cover" title="Link to this heading"></a></h2>
+<p>The Multi Asset Allocation category has <strong>27 funds</strong> in AMFI’s disclosure;
+this page covers 6. The other 21, almost all launched far more recently,
+don’t yet have a long enough track record for a comparison like the one
+above to mean much:</p>
+<ul class="simple">
+<li><p><strong>2020 launches</strong> (~6 years of history): Tata Multi Asset Allocation Fund,
+Nippon India Multi Asset Allocation Fund. Motilal Oswal Multi Asset Fund
+also launched in 2020, but its NAV data feed appears to have stopped
+updating in mid-2025 — worth checking directly with the AMC before relying
+on it for anything.</p></li>
+<li><p><strong>2022–2024 launches</strong> (under 4 years of history — most of the category):
+Baroda BNP Paribas, Aditya Birla Sun Life, WhiteOak Capital, Edelweiss,
+Shriram, Kotak (the current fund; an earlier Kotak fund of the same name
+ran 2013–2017 and is unrelated), DSP, Sundaram, Bandhan, Mirae Asset,
+Bank of India, HSBC, Mahindra Manulife, Quantum, Bajaj Finserv, and Union.</p></li>
+</ul>
+<p>A 2013-vintage fund has lived through a full market cycle — 2013’s
+taper-tantrum selloff, 2015–16, the 2020 COVID crash, 2022’s rate-hike
+correction — that a 2-to-4-year-old fund simply hasn’t. None of the 21 are
+excluded because they’re bad funds; there just isn’t enough history yet to
+say anything about them that this page’s method would stand behind.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="risk-adjusted-metrics.html" class="btn btn-neutral float-left" title="Risk-Adjusted Metrics: Beta, Alpha, Sharpe &amp; Capture Ratios" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

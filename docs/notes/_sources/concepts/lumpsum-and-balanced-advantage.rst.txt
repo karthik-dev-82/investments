@@ -374,6 +374,9 @@ index-fund expense ratios on the Funds tab are still on that older basis
 (with a few from September 2026), so the comparison between an index fund
 and a BAF is approximate, not like-for-like.
 
+See :doc:`multi-asset-funds` for the same treatment applied to funds that
+add a third asset (typically gold) alongside equity and debt.
+
 What's different from the index-fund comparison
 ------------------------------------------------------
 
