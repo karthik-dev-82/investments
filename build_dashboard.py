@@ -216,8 +216,9 @@ def main():
     final = final.replace("/*__BAF_STATS__*/", baf_json)
     multiasset_json = json.dumps(build_multiasset_stats(), separators=(",", ":"))
     final = final.replace("/*__MULTIASSET_STATS__*/", multiasset_json)
+    final = final.replace("/*__RF_ANNUAL__*/", str(baf_risk_stats.RF_ANNUAL))
 
-    placeholders = ("__DATA__", "__FUNDS_DATA__", "__BAF_STATS__", "__MULTIASSET_STATS__")
+    placeholders = ("__DATA__", "__FUNDS_DATA__", "__BAF_STATS__", "__MULTIASSET_STATS__", "__RF_ANNUAL__")
     assert not any(p in final for p in placeholders), "placeholder left unreplaced"
 
     (ROOT / "web/index_terminal.html").write_text(final, encoding="utf-8")

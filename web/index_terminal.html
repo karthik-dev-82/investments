@@ -159,6 +159,40 @@
   .baf-section .seg{ margin-bottom:10px; }
   .baf-section td.bench{ color:var(--text-3); font-weight:400; }
   .baf-empty{ color:var(--text-3); font-size:12px; padding:10px 0; }
+
+  .portfolio-amount-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+  .portfolio-amount-row label{ font-size:12.5px; color:var(--text-2); font-family:"IBM Plex Mono",monospace; }
+  .portfolio-amount{
+    font-family:"IBM Plex Mono",monospace; font-size:14px; font-weight:600; color:var(--text-1);
+    background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:7px 10px; width:180px;
+  }
+  .portfolio-presets{ display:flex; gap:6px; flex-wrap:wrap; }
+  .portfolio-legs{ display:flex; flex-direction:column; gap:8px; margin-bottom:8px; }
+  .portfolio-leg{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .portfolio-select, .portfolio-weight{
+    font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--text-1);
+    background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:6px 8px;
+  }
+  .portfolio-select{ min-width:260px; flex:1 1 260px; }
+  .portfolio-weight{ width:64px; text-align:right; }
+  .portfolio-pct{ color:var(--text-3); font-size:12.5px; }
+  .portfolio-rm{
+    border:1px solid var(--border); background:transparent; color:var(--text-3); border-radius:8px;
+    width:28px; height:28px; cursor:pointer; font-size:12px; flex:none;
+  }
+  .portfolio-rm:hover:not(:disabled){ background:var(--chip-hover); color:var(--bad); }
+  .portfolio-rm:disabled{ opacity:.35; cursor:default; }
+  .portfolio-add{
+    border:1px dashed var(--border); background:transparent; color:var(--text-2); border-radius:8px;
+    padding:6px 12px; font-size:12.5px; font-family:"IBM Plex Mono",monospace; cursor:pointer; align-self:flex-start;
+  }
+  .portfolio-add:hover{ background:var(--chip-hover); }
+  .portfolio-total{ font-size:12px; font-family:"IBM Plex Mono",monospace; margin:4px 0 16px; }
+  .portfolio-tiles{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-bottom:6px; }
+  .portfolio-charts{ display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:14px; margin-top:16px; }
+  .portfolio-chart-box{ border:1px solid var(--border); border-radius:12px; padding:10px 12px; background:var(--surface); }
+  .portfolio-chart-title{ font-size:12px; color:var(--text-2); margin-bottom:6px; font-family:"IBM Plex Mono",monospace; }
+  .portfolio-chart-box canvas{ width:100%; height:auto; display:block; }
   .legend-group{
     display:flex; align-items:center; font-size:10.5px; text-transform:uppercase;
     letter-spacing:.04em; color:var(--text-3); padding:0 2px; margin-left:2px;
@@ -284,6 +318,9 @@
 
     <div class="calendar-wrap" id="fundsWrap" hidden></div>
     <div class="chart-hint" id="fundsHint" hidden>Direct plan, Growth option, no lock-in — sorted by AUM within each index. Excludes ELSS/tax-saver variants (3-year statutory lock-in). Expense ratio mostly from AMFI's TER disclosure (~Jul-2025); a few newer AMCs from INDmoney (Sep-2026) where AMFI has no record yet — see <a href="notes/concepts/choosing-a-fund.html">notes</a>. Balanced Advantage and Multi Asset funds are actively managed, so they get a risk table (beta, alpha, Sharpe, capture ratios — <a href="notes/concepts/risk-adjusted-metrics.html">what these mean</a>) instead of an AUM ranking — see <a href="notes/concepts/lumpsum-and-balanced-advantage.html">notes</a>. The Multi Asset table covers 6 of 27 funds in that category — see <a href="notes/concepts/multi-asset-funds.html">which, and why</a>. Not investment advice.</div>
+
+    <div class="calendar-wrap" id="portfolioWrap" hidden></div>
+    <div class="chart-hint" id="portfolioHint" hidden>Buy-and-hold — weights drift with performance after the initial split, no periodic rebalancing back to target — see <a href="notes/concepts/portfolio-blender.html">the method</a>. Beta, Alpha, Sharpe, Sortino, Calmar and capture ratios are vs NIFTY 50 TRI, same method as the Funds tab (risk-free rate flat 6.5%) — see <a href="notes/concepts/risk-adjusted-metrics.html">what these mean</a>. History is limited to whichever selected fund launched most recently. Not investment advice.</div>
   </div>
 
   <div class="stats" id="stats"></div>
@@ -505,9 +542,10 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
       forceMaxZero:false, hasLog:false
     },
     calendar: { id:"calendar", label:"Calendar Returns" },
-    funds: { id:"funds", label:"Funds" }
+    funds: { id:"funds", label:"Funds" },
+    portfolio: { id:"portfolio", label:"Portfolio" }
   };
-  var TABS_ORDER = ["price","drawdown","rollret","vol","calendar","funds"];
+  var TABS_ORDER = ["price","drawdown","rollret","vol","calendar","funds","portfolio"];
 
   // ---------- DOM refs ----------
   var chartHeadEl = document.getElementById("chartHead");
@@ -529,6 +567,8 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
   var calendarWrapEl = document.getElementById("calendarWrap");
   var calHintEl = document.getElementById("calHint");
   var fundsWrapEl = document.getElementById("fundsWrap");
+  var portfolioWrapEl = document.getElementById("portfolioWrap");
+  var portfolioHintEl = document.getElementById("portfolioHint");
   var fundsHintEl = document.getElementById("fundsHint");
 
   // ---------- header as-of ----------
@@ -662,7 +702,8 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
     TABS_ORDER.forEach(function(t){ TAB_DEFS[t].btn.setAttribute("aria-selected", String(t===id)); });
     var isCal = (id==="calendar");
     var isFunds = (id==="funds");
-    var isChart = !isCal && !isFunds;
+    var isPortfolio = (id==="portfolio");
+    var isChart = !isCal && !isFunds && !isPortfolio;
     chartHeadEl.hidden = !isChart;
     chartBox.hidden = !isChart;
     chartHintEl.hidden = !isChart;
@@ -670,8 +711,11 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
     calHintEl.hidden = !isCal;
     fundsWrapEl.hidden = !isFunds;
     fundsHintEl.hidden = !isFunds;
+    portfolioWrapEl.hidden = !isPortfolio;
+    portfolioHintEl.hidden = !isPortfolio;
+    legendEl.style.display = isPortfolio ? "none" : "";
     buildTabControls();
-    if(isCal){ renderCalendar(); } else if(isFunds){ renderFunds(); } else { resize(); }
+    if(isCal){ renderCalendar(); } else if(isFunds){ renderFunds(); } else if(isPortfolio){ renderPortfolioOutput(); } else { resize(); }
     renderStats();
   }
 
@@ -1108,6 +1152,7 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
   function renderStats(){
     statsEl.innerHTML = "";
     var tab = state.tab;
+    if(tab==="portfolio") return;
     SERIES.forEach(function(s){
       var tile = document.createElement("div");
       tile.className = "tile";
@@ -1541,6 +1586,429 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
     sect.appendChild(note);
     fundsWrapEl.appendChild(sect);
   }
+
+  // ---------- portfolio blender ----------
+  var PORTFOLIO_RF_ANNUAL = 0.065;
+  var PORTFOLIO_GROUP_LABELS = { index:"Indices", baf:"Balanced Advantage", multiasset:"Multi Asset" };
+
+  function seriesByKey(key){
+    for(var i=0;i<SERIES.length;i++) if(SERIES[i].key===key) return SERIES[i];
+    return null;
+  }
+
+  var PORTFOLIO_PRESETS = [
+    { label:"100% Index", legs:[["NIFTY 50",100]] },
+    { label:"50/50 Index + BAF", legs:[["NIFTY 50",50],["ICICI Prudential Balanced Advantage Fund",50]] },
+    { label:"Equal thirds", legs:[["NIFTY 50",34],["ICICI Prudential Balanced Advantage Fund",33],["ICICI Prudential Multi Asset Allocation Fund",33]] }
+  ];
+
+  state.portfolio = {
+    amount: 10000000,
+    legs: PORTFOLIO_PRESETS[0].legs.map(function(l){ return { key:l[0], weight:l[1] }; })
+  };
+
+  var portfolioShellBuilt = false;
+  var portfolioLegsEl, portfolioOutputEl, portfolioAmountInput, portfolioTotalEl, portfolioAddBtn;
+
+  function buildInstrumentSelect(selectedKey){
+    var sel = document.createElement("select");
+    sel.className = "portfolio-select";
+    ["index","baf","multiasset"].forEach(function(g){
+      var og = document.createElement("optgroup");
+      og.label = PORTFOLIO_GROUP_LABELS[g];
+      SERIES.filter(function(s){ return s.group===g; }).forEach(function(s){
+        var opt = document.createElement("option");
+        opt.value = s.key; opt.textContent = s.label;
+        if(s.key===selectedKey) opt.selected = true;
+        og.appendChild(opt);
+      });
+      sel.appendChild(og);
+    });
+    return sel;
+  }
+
+  function updatePortfolioTotal(){
+    var total = state.portfolio.legs.reduce(function(a,l){ return a+(l.weight||0); }, 0);
+    portfolioTotalEl.textContent = "Total: " + fmtNum(total,0) + "%" + (Math.abs(total-100)>0.5 ? " — normalized to 100% for the calculation" : "");
+    portfolioTotalEl.style.color = Math.abs(total-100)>0.5 ? "var(--bad)" : "var(--text-3)";
+  }
+
+  function renderPortfolioLegs(){
+    portfolioLegsEl.innerHTML = "";
+    state.portfolio.legs.forEach(function(leg, i){
+      var row = document.createElement("div");
+      row.className = "portfolio-leg";
+      var sel = buildInstrumentSelect(leg.key);
+      sel.addEventListener("change", function(){ leg.key = sel.value; recomputePortfolio(); });
+      var weightInput = document.createElement("input");
+      weightInput.type = "number"; weightInput.min = "0"; weightInput.max = "100"; weightInput.step = "1";
+      weightInput.value = leg.weight; weightInput.className = "portfolio-weight";
+      weightInput.addEventListener("input", function(){
+        leg.weight = parseFloat(weightInput.value) || 0;
+        updatePortfolioTotal();
+        recomputePortfolio();
+      });
+      var pct = document.createElement("span"); pct.className = "portfolio-pct"; pct.textContent = "%";
+      var rm = document.createElement("button");
+      rm.type = "button"; rm.className = "portfolio-rm"; rm.textContent = "✕"; rm.title = "Remove this fund";
+      rm.disabled = state.portfolio.legs.length <= 1;
+      rm.addEventListener("click", function(){
+        state.portfolio.legs.splice(i,1);
+        renderPortfolioLegs();
+        recomputePortfolio();
+      });
+      row.appendChild(sel); row.appendChild(weightInput); row.appendChild(pct); row.appendChild(rm);
+      portfolioLegsEl.appendChild(row);
+    });
+    updatePortfolioTotal();
+    portfolioAddBtn.disabled = state.portfolio.legs.length >= SERIES.length;
+  }
+
+  function toReturnsArr(vals){
+    var r = new Array(vals.length-1);
+    for(var i=1;i<vals.length;i++) r[i-1] = vals[i]/vals[i-1]-1;
+    return r;
+  }
+  function maxDrawdownArr(vals){
+    var peak=-Infinity, worst=0;
+    for(var i=0;i<vals.length;i++){ if(vals[i]>=peak) peak=vals[i]; var dd=vals[i]/peak-1; if(dd<worst) worst=dd; }
+    return worst;
+  }
+  function cagrArr(days, vals){
+    var years = (days[days.length-1]-days[0])/365.25;
+    return Math.pow(vals[vals.length-1]/vals[0], 1/years)-1;
+  }
+  function mean(arr){ var s=0; for(var i=0;i<arr.length;i++) s+=arr[i]; return s/arr.length; }
+  function annVolLog(rets){
+    var logs = rets.map(function(r){ return Math.log(1+r); });
+    var m = mean(logs), n = logs.length, v=0;
+    for(var i=0;i<n;i++) v += (logs[i]-m)*(logs[i]-m);
+    return Math.sqrt(v/n) * Math.sqrt(252);
+  }
+  function annDownsideDev(rets){
+    var n = rets.length, v=0;
+    for(var i=0;i<n;i++){ var d=Math.min(0,rets[i]); v += d*d; }
+    return Math.sqrt(v/n) * Math.sqrt(252);
+  }
+  function betaAlpha(fundRets, benchRets, rfDaily){
+    var n = fundRets.length, mf = mean(fundRets), mb = mean(benchRets), cov=0, varB=0;
+    for(var i=0;i<n;i++){ cov += (fundRets[i]-mf)*(benchRets[i]-mb); varB += (benchRets[i]-mb)*(benchRets[i]-mb); }
+    cov/=n; varB/=n;
+    var beta = cov/varB;
+    var alphaDaily = (mf-rfDaily) - beta*(mb-rfDaily);
+    return { beta:beta, alpha:alphaDaily*252 };
+  }
+  function correlationArr(fundRets, benchRets){
+    var n = fundRets.length, mf = mean(fundRets), mb = mean(benchRets), cov=0, sf=0, sb=0;
+    for(var i=0;i<n;i++){
+      cov += (fundRets[i]-mf)*(benchRets[i]-mb);
+      sf += (fundRets[i]-mf)*(fundRets[i]-mf);
+      sb += (benchRets[i]-mb)*(benchRets[i]-mb);
+    }
+    return (cov/n) / (Math.sqrt(sf/n)*Math.sqrt(sb/n));
+  }
+  function monthlyReturnsArr(days, vals){
+    var byMonth = new Map();
+    for(var i=0;i<days.length;i++){
+      var dt = dayToDate(days[i]);
+      byMonth.set(dt.getUTCFullYear()+"-"+dt.getUTCMonth(), vals[i]);
+    }
+    var arr = Array.from(byMonth.values());
+    var out = [];
+    for(var i=1;i<arr.length;i++) out.push(arr[i]/arr[i-1]-1);
+    return out;
+  }
+  function geoAvg(arr){ var p=1; for(var i=0;i<arr.length;i++) p*=(1+arr[i]); return Math.pow(p, 1/arr.length)-1; }
+  function captureRatiosArr(fundM, benchM){
+    var upF=[], upB=[], dnF=[], dnB=[];
+    for(var i=0;i<fundM.length;i++){
+      if(benchM[i]>0){ upF.push(fundM[i]); upB.push(benchM[i]); }
+      else if(benchM[i]<0){ dnF.push(fundM[i]); dnB.push(benchM[i]); }
+    }
+    return {
+      upcap: upB.length ? geoAvg(upF)/geoAvg(upB)*100 : null,
+      downcap: dnB.length ? geoAvg(dnF)/geoAvg(dnB)*100 : null
+    };
+  }
+
+  function computeSeriesStats(days, vals, benchVals){
+    var rfDaily = Math.pow(1+PORTFOLIO_RF_ANNUAL, 1/252)-1;
+    var rets = toReturnsArr(vals), benchRets = toReturnsArr(benchVals);
+    var cagr = cagrArr(days, vals), benchCagr = cagrArr(days, benchVals);
+    var vol = annVolLog(rets);
+    var maxdd = maxDrawdownArr(vals)*100, benchMaxdd = maxDrawdownArr(benchVals)*100;
+    var downside = annDownsideDev(rets);
+    var ba = betaAlpha(rets, benchRets, rfDaily);
+    var corr = correlationArr(rets, benchRets);
+    var sharpe = (cagr-PORTFOLIO_RF_ANNUAL)/vol;
+    var sortino = downside>0 ? (cagr-PORTFOLIO_RF_ANNUAL)/downside : null;
+    var calmar = maxdd<0 ? cagr/Math.abs(maxdd/100) : null;
+    var cap = captureRatiosArr(monthlyReturnsArr(days, vals), monthlyReturnsArr(days, benchVals));
+    return {
+      cagr:cagr*100, benchCagr:benchCagr*100, vol:vol*100, maxdd:maxdd, benchMaxdd:benchMaxdd,
+      beta:ba.beta, alpha:ba.alpha*100, corr:corr, sharpe:sharpe, sortino:sortino, calmar:calmar,
+      upcap:cap.upcap, downcap:cap.downcap,
+      years:(days[days.length-1]-days[0])/365.25, startDay:days[0], endDay:days[days.length-1],
+      currentValue: vals[vals.length-1]
+    };
+  }
+
+  function computeBlend(){
+    var legs = state.portfolio.legs.filter(function(l){ return l.weight>0 && seriesByKey(l.key); });
+    if(legs.length===0) return { error:"Add at least one fund with a weight above 0%." };
+    var totalW = legs.reduce(function(a,l){ return a+l.weight; }, 0);
+    var legSeries = legs.map(function(l){ return { s:seriesByKey(l.key), w:l.weight/totalW }; });
+    var nifty = seriesByKey("NIFTY 50");
+
+    var sets = legSeries.map(function(x){ return x.s.data.d; }).concat([nifty.data.d]);
+    var common = sets[0];
+    for(var k=1;k<sets.length;k++){
+      var setB = new Set(sets[k]);
+      common = common.filter(function(d){ return setB.has(d); });
+    }
+    if(common.length<60) return { error:"Not enough overlapping history between the selected funds to compute this." };
+
+    var priceMaps = legSeries.map(function(x){
+      var m = new Map();
+      for(var i=0;i<x.s.data.d.length;i++) m.set(x.s.data.d[i], x.s.data.c[i]);
+      return m;
+    });
+    var niftyMap = new Map();
+    for(var i=0;i<nifty.data.d.length;i++) niftyMap.set(nifty.data.d[i], nifty.data.c[i]);
+
+    var amount = state.portfolio.amount;
+    var units = legSeries.map(function(x,idx){ return (amount*x.w) / priceMaps[idx].get(common[0]); });
+    var value = new Array(common.length);
+    for(var i=0;i<common.length;i++){
+      var sum = 0;
+      for(var j=0;j<legSeries.length;j++) sum += units[j]*priceMaps[j].get(common[i]);
+      value[i] = sum;
+    }
+    var niftyUnits = amount / niftyMap.get(common[0]);
+    var niftyValue = common.map(function(d){ return niftyUnits*niftyMap.get(d); });
+
+    return { days:common, value:value, niftyValue:niftyValue, stats: computeSeriesStats(common, value, niftyValue) };
+  }
+
+  function fmtCompactRupees(v){
+    var sign = v<0 ? "-" : "";
+    v = Math.abs(v);
+    if(v>=1e7) return sign+"₹"+fmtNum(v/1e7,2)+"Cr";
+    if(v>=1e5) return sign+"₹"+fmtNum(v/1e5,2)+"L";
+    return sign+"₹"+fmtNum(v,0);
+  }
+
+  function drawMiniLineChart(canvas, days, seriesArr, opts){
+    opts = opts || {};
+    var ctx = canvas.getContext("2d");
+    var W = canvas.width, H = canvas.height;
+    ctx.clearRect(0,0,W,H);
+    var cssVars = getComputedStyle(document.documentElement);
+    var col = function(name){ return cssVars.getPropertyValue(name).trim(); };
+    var pad = { l:56, r:10, t:10, b:22 };
+
+    var allVals = [];
+    seriesArr.forEach(function(s){ s.vals.forEach(function(v){ if(v!=null && isFinite(v)) allVals.push(v); }); });
+    var minV = Math.min.apply(null, allVals), maxV = Math.max.apply(null, allVals);
+    if(opts.zeroTop) maxV = Math.max(maxV, 0);
+    if(minV===maxV){ minV -= 1; maxV += 1; }
+    var margin = (maxV-minV)*0.06;
+    minV -= margin; if(!opts.zeroTop) maxV += margin;
+    if(opts.zeroTop) maxV = 0;
+
+    function xScale(day){ return pad.l + (day-days[0])/(days[days.length-1]-days[0]) * (W-pad.l-pad.r); }
+    function yScale(v){ return pad.t + (1-(v-minV)/(maxV-minV)) * (H-pad.t-pad.b); }
+
+    ctx.strokeStyle = col("--grid"); ctx.fillStyle = col("--text-3");
+    ctx.font = "10px 'IBM Plex Mono', monospace"; ctx.textAlign = "right"; ctx.textBaseline = "middle";
+    ctx.lineWidth = 1;
+    for(var t=0;t<=3;t++){
+      var v = minV + (maxV-minV)*t/3;
+      var y = yScale(v);
+      ctx.beginPath(); ctx.moveTo(pad.l,Math.round(y)+0.5); ctx.lineTo(W-pad.r,Math.round(y)+0.5); ctx.stroke();
+      var label = opts.money ? fmtCompactRupees(v) : (fmtNum(v,0)+"%");
+      ctx.fillText(label, pad.l-6, y);
+    }
+
+    ctx.lineJoin = "round"; ctx.lineCap = "round";
+    seriesArr.forEach(function(s){
+      ctx.strokeStyle = s.color; ctx.lineWidth = s.dash ? 1.3 : 1.8;
+      ctx.setLineDash(s.dash ? [5,4] : []);
+      ctx.beginPath();
+      var started = false;
+      for(var i=0;i<days.length;i++){
+        var v = s.vals[i];
+        if(v==null || !isFinite(v)){ started=false; continue; }
+        var x = xScale(days[i]), y = yScale(v);
+        if(!started){ ctx.moveTo(x,y); started=true; } else { ctx.lineTo(x,y); }
+      }
+      ctx.stroke();
+    });
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = col("--text-3"); ctx.font = "10px 'IBM Plex Mono', monospace";
+    ctx.textAlign = "left"; ctx.textBaseline = "top";
+    ctx.fillText(fmtDate(dayToDate(days[0])), pad.l, H-pad.b+7);
+    ctx.textAlign = "right";
+    ctx.fillText(fmtDate(dayToDate(days[days.length-1])), W-pad.r, H-pad.b+7);
+
+    ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+    var lx = pad.l;
+    seriesArr.forEach(function(s){
+      ctx.fillStyle = s.color;
+      ctx.fillRect(lx, 4, 10, 3);
+      ctx.fillStyle = col("--text-2");
+      ctx.fillText(s.label, lx+14, 11);
+      lx += 14 + ctx.measureText(s.label).width + 18;
+    });
+  }
+
+  function portfolioTile(grid, label, value, sub, cls){
+    var t = document.createElement("div"); t.className = "tile";
+    var h = document.createElement("div"); h.className = "tile-head";
+    var n = document.createElement("span"); n.className = "name"; n.textContent = label;
+    h.appendChild(n); t.appendChild(h);
+    var v = document.createElement("div"); v.className = "value tab"; v.textContent = value; t.appendChild(v);
+    if(sub){
+      var d = document.createElement("div"); d.className = "delta" + (cls ? " "+cls : "");
+      var since = document.createElement("span"); since.className = "since"; since.textContent = sub;
+      d.appendChild(since); t.appendChild(d);
+    }
+    grid.appendChild(t);
+  }
+
+  function renderPortfolioOutput(){
+    if(!portfolioShellBuilt) return;
+    portfolioOutputEl.innerHTML = "";
+    var result = computeBlend();
+    if(result.error){
+      var err = document.createElement("div");
+      err.className = "baf-empty";
+      err.textContent = result.error;
+      portfolioOutputEl.appendChild(err);
+      return;
+    }
+    var st = result.stats;
+    var totalReturn = (st.currentValue/state.portfolio.amount - 1) * 100;
+
+    var grid = document.createElement("div");
+    grid.className = "portfolio-tiles";
+    portfolioTile(grid, "Current value", fmtCompactRupees(st.currentValue),
+      (totalReturn>=0?"+":"")+fmtNum(totalReturn,1)+"% total return", totalReturn>=0?"up":"down");
+    portfolioTile(grid, "CAGR", fmtNum(st.cagr,2)+"%", "NIFTY 50 TRI: "+fmtNum(st.benchCagr,2)+"%");
+    portfolioTile(grid, "Max drawdown", fmtNum(st.maxdd,1)+"%", "NIFTY 50 TRI: "+fmtNum(st.benchMaxdd,1)+"%");
+    portfolioTile(grid, "Ann. volatility", fmtNum(st.vol,2)+"%");
+    portfolioTile(grid, "Beta / Alpha", fmtNum(st.beta,2)+" / "+fmtNum(st.alpha,1)+"%", "vs NIFTY 50 TRI");
+    portfolioTile(grid, "Sharpe / Sortino", fmtNum(st.sharpe,2)+" / "+(st.sortino==null?"—":fmtNum(st.sortino,2)));
+    portfolioTile(grid, "Calmar", st.calmar==null?"—":fmtNum(st.calmar,2));
+    portfolioTile(grid, "Up-cap / Down-cap", (st.upcap==null?"—":fmtNum(st.upcap,0)+"%")+" / "+(st.downcap==null?"—":fmtNum(st.downcap,0)+"%"), "vs NIFTY 50 TRI");
+    portfolioOutputEl.appendChild(grid);
+
+    var note = document.createElement("div");
+    note.className = "baf-empty";
+    note.textContent = "Common history: " + fmtDate(dayToDate(st.startDay)) + " – " + fmtDate(dayToDate(st.endDay)) + " (" + fmtNum(st.years,1) + " yrs), limited by whichever selected fund launched most recently. Buy-and-hold from that date — weights drift with performance, no rebalancing.";
+    portfolioOutputEl.appendChild(note);
+
+    var chartsRow = document.createElement("div");
+    chartsRow.className = "portfolio-charts";
+    var growthBox = document.createElement("div"); growthBox.className = "portfolio-chart-box";
+    var growthTitle = document.createElement("div"); growthTitle.className = "portfolio-chart-title";
+    growthTitle.textContent = "Portfolio value vs 100% NIFTY 50 TRI";
+    var growthCanvas = document.createElement("canvas"); growthCanvas.width = 640; growthCanvas.height = 240;
+    growthBox.appendChild(growthTitle); growthBox.appendChild(growthCanvas);
+
+    var ddBox = document.createElement("div"); ddBox.className = "portfolio-chart-box";
+    var ddTitle = document.createElement("div"); ddTitle.className = "portfolio-chart-title";
+    ddTitle.textContent = "Portfolio drawdown";
+    var ddCanvas = document.createElement("canvas"); ddCanvas.width = 640; ddCanvas.height = 240;
+    ddBox.appendChild(ddTitle); ddBox.appendChild(ddCanvas);
+
+    chartsRow.appendChild(growthBox); chartsRow.appendChild(ddBox);
+    portfolioOutputEl.appendChild(chartsRow);
+
+    var cssVars = getComputedStyle(document.documentElement);
+    drawMiniLineChart(growthCanvas, result.days, [
+      { vals: result.value, color: cssVars.getPropertyValue("--n50").trim(), label:"Blend" },
+      { vals: result.niftyValue, color: cssVars.getPropertyValue("--text-3").trim(), dash:true, label:"100% NIFTY 50 TRI" }
+    ], { money:true });
+
+    var dd = new Array(result.value.length);
+    var peak = -Infinity;
+    for(var i=0;i<result.value.length;i++){ if(result.value[i]>=peak) peak=result.value[i]; dd[i]=(result.value[i]/peak-1)*100; }
+    drawMiniLineChart(ddCanvas, result.days, [
+      { vals: dd, color: cssVars.getPropertyValue("--bad").trim(), label:"Drawdown" }
+    ], { percent:true, zeroTop:true });
+  }
+
+  function recomputePortfolio(){
+    if(state.tab==="portfolio") renderPortfolioOutput();
+  }
+
+  function applyPortfolioPreset(preset){
+    state.portfolio.legs = preset.legs.map(function(l){ return { key:l[0], weight:l[1] }; });
+    renderPortfolioLegs();
+    recomputePortfolio();
+  }
+
+  function buildPortfolioShell(){
+    if(portfolioShellBuilt) return;
+    portfolioShellBuilt = true;
+
+    var presetsRow = document.createElement("div");
+    presetsRow.className = "portfolio-presets";
+    PORTFOLIO_PRESETS.forEach(function(preset){
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "ranges-btn"; b.textContent = preset.label;
+      b.style.cssText = "border:1px solid var(--border); background:transparent; color:var(--text-2); border-radius:8px; padding:6px 12px; font-size:12.5px; font-family:'IBM Plex Mono',monospace; cursor:pointer;";
+      b.addEventListener("mouseenter", function(){ b.style.background = "var(--chip-hover)"; });
+      b.addEventListener("mouseleave", function(){ b.style.background = "transparent"; });
+      b.addEventListener("click", function(){ applyPortfolioPreset(preset); });
+      presetsRow.appendChild(b);
+    });
+
+    var amountRow = document.createElement("div");
+    amountRow.className = "portfolio-amount-row";
+    var label = document.createElement("label"); label.textContent = "Amount (₹)"; label.htmlFor = "portfolioAmount";
+    portfolioAmountInput = document.createElement("input");
+    portfolioAmountInput.type = "number"; portfolioAmountInput.id = "portfolioAmount"; portfolioAmountInput.min = "0";
+    portfolioAmountInput.step = "100000"; portfolioAmountInput.className = "portfolio-amount";
+    portfolioAmountInput.value = state.portfolio.amount;
+    portfolioAmountInput.addEventListener("input", function(){
+      state.portfolio.amount = parseFloat(portfolioAmountInput.value) || 0;
+      recomputePortfolio();
+    });
+    amountRow.appendChild(label); amountRow.appendChild(portfolioAmountInput);
+    amountRow.appendChild(presetsRow);
+
+    portfolioLegsEl = document.createElement("div");
+    portfolioLegsEl.className = "portfolio-legs";
+
+    portfolioAddBtn = document.createElement("button");
+    portfolioAddBtn.type = "button"; portfolioAddBtn.className = "portfolio-add"; portfolioAddBtn.textContent = "+ Add fund";
+    portfolioAddBtn.addEventListener("click", function(){
+      var used = state.portfolio.legs.map(function(l){ return l.key; });
+      var next = SERIES.filter(function(s){ return used.indexOf(s.key)===-1; })[0];
+      if(!next) return;
+      state.portfolio.legs.push({ key: next.key, weight: 0 });
+      renderPortfolioLegs();
+      recomputePortfolio();
+    });
+
+    portfolioTotalEl = document.createElement("div");
+    portfolioTotalEl.className = "portfolio-total";
+
+    portfolioOutputEl = document.createElement("div");
+
+    portfolioWrapEl.appendChild(amountRow);
+    portfolioWrapEl.appendChild(portfolioLegsEl);
+    portfolioWrapEl.appendChild(portfolioAddBtn);
+    portfolioWrapEl.appendChild(portfolioTotalEl);
+    portfolioWrapEl.appendChild(document.createElement("hr"));
+    portfolioWrapEl.appendChild(portfolioOutputEl);
+
+    renderPortfolioLegs();
+  }
+  buildPortfolioShell();
 
   // ---------- calendar returns table ----------
   function renderCalendar(){

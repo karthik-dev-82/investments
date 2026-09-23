@@ -43,6 +43,9 @@ real NIFTY 50 Total Return Index series, not placeholder numbers.
    * - :doc:`concepts/multi-asset-funds`
      - Equity + debt + gold funds, and how they compare to NIFTY 50 and BAFs
      - multi asset allocation, gold
+   * - :doc:`concepts/portfolio-blender`
+     - Mix any funds with weights and an amount, see the blend's own stats
+     - buy-and-hold, no rebalancing
 
 .. toctree::
    :maxdepth: 2
@@ -58,3 +61,4 @@ real NIFTY 50 Total Return Index series, not placeholder numbers.
    concepts/lumpsum-and-balanced-advantage
    concepts/risk-adjusted-metrics
    concepts/multi-asset-funds
+   concepts/portfolio-blender

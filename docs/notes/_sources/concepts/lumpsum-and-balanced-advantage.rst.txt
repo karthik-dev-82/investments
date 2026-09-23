@@ -375,7 +375,10 @@ index-fund expense ratios on the Funds tab are still on that older basis
 and a BAF is approximate, not like-for-like.
 
 See :doc:`multi-asset-funds` for the same treatment applied to funds that
-add a third asset (typically gold) alongside equity and debt.
+add a third asset (typically gold) alongside equity and debt, and
+:doc:`portfolio-blender` to see what an actual mix of index, BAF and
+multi-asset funds would have done together, with your own amount and
+weights.
 
 What's different from the index-fund comparison
 ------------------------------------------------------

@@ -1,0 +1,281 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio Blender &mdash; NIFTY Index Terminal — Notes</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=93e713b6" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Multi Asset Funds" href="multi-asset-funds.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NIFTY Index Terminal — Notes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index-levels.html">Index Levels &amp; Rebasing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#why-total-return-not-the-price-index">Why total return, not the price index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#the-fix-rebasing">The fix: rebasing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#log-scale">Log scale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index-levels.html#why-it-matters">Why it matters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="base-dates.html">Base Dates &amp; Back-tested History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base-dates.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="drawdown.html">Drawdown</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#worked-example-the-2020-crash">Worked example: the 2020 crash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drawdown.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rolling-returns.html">Rolling Returns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#why-n-1-3-5-7-10-years">Why N = 1, 3, 5, 7, 10 years</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#worked-example">Worked example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#why-it-matters-sequence-of-returns-risk">Why it matters: sequence-of-returns risk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rolling-returns.html#caveat">Caveat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="volatility.html">Volatility</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#choosing-a-window">Choosing a window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#worked-example">Worked example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="volatility.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="calendar-returns.html">Calendar-Year Returns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#worked-examples">Worked examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#why-it-matters">Why it matters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calendar-returns.html#how-to-read-it-on-the-chart">How to read it on the chart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="choosing-a-fund.html">Choosing a Fund</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#direct-vs-regular">Direct vs. Regular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#growth-vs-idcw-and-why-it-matters-more-for-an-australian-tax-resident">Growth vs. IDCW — and why it matters more for an Australian tax resident</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#lock-in-why-elss-variants-are-excluded">Lock-in: why ELSS variants are excluded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#why-aum-is-shown-at-all">Why AUM is shown at all</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#the-nro-nre-route">The NRO → NRE route</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing-a-fund.html#what-this-page-doesn-t-cover">What this page doesn’t cover</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lumpsum-and-balanced-advantage.html">Lump-Sum Timing &amp; Balanced Advantage Funds</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#the-problem-this-page-is-about">The problem this page is about</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-a-balanced-advantage-fund-does-differently">What a Balanced Advantage Fund does differently</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-the-data-actually-shows">What the data actually shows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#risk-adjusted-performance-beta-alpha-sharpe-and-capture-ratios">Risk-adjusted performance: beta, alpha, Sharpe, and capture ratios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#how-this-fits-the-project-s-fund-rules">How this fits the project’s fund rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-these-funds-cost">What these funds cost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#what-s-different-from-the-index-fund-comparison">What’s different from the index-fund comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumpsum-and-balanced-advantage.html#why-this-isn-t-just-add-balanced-advantage-funds-to-the-funds-tab">Why this isn’t just “add balanced advantage funds to the Funds tab”</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="risk-adjusted-metrics.html">Risk-Adjusted Metrics: Beta, Alpha, Sharpe &amp; Capture Ratios</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#the-problem-these-metrics-solve">The problem these metrics solve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#beta">Beta</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#alpha">Alpha</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#sharpe-ratio">Sharpe ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#sortino-ratio">Sortino ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#calmar-ratio">Calmar ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#up-capture-and-down-capture-ratios">Up-capture and down-capture ratios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#reading-them-together">Reading them together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="risk-adjusted-metrics.html#how-to-read-this-on-the-terminal">How to read this on the Terminal</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multi-asset-funds.html">Multi Asset Funds</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="multi-asset-funds.html#the-simple-explanation">The simple explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi-asset-funds.html#risk-adjusted-performance-vs-nifty-50-tri">Risk-adjusted performance vs NIFTY 50 TRI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi-asset-funds.html#cost-and-size">Cost and size</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi-asset-funds.html#what-this-page-doesn-t-cover">What this page doesn’t cover</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Portfolio Blender</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-it-answers">What it answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-method">The method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-buy-and-hold-not-periodic-rebalancing">Why buy-and-hold, not periodic rebalancing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-read-it">How to read it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-it-doesn-t-do">What it doesn’t do</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NIFTY Index Terminal — Notes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Portfolio Blender</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/concepts/portfolio-blender.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="portfolio-blender">
+<h1>Portfolio Blender<a class="headerlink" href="#portfolio-blender" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This page is not investment advice. All computation happens in your
+browser — the amount and fund mix you enter are never sent anywhere.
+Past performance of any blend shown is not a guarantee of future results.</p>
+</div>
+<section id="what-it-answers">
+<h2>What it answers<a class="headerlink" href="#what-it-answers" title="Link to this heading"></a></h2>
+<p>Every other page on this site looks at one fund, or one index, at a time.
+The <strong>Portfolio</strong> tab on the <a class="reference external" href="../index.html">Index Terminal</a> answers a
+different question: if you split a lump sum across several of them — some
+index, some <a class="reference internal" href="lumpsum-and-balanced-advantage.html"><span class="doc">Balanced Advantage</span></a>, some
+<a class="reference internal" href="multi-asset-funds.html"><span class="doc">Multi Asset</span></a> — what did <em>that specific mix</em>
+actually do?</p>
+<p>Pick any combination of the indices and funds already on this site, give
+each a weight and an amount, and it computes the blend’s CAGR, max drawdown,
+annualized volatility, and the same <a class="reference internal" href="risk-adjusted-metrics.html"><span class="doc">risk-adjusted metrics</span></a> (Beta, Alpha, Sharpe, Sortino, Calmar, capture
+ratios) used everywhere else — against NIFTY 50 TRI, with a growth chart and
+a drawdown chart for the blend itself.</p>
+</section>
+<section id="the-method">
+<h2>The method<a class="headerlink" href="#the-method" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>units_per_leg  = (amount × leg_weight) / leg_price on the common start date
+portfolio[day] = Σ  units_per_leg × leg_price[day]
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Buy-and-hold, no rebalancing.</strong> The split is applied once, on the common
+start date, and never adjusted afterward — each leg’s unit count is fixed
+from day one. A leg that grows faster becomes a larger share of the
+portfolio over time; this is deliberate, not a simplification, matching a
+lump sum that’s invested once and left alone.</p></li>
+<li><p><strong>Common start date.</strong> A blend can only be computed from the date every
+selected leg has data — set by whichever fund in the mix launched most
+recently. Add SBI Balanced Advantage Fund (data from Sep 2021) to a blend
+with funds running since 2013, and the whole blend’s history shortens to
+Sep 2021 onward. The page states the actual window used every time.</p></li>
+<li><p><strong>Weights are normalized to 100%</strong> for the calculation regardless of what
+you enter — if your legs sum to 90% or 110%, a note says so, but the
+relative split between legs is preserved.</p></li>
+<li><p>Beta, Alpha, Sharpe, Sortino, Calmar and the capture ratios use the exact
+same formulas as the Funds tab (daily returns for the first five, monthly
+returns for capture, a flat 6.5% risk-free rate) — see
+<a class="reference internal" href="risk-adjusted-metrics.html"><span class="doc">Risk-Adjusted Metrics: Beta, Alpha, Sharpe &amp; Capture Ratios</span></a> for what each one means.</p></li>
+</ul>
+</section>
+<section id="why-buy-and-hold-not-periodic-rebalancing">
+<h2>Why buy-and-hold, not periodic rebalancing<a class="headerlink" href="#why-buy-and-hold-not-periodic-rebalancing" title="Link to this heading"></a></h2>
+<p>A portfolio that’s rebalanced back to its target weights every year behaves
+differently from one that’s never touched — rebalancing systematically sells
+what went up and buys what went down, which usually (not always) helps
+long-run returns. This tool models the <em>un-rebalanced</em> case on purpose,
+because it matches a specific plan: invest a lump sum once, and don’t
+actively manage it afterward. If you intend to rebalance periodically, treat
+every number here as an approximation of a somewhat different strategy.</p>
+</section>
+<section id="how-to-read-it">
+<h2>How to read it<a class="headerlink" href="#how-to-read-it" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>The <strong>preset buttons</strong> (100% Index, 50/50 Index + BAF, Equal thirds) load
+a starting mix — change any fund or weight afterward, or add/remove legs
+with <strong>+ Add fund</strong>.</p></li>
+<li><p>The <strong>growth chart</strong> plots the blend’s ₹ value alongside what the same
+amount would have become in 100% NIFTY 50 TRI over the same window, so you
+can see whether the mix actually helped.</p></li>
+<li><p>The <strong>drawdown chart</strong> is the blend’s own underwater curve — see
+<a class="reference internal" href="drawdown.html"><span class="doc">Drawdown</span></a> for how to read one.</p></li>
+<li><p>Numbers update as you type; there’s no separate “calculate” step.</p></li>
+</ul>
+</section>
+<section id="what-it-doesn-t-do">
+<h2>What it doesn’t do<a class="headerlink" href="#what-it-doesn-t-do" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>No tax modeling — a real redemption has capital-gains consequences the
+blend doesn’t account for.</p></li>
+<li><p>No partial or staggered deployment (e.g. an STP into equity over several
+months) — the whole amount goes in on day one, in every leg, at once.</p></li>
+<li><p>No allocation drift limits or bands — weights can drift arbitrarily far
+from their starting split over a long enough window, since nothing
+rebalances them back.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="multi-asset-funds.html" class="btn btn-neutral float-left" title="Multi Asset Funds" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
