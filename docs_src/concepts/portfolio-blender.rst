@@ -20,8 +20,8 @@ Pick any combination of the indices and funds already on this site, give
 each a weight and an amount, and it computes the blend's CAGR, max drawdown,
 annualized volatility, and the same :doc:`risk-adjusted metrics
 <risk-adjusted-metrics>` (Beta, Alpha, Sharpe, Sortino, Calmar, capture
-ratios) used everywhere else — against NIFTY 50 TRI, with a growth chart and
-a drawdown chart for the blend itself.
+ratios) used everywhere else — against a benchmark you choose (NIFTY 50 TRI by
+default), with a growth chart and a drawdown chart for the blend itself.
 
 The method
 ------------
@@ -48,6 +48,16 @@ The method
   same formulas as the Funds tab (daily returns for the first five, monthly
   returns for capture, a flat 6.5% risk-free rate) — see
   :doc:`risk-adjusted-metrics` for what each one means.
+- **The benchmark is your choice.** It defaults to NIFTY 50 TRI, but any index
+  or fund on the site can be the yardstick, and it drives the comparison line
+  on the growth chart plus every "vs" number (CAGR and drawdown comparison,
+  Beta, Alpha, capture ratios). It also has to have data on the same dates, so
+  a benchmark that launched later than the rest of the mix shortens the
+  window, exactly as an extra fund would. Those "vs" numbers are relative to
+  whatever you pick: a 100% NIFTY 50 TRI blend measured against ICICI
+  Prudential Balanced Advantage Fund shows a Beta of 1.68 and a down-capture
+  of 213%, because NIFTY 50 falls further than that fund does — the same
+  relationship the fund's own row shows from the other side (Beta 0.52).
 
 Why buy-and-hold, not periodic rebalancing
 -----------------------------------------------
@@ -78,6 +88,26 @@ How to read it
   others is worth more than its original weight today, and this table makes
   that concrete instead of leaving it as an abstract caveat.
 - Numbers update as you type; there's no separate "calculate" step.
+
+Sharing a blend
+------------------
+
+The address bar always holds a link to exactly what's on screen: the tab, the
+amount, the benchmark, and each fund with its weight. The **Copy link**
+button next to the amount copies it; opening that link anywhere reproduces
+the same blend and the same numbers. Editing the part of the address after
+the ``#`` by hand also works, and the page follows.
+
+- The state lives entirely in the part of the address after the ``#``, which
+  browsers never send to a web server, so nothing is stored anywhere unless
+  you choose to send someone the link.
+- Only the Portfolio tab's state is included. Which funds are switched on in
+  the legend, the zoom range, and the other tabs' settings are not part of
+  the link.
+- Funds are written into the link by short codes (``N50``, ``ICICI-BAF``,
+  ``ICICI-MA`` and so on). If a fund is ever renamed or removed from the
+  site, an old link simply drops that fund and uses the rest; a link with
+  nothing valid in it falls back to the default 100% NIFTY 50 blend.
 
 What it doesn't do
 ----------------------

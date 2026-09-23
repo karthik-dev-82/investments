@@ -133,6 +133,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#the-method">The method</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#why-buy-and-hold-not-periodic-rebalancing">Why buy-and-hold, not periodic rebalancing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#how-to-read-it">How to read it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sharing-a-blend">Sharing a blend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#what-it-doesn-t-do">What it doesn’t do</a></li>
 </ul>
 </li>
@@ -181,8 +182,8 @@ actually do?</p>
 <p>Pick any combination of the indices and funds already on this site, give
 each a weight and an amount, and it computes the blend’s CAGR, max drawdown,
 annualized volatility, and the same <a class="reference internal" href="risk-adjusted-metrics.html"><span class="doc">risk-adjusted metrics</span></a> (Beta, Alpha, Sharpe, Sortino, Calmar, capture
-ratios) used everywhere else — against NIFTY 50 TRI, with a growth chart and
-a drawdown chart for the blend itself.</p>
+ratios) used everywhere else — against a benchmark you choose (NIFTY 50 TRI by
+default), with a growth chart and a drawdown chart for the blend itself.</p>
 </section>
 <section id="the-method">
 <h2>The method<a class="headerlink" href="#the-method" title="Link to this heading"></a></h2>
@@ -208,6 +209,16 @@ relative split between legs is preserved.</p></li>
 same formulas as the Funds tab (daily returns for the first five, monthly
 returns for capture, a flat 6.5% risk-free rate) — see
 <a class="reference internal" href="risk-adjusted-metrics.html"><span class="doc">Risk-Adjusted Metrics: Beta, Alpha, Sharpe &amp; Capture Ratios</span></a> for what each one means.</p></li>
+<li><p><strong>The benchmark is your choice.</strong> It defaults to NIFTY 50 TRI, but any index
+or fund on the site can be the yardstick, and it drives the comparison line
+on the growth chart plus every “vs” number (CAGR and drawdown comparison,
+Beta, Alpha, capture ratios). It also has to have data on the same dates, so
+a benchmark that launched later than the rest of the mix shortens the
+window, exactly as an extra fund would. Those “vs” numbers are relative to
+whatever you pick: a 100% NIFTY 50 TRI blend measured against ICICI
+Prudential Balanced Advantage Fund shows a Beta of 1.68 and a down-capture
+of 213%, because NIFTY 50 falls further than that fund does — the same
+relationship the fund’s own row shows from the other side (Beta 0.52).</p></li>
 </ul>
 </section>
 <section id="why-buy-and-hold-not-periodic-rebalancing">
@@ -238,6 +249,26 @@ starting weight — since nothing rebalances, a fund that outperformed the
 others is worth more than its original weight today, and this table makes
 that concrete instead of leaving it as an abstract caveat.</p></li>
 <li><p>Numbers update as you type; there’s no separate “calculate” step.</p></li>
+</ul>
+</section>
+<section id="sharing-a-blend">
+<h2>Sharing a blend<a class="headerlink" href="#sharing-a-blend" title="Link to this heading"></a></h2>
+<p>The address bar always holds a link to exactly what’s on screen: the tab, the
+amount, the benchmark, and each fund with its weight. The <strong>Copy link</strong>
+button next to the amount copies it; opening that link anywhere reproduces
+the same blend and the same numbers. Editing the part of the address after
+the <code class="docutils literal notranslate"><span class="pre">#</span></code> by hand also works, and the page follows.</p>
+<ul class="simple">
+<li><p>The state lives entirely in the part of the address after the <code class="docutils literal notranslate"><span class="pre">#</span></code>, which
+browsers never send to a web server, so nothing is stored anywhere unless
+you choose to send someone the link.</p></li>
+<li><p>Only the Portfolio tab’s state is included. Which funds are switched on in
+the legend, the zoom range, and the other tabs’ settings are not part of
+the link.</p></li>
+<li><p>Funds are written into the link by short codes (<code class="docutils literal notranslate"><span class="pre">N50</span></code>, <code class="docutils literal notranslate"><span class="pre">ICICI-BAF</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ICICI-MA</span></code> and so on). If a fund is ever renamed or removed from the
+site, an old link simply drops that fund and uses the rest; a link with
+nothing valid in it falls back to the default 100% NIFTY 50 blend.</p></li>
 </ul>
 </section>
 <section id="what-it-doesn-t-do">

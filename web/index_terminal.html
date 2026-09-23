@@ -320,7 +320,7 @@
     <div class="chart-hint" id="fundsHint" hidden>Direct plan, Growth option, no lock-in — sorted by AUM within each index. Excludes ELSS/tax-saver variants (3-year statutory lock-in). Expense ratio mostly from AMFI's TER disclosure (~Jul-2025); a few newer AMCs from INDmoney (Sep-2026) where AMFI has no record yet — see <a href="notes/concepts/choosing-a-fund.html">notes</a>. Balanced Advantage and Multi Asset funds are actively managed, so they get a risk table (beta, alpha, Sharpe, capture ratios — <a href="notes/concepts/risk-adjusted-metrics.html">what these mean</a>) instead of an AUM ranking — see <a href="notes/concepts/lumpsum-and-balanced-advantage.html">notes</a>. The Multi Asset table covers 6 of 27 funds in that category — see <a href="notes/concepts/multi-asset-funds.html">which, and why</a>. Not investment advice.</div>
 
     <div class="calendar-wrap" id="portfolioWrap" hidden></div>
-    <div class="chart-hint" id="portfolioHint" hidden>Buy-and-hold — weights drift with performance after the initial split, no periodic rebalancing back to target — see <a href="notes/concepts/portfolio-blender.html">the method</a>. Beta, Alpha, Sharpe, Sortino, Calmar and capture ratios are vs NIFTY 50 TRI, same method as the Funds tab (risk-free rate flat 6.5%) — see <a href="notes/concepts/risk-adjusted-metrics.html">what these mean</a>. History is limited to whichever selected fund launched most recently. Not investment advice.</div>
+    <div class="chart-hint" id="portfolioHint" hidden>Buy-and-hold — weights drift with performance after the initial split, no periodic rebalancing back to target — see <a href="notes/concepts/portfolio-blender.html">the method</a>. Beta, Alpha, Sharpe, Sortino, Calmar and capture ratios are vs the benchmark you pick (default NIFTY 50 TRI), same method as the Funds tab (risk-free rate flat 6.5%) — see <a href="notes/concepts/risk-adjusted-metrics.html">what these mean</a>. History is limited to whichever fund in the mix, or the benchmark, launched most recently. The address bar always holds a shareable link to the current blend. Not investment advice.</div>
   </div>
 
   <div class="stats" id="stats"></div>
@@ -717,6 +717,7 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
     buildTabControls();
     if(isCal){ renderCalendar(); } else if(isFunds){ renderFunds(); } else if(isPortfolio){ renderPortfolioOutput(); } else { resize(); }
     renderStats();
+    writeHash();
   }
 
   function refresh(){
@@ -1604,11 +1605,92 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
 
   state.portfolio = {
     amount: 10000000,
+    bench: "NIFTY 50",
     legs: PORTFOLIO_PRESETS[0].legs.map(function(l){ return { key:l[0], weight:l[1] }; })
   };
 
   var portfolioShellBuilt = false;
-  var portfolioLegsEl, portfolioOutputEl, portfolioAmountInput, portfolioTotalEl, portfolioAddBtn;
+  var portfolioLegsEl, portfolioOutputEl, portfolioAmountInput, portfolioTotalEl, portfolioAddBtn, portfolioBenchSelect;
+
+  function plainButton(text){
+    var b = document.createElement("button");
+    b.type = "button"; b.textContent = text;
+    b.style.cssText = "border:1px solid var(--border); background:transparent; color:var(--text-2); border-radius:8px; padding:6px 12px; font-size:12.5px; font-family:'IBM Plex Mono',monospace; cursor:pointer;";
+    b.addEventListener("mouseenter", function(){ b.style.background = "var(--chip-hover)"; });
+    b.addEventListener("mouseleave", function(){ b.style.background = "transparent"; });
+    return b;
+  }
+
+  // ---------- shareable link: state lives in the URL hash (works on static hosting, never sent to a server) ----------
+  function shortOf(key){ var s = seriesByKey(key); return s ? s.short : null; }
+  function keyOfShort(sh){
+    for(var i=0;i<SERIES.length;i++) if(SERIES[i].short===sh) return SERIES[i].key;
+    return null;
+  }
+  function stateToHash(){
+    var parts = [];
+    if(state.tab!=="price") parts.push("t="+state.tab);
+    if(state.tab==="portfolio"){
+      var pf = state.portfolio;
+      parts.push("a="+pf.amount);
+      parts.push("b="+shortOf(pf.bench));
+      parts.push("p="+pf.legs.map(function(l){ return shortOf(l.key)+":"+l.weight; }).join(","));
+    }
+    return parts.join("&");
+  }
+  function writeHashNow(){
+    var h = stateToHash();
+    try{ history.replaceState(null, "", location.pathname + location.search + (h ? "#"+h : "")); }catch(e){}
+  }
+  var hashTimer = null;
+  function writeHash(){
+    clearTimeout(hashTimer);
+    hashTimer = setTimeout(writeHashNow, 200);
+  }
+  function parseHash(){
+    var out = {};
+    var h = location.hash.replace(/^#/, "");
+    if(!h) return out;
+    h.split("&").forEach(function(kv){
+      var i = kv.indexOf("=");
+      if(i>0){ try{ out[kv.slice(0,i)] = decodeURIComponent(kv.slice(i+1)); }catch(e){} }
+    });
+    return out;
+  }
+  function applyHashState(){
+    var h = parseHash();
+    var pf = state.portfolio;
+    var a = parseFloat(h.a);
+    if(a>0 && isFinite(a)) pf.amount = a;
+    var bk = h.b ? keyOfShort(h.b) : null;
+    if(bk) pf.bench = bk;
+    if(h.p){
+      var legs = [];
+      h.p.split(",").forEach(function(tok){
+        var c = tok.split(":"), k = keyOfShort(c[0]), w = parseFloat(c[1]);
+        if(k && isFinite(w) && w>=0 && legs.length<SERIES.length) legs.push({ key:k, weight:w });
+      });
+      if(legs.length) pf.legs = legs;
+    }
+    if(portfolioShellBuilt){
+      portfolioAmountInput.value = pf.amount;
+      portfolioBenchSelect.value = pf.bench;
+      renderPortfolioLegs();
+    }
+    var t = (h.t && TAB_DEFS[h.t]) ? h.t : "price";
+    if(t!==state.tab) switchTab(t);
+    else if(t==="portfolio") renderPortfolioOutput();
+  }
+
+  function fallbackCopy(text, cb){
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    var ok = false;
+    try{ ok = document.execCommand("copy"); }catch(e){}
+    document.body.removeChild(ta);
+    cb(ok);
+  }
 
   function buildInstrumentSelect(selectedKey){
     var sel = document.createElement("select");
@@ -1768,7 +1850,7 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
     if(legs.length===0) return { error:"Add at least one fund with a weight above 0%." };
     var totalW = legs.reduce(function(a,l){ return a+l.weight; }, 0);
     var legSeries = legs.map(function(l){ return { s:seriesByKey(l.key), w:l.weight/totalW }; });
-    var nifty = seriesByKey("NIFTY 50");
+    var nifty = seriesByKey(state.portfolio.bench) || seriesByKey("NIFTY 50");
 
     var sets = legSeries.map(function(x){ return x.s.data.d; }).concat([nifty.data.d]);
     var common = sets[0];
@@ -1807,7 +1889,7 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
     });
 
     return {
-      days:common, value:value, niftyValue:niftyValue,
+      days:common, value:value, niftyValue:niftyValue, benchLabel:nifty.label,
       stats: computeSeriesStats(common, value, niftyValue),
       trough: maxDrawdownDetail(common, value),
       breakdown: breakdown
@@ -1913,25 +1995,26 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
       return;
     }
     var st = result.stats;
+    var bl = result.benchLabel;
     var totalReturn = (st.currentValue/state.portfolio.amount - 1) * 100;
 
     var grid = document.createElement("div");
     grid.className = "portfolio-tiles";
     portfolioTile(grid, "Current value", fmtCompactRupees(st.currentValue),
       (totalReturn>=0?"+":"")+fmtNum(totalReturn,1)+"% total return", totalReturn>=0?"up":"down");
-    portfolioTile(grid, "CAGR", fmtNum(st.cagr,2)+"%", "NIFTY 50 TRI: "+fmtNum(st.benchCagr,2)+"%");
+    portfolioTile(grid, "CAGR", fmtNum(st.cagr,2)+"%", bl+": "+fmtNum(st.benchCagr,2)+"%");
     portfolioTile(grid, "Max drawdown", fmtNum(st.maxdd,1)+"%",
-      "worst point: " + fmtCompactRupees(result.trough.value) + " on " + fmtDate(dayToDate(result.trough.day)) + " (NIFTY 50 TRI: "+fmtNum(st.benchMaxdd,1)+"%)");
+      "worst point: " + fmtCompactRupees(result.trough.value) + " on " + fmtDate(dayToDate(result.trough.day)) + " ("+bl+": "+fmtNum(st.benchMaxdd,1)+"%)");
     portfolioTile(grid, "Ann. volatility", fmtNum(st.vol,2)+"%");
-    portfolioTile(grid, "Beta / Alpha", fmtNum(st.beta,2)+" / "+fmtNum(st.alpha,1)+"%", "vs NIFTY 50 TRI");
+    portfolioTile(grid, "Beta / Alpha", fmtNum(st.beta,2)+" / "+fmtNum(st.alpha,1)+"%", "vs "+bl);
     portfolioTile(grid, "Sharpe / Sortino", fmtNum(st.sharpe,2)+" / "+(st.sortino==null?"—":fmtNum(st.sortino,2)));
     portfolioTile(grid, "Calmar", st.calmar==null?"—":fmtNum(st.calmar,2));
-    portfolioTile(grid, "Up-cap / Down-cap", (st.upcap==null?"—":fmtNum(st.upcap,0)+"%")+" / "+(st.downcap==null?"—":fmtNum(st.downcap,0)+"%"), "vs NIFTY 50 TRI");
+    portfolioTile(grid, "Up-cap / Down-cap", (st.upcap==null?"—":fmtNum(st.upcap,0)+"%")+" / "+(st.downcap==null?"—":fmtNum(st.downcap,0)+"%"), "vs "+bl);
     portfolioOutputEl.appendChild(grid);
 
     var note = document.createElement("div");
     note.className = "baf-empty";
-    note.textContent = "Common history: " + fmtDate(dayToDate(st.startDay)) + " – " + fmtDate(dayToDate(st.endDay)) + " (" + fmtNum(st.years,1) + " yrs), limited by whichever selected fund launched most recently. Buy-and-hold from that date — weights drift with performance, no rebalancing.";
+    note.textContent = "Common history: " + fmtDate(dayToDate(st.startDay)) + " – " + fmtDate(dayToDate(st.endDay)) + " (" + fmtNum(st.years,1) + " yrs), limited by whichever fund in the mix — or the benchmark — launched most recently. Buy-and-hold from that date — weights drift with performance, no rebalancing.";
     portfolioOutputEl.appendChild(note);
 
     if(result.breakdown.length>1){
@@ -1972,7 +2055,7 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
     chartsRow.className = "portfolio-charts";
     var growthBox = document.createElement("div"); growthBox.className = "portfolio-chart-box";
     var growthTitle = document.createElement("div"); growthTitle.className = "portfolio-chart-title";
-    growthTitle.textContent = "Portfolio value vs 100% NIFTY 50 TRI";
+    growthTitle.textContent = "Portfolio value vs 100% " + bl;
     var growthCanvas = document.createElement("canvas"); growthCanvas.width = 1400; growthCanvas.height = 340;
     growthBox.appendChild(growthTitle); growthBox.appendChild(growthCanvas);
 
@@ -1988,7 +2071,7 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
     var cssVars = getComputedStyle(document.documentElement);
     drawMiniLineChart(growthCanvas, result.days, [
       { vals: result.value, color: cssVars.getPropertyValue("--n50").trim(), label:"Blend" },
-      { vals: result.niftyValue, color: cssVars.getPropertyValue("--text-3").trim(), dash:true, label:"100% NIFTY 50 TRI" }
+      { vals: result.niftyValue, color: cssVars.getPropertyValue("--text-3").trim(), dash:true, label:"100% " + bl }
     ], { money:true });
 
     var dd = new Array(result.value.length);
@@ -2000,6 +2083,7 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
   }
 
   function recomputePortfolio(){
+    writeHash();
     if(state.tab==="portfolio") renderPortfolioOutput();
   }
 
@@ -2016,11 +2100,7 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
     var presetsRow = document.createElement("div");
     presetsRow.className = "portfolio-presets";
     PORTFOLIO_PRESETS.forEach(function(preset){
-      var b = document.createElement("button");
-      b.type = "button"; b.className = "ranges-btn"; b.textContent = preset.label;
-      b.style.cssText = "border:1px solid var(--border); background:transparent; color:var(--text-2); border-radius:8px; padding:6px 12px; font-size:12.5px; font-family:'IBM Plex Mono',monospace; cursor:pointer;";
-      b.addEventListener("mouseenter", function(){ b.style.background = "var(--chip-hover)"; });
-      b.addEventListener("mouseleave", function(){ b.style.background = "transparent"; });
+      var b = plainButton(preset.label);
       b.addEventListener("click", function(){ applyPortfolioPreset(preset); });
       presetsRow.appendChild(b);
     });
@@ -2037,7 +2117,31 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
       recomputePortfolio();
     });
     amountRow.appendChild(label); amountRow.appendChild(portfolioAmountInput);
+
+    var benchLabel = document.createElement("label"); benchLabel.textContent = "Benchmark"; benchLabel.htmlFor = "portfolioBench";
+    portfolioBenchSelect = buildInstrumentSelect(state.portfolio.bench);
+    portfolioBenchSelect.id = "portfolioBench";
+    portfolioBenchSelect.style.flex = "0 1 230px"; portfolioBenchSelect.style.minWidth = "180px";
+    portfolioBenchSelect.addEventListener("change", function(){
+      state.portfolio.bench = portfolioBenchSelect.value;
+      recomputePortfolio();
+    });
+    amountRow.appendChild(benchLabel); amountRow.appendChild(portfolioBenchSelect);
     amountRow.appendChild(presetsRow);
+
+    var copyBtn = plainButton("Copy link");
+    copyBtn.addEventListener("click", function(){
+      writeHashNow();
+      var url = location.href;
+      var done = function(ok){
+        copyBtn.textContent = ok ? "Copied!" : "Copy from the address bar";
+        setTimeout(function(){ copyBtn.textContent = "Copy link"; }, 1800);
+      };
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(url).then(function(){ done(true); }, function(){ fallbackCopy(url, done); });
+      } else { fallbackCopy(url, done); }
+    });
+    amountRow.appendChild(copyBtn);
 
     portfolioLegsEl = document.createElement("div");
     portfolioLegsEl.className = "portfolio-legs";
@@ -2132,6 +2236,8 @@ window.__INDEX_DATA__ = {"NIFTY 50":{"d":[3467,3468,3469,3472,3473,3474,3475,347
   resize();
   renderStats();
   window.addEventListener("resize", function(){ if(!chartBox.hidden) resize(); });
+  applyHashState();
+  window.addEventListener("hashchange", applyHashState);
 })();
 
 </script>
