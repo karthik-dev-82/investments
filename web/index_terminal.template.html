@@ -152,6 +152,7 @@
   .legend button[aria-pressed="false"]{ color:var(--text-3); }
   .legend button[aria-pressed="false"] .dot{ opacity:.35; }
   .legend .dot{ width:9px; height:9px; border-radius:50%; flex:none; }
+  .legend .dot.dashed{ background:transparent; border:1.5px dashed; box-sizing:border-box; }
   .chart-head[hidden]{ display:none; }
   .baf-section{ margin-top:18px; }
   .baf-section h3{ font-size:12.5px; font-weight:600; color:var(--text-2); margin:0 0 8px; font-family:"IBM Plex Mono",monospace; }
@@ -314,7 +315,13 @@
     { key:"ICICI Prudential Balanced Advantage Fund",  label:"ICICI Pru BAF",      short:"ICICI-BAF", varName:"--baf2", group:"baf" },
     { key:"Edelweiss Balanced Advantage Fund",         label:"Edelweiss BAF",      short:"EDEL-BAF",  varName:"--baf3", group:"baf" },
     { key:"Nippon India Balanced Advantage Fund",      label:"Nippon India BAF",   short:"NI-BAF",    varName:"--baf4", group:"baf" },
-    { key:"SBI Balanced Advantage Fund",               label:"SBI BAF",            short:"SBI-BAF",   varName:"--baf5", group:"baf" }
+    { key:"SBI Balanced Advantage Fund",               label:"SBI BAF",            short:"SBI-BAF",   varName:"--baf5", group:"baf" },
+    { key:"HDFC Multi Asset Allocation Fund",             label:"HDFC Multi Asset",    short:"HDFC-MA",  varName:"--n50",  group:"multiasset", dash:true },
+    { key:"Axis Multi Asset Allocation Fund",             label:"Axis Multi Asset",    short:"AXIS-MA",  varName:"--nn50", group:"multiasset", dash:true },
+    { key:"ICICI Prudential Multi Asset Allocation Fund", label:"ICICI Pru Multi Asset", short:"ICICI-MA", varName:"--mc150",group:"multiasset", dash:true },
+    { key:"UTI Multi Asset Allocation Fund",              label:"UTI Multi Asset",     short:"UTI-MA",   varName:"--baf1", group:"multiasset", dash:true },
+    { key:"Quant Multi Asset Allocation Fund",            label:"Quant Multi Asset",   short:"QUANT-MA", varName:"--baf2", group:"multiasset", dash:true },
+    { key:"SBI Multi Asset Allocation Fund",              label:"SBI Multi Asset",     short:"SBI-MA",   varName:"--baf3", group:"multiasset", dash:true }
   ];
 
   var ROLL_PERIODS = [1,3,5,7,10];
@@ -433,13 +440,16 @@
     mode: "rebased",       // "level" | "rebased" (Growth tab only)
     log: false,             // price tab only
     rollPeriod: 5,
-    bafWindow: BAF_STATS.windows.length-1,
+    fundWindow: { baf: BAF_STATS.windows.length-1, multiasset: MULTIASSET_STATS.windows.length-1 },
     volWindow: 63,
     visible: {
       "NIFTY 50":true, "NIFTY NEXT 50":true, "NIFTY MIDCAP 150":true,
       "HDFC Balanced Advantage Fund":false, "ICICI Prudential Balanced Advantage Fund":false,
       "Edelweiss Balanced Advantage Fund":false, "Nippon India Balanced Advantage Fund":false,
-      "SBI Balanced Advantage Fund":false
+      "SBI Balanced Advantage Fund":false,
+      "HDFC Multi Asset Allocation Fund":false, "Axis Multi Asset Allocation Fund":false,
+      "ICICI Prudential Multi Asset Allocation Fund":false, "UTI Multi Asset Allocation Fund":false,
+      "Quant Multi Asset Allocation Fund":false, "SBI Multi Asset Allocation Fund":false
     },
     domain: [FULL_MIN, FULL_MAX]
   };
@@ -536,13 +546,19 @@
     return v.toLocaleString("en-IN", { minimumFractionDigits:digits, maximumFractionDigits:digits });
   }
 
+  var LEGEND_GROUP_LABELS = {
+    index: "Indices",
+    baf: "Balanced Advantage (Direct, Growth)",
+    multiasset: "Multi Asset (Direct, Growth)"
+  };
+
   // ---------- legend ----------
   var lastGroup = null;
   SERIES.forEach(function(s){
     if(s.group !== lastGroup){
       var divider = document.createElement("span");
       divider.className = "legend-group";
-      divider.textContent = s.group === "baf" ? "Balanced Advantage (Direct, Growth)" : "Indices";
+      divider.textContent = LEGEND_GROUP_LABELS[s.group] || "Indices";
       legendEl.appendChild(divider);
       lastGroup = s.group;
     }
@@ -550,8 +566,8 @@
     btn.type = "button";
     btn.setAttribute("aria-pressed", String(!!state.visible[s.key]));
     var dot = document.createElement("span");
-    dot.className = "dot";
-    dot.style.background = s.color;
+    dot.className = s.dash ? "dot dashed" : "dot";
+    if(s.dash){ dot.style.borderColor = s.color; } else { dot.style.background = s.color; }
     btn.appendChild(dot);
     var label = document.createElement("span");
     label.textContent = s.label;
@@ -851,9 +867,12 @@
     if(state.tab==="price"){
       if(state.mode==="rebased"){
         t += " · every line = 100 on " + fmtDate(dayToDate(rebaseInfo().day));
-      } else if(SERIES.some(function(s){ return s.group==="baf" && state.visible[s.key]; })){
+      } else if(SERIES.some(function(s){ return s.group!=="index" && state.visible[s.key]; })){
         t += " · fund NAVs and TRI levels are on different scales — use Growth of ₹100 to compare";
       }
+    }
+    if(SERIES.some(function(s){ return s.group==="multiasset" && state.visible[s.key]; })){
+      t += " · dashed lines = Multi Asset funds";
     }
     chartHintEl.textContent = t;
   }
@@ -913,7 +932,9 @@
       if(i1-i0<1) return;
       ctx.beginPath();
       ctx.strokeStyle = s.color;
-      ctx.lineWidth = 1.75;
+      ctx.lineWidth = s.dash ? 1.4 : 1.75;
+      ctx.globalAlpha = s.dash ? 0.7 : 1;
+      ctx.setLineDash(s.dash ? [7,5] : []);
       var started=false;
       for(var i=i0;i<i1;i++){
         var raw2 = def.getVal(s,i);
@@ -924,6 +945,8 @@
       }
       ctx.stroke();
     });
+    ctx.setLineDash([]);
+    ctx.globalAlpha = 1;
 
     var zl = def.zeroLine ? def.zeroLine() : null;
     if(zl!=null){
@@ -1253,12 +1276,12 @@
   function monthYear(iso){ var p = iso.split("-"); return MONTHS[+p[1]-1] + " " + p[0]; }
   function dash(v, digits, suffix){ return v==null ? "—" : fmtNum(v,digits) + (suffix||""); }
 
-  function renderBafFundsTile(tile, s){
-    var w = BAF_STATS.windows[state.bafWindow];
+  function renderFundRiskTile(tile, s, stats){
+    var w = stats.windows[state.fundWindow[s.group]];
     var st = w.funds[s.key];
     var valueEl = document.createElement("div");
     valueEl.className = "value tab";
-    var c = BAF_STATS.cost[s.key];
+    var c = stats.cost[s.key];
     valueEl.textContent = fmtNum(c.allin,2) + "%";
     tile.appendChild(valueEl);
 
@@ -1296,7 +1319,8 @@
   }
 
   function renderFundsTile(tile, s){
-    if(s.group==="baf"){ renderBafFundsTile(tile, s); return; }
+    if(s.group==="baf"){ renderFundRiskTile(tile, s, BAF_STATS); return; }
+    if(s.group==="multiasset"){ renderFundRiskTile(tile, s, MULTIASSET_STATS); return; }
     var list = FUNDS_DATA[s.key] || [];
     if(list.length===0){
       var na = document.createElement("div");
@@ -1338,8 +1362,8 @@
     fundsWrapEl.innerHTML = "";
     var anyIndexFunds = SERIES.some(function(s){ return state.visible[s.key] && (FUNDS_DATA[s.key]||[]).length>0; });
     if(anyIndexFunds) renderIndexFundsTable();
-    renderBafSection();
-    renderMultiAssetSection();
+    renderFundRiskSection(BAF_STATS, "baf");
+    renderFundRiskSection(MULTIASSET_STATS, "multiasset");
   }
 
   function renderIndexFundsTable(){
@@ -1416,36 +1440,47 @@
     ["Down-cap", "Share of NIFTY 50 TRI's losses in its down months that the fund took",  function(f){ return dash(f.downcap,0,"%"); }]
   ];
 
-  function renderBafSection(){
+  var FUND_SECTION_HEADINGS = {
+    baf: "Balanced Advantage funds — risk vs NIFTY 50 TRI (Direct, Growth)",
+    multiasset: "Multi Asset funds — risk vs NIFTY 50 TRI (Direct, Growth)"
+  };
+  var FUND_SECTION_NOTES = {
+    baf: "Costs and AUM are as of Sep 2026: Nippon India and SBI straight from the fund houses' TER files, the others from Tickertape / Groww / INDmoney because those fund houses block automated access — see notes.",
+    multiasset: "Covers 6 of 27 Multi Asset Allocation funds — the ones with NAV history back to the 2013 Direct-plan era; see notes for which funds are missing and why. Costs and AUM as of Sep 2026: SBI straight from its TER file, the others from Tickertape / INDmoney because those fund houses block automated access."
+  };
+
+  function renderFundRiskSection(stats, group){
     var sect = document.createElement("div");
     sect.className = "baf-section";
     var h = document.createElement("h3");
-    h.textContent = "Balanced Advantage funds — risk vs NIFTY 50 TRI (Direct, Growth)";
+    h.textContent = FUND_SECTION_HEADINGS[group];
     sect.appendChild(h);
 
-    var shown = SERIES.filter(function(s){ return s.group==="baf" && state.visible[s.key]; });
+    var shown = SERIES.filter(function(s){ return s.group===group && state.visible[s.key]; });
     if(shown.length===0){
       var empty = document.createElement("div");
       empty.className = "baf-empty";
-      empty.textContent = "Switch on a Balanced Advantage fund in the legend above to see its expense ratio, beta, Sharpe and other risk stats.";
+      empty.textContent = "Switch on a " + (group==="baf" ? "Balanced Advantage" : "Multi Asset") + " fund in the legend above to see its expense ratio, beta, Sharpe and other risk stats.";
       sect.appendChild(empty);
       fundsWrapEl.appendChild(sect);
       return;
     }
 
-    var seg = document.createElement("div");
-    seg.className = "seg"; seg.setAttribute("role","group"); seg.setAttribute("aria-label","Comparison window");
-    BAF_STATS.windows.forEach(function(w, i){
-      var b = document.createElement("button");
-      b.type = "button";
-      b.textContent = "Since " + monthYear(w.start) + " (" + Object.keys(w.funds).length + " funds)";
-      b.setAttribute("aria-pressed", String(i===state.bafWindow));
-      b.addEventListener("click", function(){ state.bafWindow = i; renderFunds(); renderStats(); });
-      seg.appendChild(b);
-    });
-    sect.appendChild(seg);
+    if(stats.windows.length>1){
+      var seg = document.createElement("div");
+      seg.className = "seg"; seg.setAttribute("role","group"); seg.setAttribute("aria-label","Comparison window");
+      stats.windows.forEach(function(w, i){
+        var b = document.createElement("button");
+        b.type = "button";
+        b.textContent = "Since " + monthYear(w.start) + " (" + Object.keys(w.funds).length + " funds)";
+        b.setAttribute("aria-pressed", String(i===state.fundWindow[group]));
+        b.addEventListener("click", function(){ state.fundWindow[group] = i; renderFunds(); renderStats(); });
+        seg.appendChild(b);
+      });
+      sect.appendChild(seg);
+    }
 
-    var w = BAF_STATS.windows[state.bafWindow];
+    var w = stats.windows[state.fundWindow[group]];
     var table = document.createElement("table");
     table.className = "caltable";
     var thead = document.createElement("thead");
@@ -1477,9 +1512,9 @@
       var tdName = document.createElement("td");
       tdName.className = "yr";
       var dot = document.createElement("span");
-      dot.className = "dot"; dot.style.background = s.color;
       dot.style.display = "inline-block"; dot.style.width = "8px"; dot.style.height = "8px";
-      dot.style.borderRadius = "50%"; dot.style.marginRight = "6px";
+      dot.style.borderRadius = "50%"; dot.style.marginRight = "6px"; dot.style.boxSizing = "border-box";
+      if(s.dash){ dot.style.border = "1.5px dashed " + s.color; } else { dot.style.background = s.color; }
       tdName.appendChild(dot);
       tdName.appendChild(document.createTextNode(s.key));
       tr.appendChild(tdName);
@@ -1502,64 +1537,7 @@
 
     var note = document.createElement("div");
     note.className = "baf-empty";
-    note.textContent = "Window: " + monthYear(w.start) + " – " + monthYear(w.end) + " (" + w.years + " yrs). Beta, alpha, Sharpe, Sortino from daily returns; capture ratios from monthly returns; risk-free rate flat " + BAF_STATS.rf.toFixed(1) + "% (a simplification). Costs and AUM are as of Sep 2026: Nippon India and SBI straight from the fund houses' TER files, the others from Tickertape / Groww / INDmoney because those fund houses block automated access — see notes. Past behaviour of actively managed funds is not a guide to future results.";
-    sect.appendChild(note);
-    fundsWrapEl.appendChild(sect);
-  }
-
-  function renderMultiAssetSection(){
-    var sect = document.createElement("div");
-    sect.className = "baf-section";
-    var h = document.createElement("h3");
-    h.textContent = "Multi Asset funds \u2014 risk vs NIFTY 50 TRI (Direct, Growth)";
-    sect.appendChild(h);
-
-    var m = MULTIASSET_STATS;
-    var table = document.createElement("table");
-    table.className = "caltable";
-    var thead = document.createElement("thead");
-    var htr = document.createElement("tr");
-    var th0 = document.createElement("th"); th0.textContent = "Fund"; htr.appendChild(th0);
-    BAF_COLS.forEach(function(c){
-      var th = document.createElement("th"); th.textContent = c[0]; th.title = c[1]; htr.appendChild(th);
-    });
-    thead.appendChild(htr); table.appendChild(thead);
-
-    var tbody = document.createElement("tbody");
-    var bTr = document.createElement("tr");
-    var bName = document.createElement("td");
-    bName.className = "yr";
-    bName.textContent = "NIFTY 50 TRI (benchmark)";
-    bTr.appendChild(bName);
-    var benchVals = { "CAGR":dash(m.bench.cagr,1,"%"), "Max DD":dash(m.bench.maxdd,1,"%"), "Beta":"1.00", "Up-cap":"100%", "Down-cap":"100%" };
-    BAF_COLS.forEach(function(c){
-      var td = document.createElement("td");
-      td.className = "bench";
-      td.textContent = benchVals[c[0]] || "\u2014";
-      bTr.appendChild(td);
-    });
-    tbody.appendChild(bTr);
-
-    Object.keys(m.funds).forEach(function(name){
-      var f = m.funds[name];
-      var tr = document.createElement("tr");
-      var tdName = document.createElement("td");
-      tdName.className = "yr";
-      tdName.textContent = name;
-      tr.appendChild(tdName);
-      BAF_COLS.forEach(function(c){
-        var td = document.createElement("td");
-        td.textContent = c[2](f);
-        tr.appendChild(td);
-      });
-      tbody.appendChild(tr);
-    });
-    table.appendChild(tbody);
-    sect.appendChild(table);
-
-    var note = document.createElement("div");
-    note.className = "baf-empty";
-    note.textContent = "Window: " + monthYear(m.start) + " \u2013 " + monthYear(m.end) + " (" + m.years + " yrs). Covers 6 of 27 Multi Asset Allocation funds \u2014 the ones with NAV history back to the 2013 Direct-plan era; see notes for which funds are missing and why. Same method as the Balanced Advantage table above (risk-free rate flat " + m.rf.toFixed(1) + "%). Past behaviour of actively managed funds is not a guide to future results.";
+    note.textContent = "Window: " + monthYear(w.start) + " – " + monthYear(w.end) + " (" + w.years + " yrs). Beta, alpha, Sharpe, Sortino from daily returns; capture ratios from monthly returns; risk-free rate flat " + stats.rf.toFixed(1) + "% (a simplification). " + FUND_SECTION_NOTES[group] + " Past behaviour of actively managed funds is not a guide to future results.";
     sect.appendChild(note);
     fundsWrapEl.appendChild(sect);
   }

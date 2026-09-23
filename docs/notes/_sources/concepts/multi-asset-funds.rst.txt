@@ -148,10 +148,19 @@ A few things stand out:
   ICICI Prudential and Quant's outright outperformance is the exception
   here, not the rule.
 
-The Funds tab on the `Index Terminal <../index.html>`_ has this same table,
-directly below the Balanced Advantage section, using the identical method
-(daily returns for Beta/Alpha/Sharpe/Sortino/Correlation, monthly returns
-for the capture ratios, a flat 6.5% risk-free rate).
+All six funds are also toggleable series on the `Index Terminal
+<../index.html>`_'s Price, Drawdown, Rolling Return, Volatility, and
+Calendar Returns tabs, under "Multi Asset (Direct, Growth)" in the legend
+— drawn as thinner, lighter, **dashed lines**, since the categorical color
+palette used there is validated for 8 hues and the three indices plus five
+Balanced Advantage funds already use all 8. The six Multi Asset funds reuse
+those same hues; the dash/weight/opacity treatment — never color alone — is
+what tells them apart from an index or a Balanced Advantage fund of the same
+color, at every zoom level from one year to the full data history. Switching one
+on in the legend also populates the risk table below, directly under the
+Balanced Advantage section, using the identical method (daily returns for
+Beta/Alpha/Sharpe/Sortino/Correlation, monthly returns for the capture
+ratios, a flat 6.5% risk-free rate).
 
 Cost and size
 ---------------

@@ -59,6 +59,18 @@ BAF_FUNDS = {
     "SBI Balanced Advantage Fund": ROOT / "data/baf/sbi_balanced_advantage_fund.csv",
 }
 
+# Multi Asset Allocation funds -- equity + debt + a third asset (typically
+# gold), a different strategy from BAF's equity+debt. Plotted as chart series
+# same as BAF; see multiasset_risk_stats.py for why only these six.
+MULTIASSET_FUNDS = {
+    "HDFC Multi Asset Allocation Fund": ROOT / "data/multiasset/hdfc_multi_asset_allocation_fund.csv",
+    "Axis Multi Asset Allocation Fund": ROOT / "data/multiasset/axis_multi_asset_allocation_fund.csv",
+    "ICICI Prudential Multi Asset Allocation Fund": ROOT / "data/multiasset/icici_prudential_multi_asset_allocation_fund.csv",
+    "UTI Multi Asset Allocation Fund": ROOT / "data/multiasset/uti_multi_asset_allocation_fund.csv",
+    "Quant Multi Asset Allocation Fund": ROOT / "data/multiasset/quant_multi_asset_allocation_fund.csv",
+    "SBI Multi Asset Allocation Fund": ROOT / "data/multiasset/sbi_multi_asset_allocation_fund.csv",
+}
+
 
 def build_price_series(paths):
     out = {}
@@ -78,6 +90,7 @@ def build_price_series(paths):
 def build_index_data():
     out = build_price_series(INDICES)
     out.update(build_price_series(BAF_FUNDS))
+    out.update(build_price_series(MULTIASSET_FUNDS))
     return out
 
 
@@ -162,31 +175,33 @@ def build_multiasset_stats():
     def r(v, n):
         return None if v != v else round(v, n)
 
-    start_date, fund_paths = multiasset_risk_stats.WINDOWS[0]
-    bench, rows = multiasset_risk_stats.compute(start_date, fund_paths)
-    funds = {
-        x["name"]: {
-            **cost[x["name"]],
-            "cagr": r(x["cagr"], 2),
-            "maxdd": r(x["maxdd"], 2),
-            "beta": r(x["beta"], 2),
-            "alpha": r(x["alpha"], 2),
-            "sharpe": r(x["sharpe"], 2),
-            "sortino": r(x["sortino"], 2),
-            "calmar": r(x["calmar"], 2),
-            "upcap": r(x["upcap"], 1),
-            "downcap": r(x["downcap"], 1),
-        }
-        for x in rows
-    }
-    return {
-        "rf": multiasset_risk_stats.RF_ANNUAL * 100,
-        "start": bench["start"],
-        "end": bench["end"],
-        "years": round(bench["years"], 1),
-        "bench": {"cagr": r(bench["cagr"], 2), "maxdd": r(bench["maxdd"], 2)},
-        "funds": funds,
-    }
+    windows = []
+    for start_date, fund_paths in multiasset_risk_stats.WINDOWS:
+        bench, rows = multiasset_risk_stats.compute(start_date, fund_paths)
+        windows.append(
+            {
+                "start": bench["start"],
+                "end": bench["end"],
+                "years": round(bench["years"], 1),
+                "bench": {"cagr": r(bench["cagr"], 2), "maxdd": r(bench["maxdd"], 2)},
+                "funds": {
+                    x["name"]: {
+                        **cost[x["name"]],
+                        "cagr": r(x["cagr"], 2),
+                        "maxdd": r(x["maxdd"], 2),
+                        "beta": r(x["beta"], 2),
+                        "alpha": r(x["alpha"], 2),
+                        "sharpe": r(x["sharpe"], 2),
+                        "sortino": r(x["sortino"], 2),
+                        "calmar": r(x["calmar"], 2),
+                        "upcap": r(x["upcap"], 1),
+                        "downcap": r(x["downcap"], 1),
+                    }
+                    for x in rows
+                },
+            }
+        )
+    return {"rf": multiasset_risk_stats.RF_ANNUAL * 100, "windows": windows, "cost": cost}
 
 
 def main():
