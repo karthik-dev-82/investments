@@ -70,7 +70,13 @@ How to read it
   amount would have become in 100% NIFTY 50 TRI over the same window, so you
   can see whether the mix actually helped.
 - The **drawdown chart** is the blend's own underwater curve — see
-  :doc:`drawdown` for how to read one.
+  :doc:`drawdown` for how to read one. The Max Drawdown tile also gives the
+  worst point in rupees and its date, not just a percentage.
+- With more than one fund in the mix, a **"how the mix has drifted"** table
+  shows each fund's actual current share of the portfolio next to its
+  starting weight — since nothing rebalances, a fund that outperformed the
+  others is worth more than its original weight today, and this table makes
+  that concrete instead of leaving it as an abstract caveat.
 - Numbers update as you type; there's no separate "calculate" step.
 
 What it doesn't do

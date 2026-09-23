@@ -189,7 +189,7 @@
   .portfolio-add:hover{ background:var(--chip-hover); }
   .portfolio-total{ font-size:12px; font-family:"IBM Plex Mono",monospace; margin:4px 0 16px; }
   .portfolio-tiles{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-bottom:6px; }
-  .portfolio-charts{ display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:14px; margin-top:16px; }
+  .portfolio-charts{ display:flex; flex-direction:column; gap:16px; margin-top:16px; }
   .portfolio-chart-box{ border:1px solid var(--border); border-radius:12px; padding:10px 12px; background:var(--surface); }
   .portfolio-chart-title{ font-size:12px; color:var(--text-2); margin-bottom:6px; font-family:"IBM Plex Mono",monospace; }
   .portfolio-chart-box canvas{ width:100%; height:auto; display:block; }
@@ -1674,6 +1674,15 @@
     for(var i=0;i<vals.length;i++){ if(vals[i]>=peak) peak=vals[i]; var dd=vals[i]/peak-1; if(dd<worst) worst=dd; }
     return worst;
   }
+  function maxDrawdownDetail(days, vals){
+    var peak=-Infinity, peakDay=days[0], worst=0, worstDay=days[0], worstPeakDay=days[0], worstValue=vals[0];
+    for(var i=0;i<vals.length;i++){
+      if(vals[i]>=peak){ peak=vals[i]; peakDay=days[i]; }
+      var dd = vals[i]/peak-1;
+      if(dd<worst){ worst=dd; worstDay=days[i]; worstPeakDay=peakDay; worstValue=vals[i]; }
+    }
+    return { pct:worst*100, value:worstValue, day:worstDay, peakDay:worstPeakDay };
+  }
   function cagrArr(days, vals){
     var years = (days[days.length-1]-days[0])/365.25;
     return Math.pow(vals[vals.length-1]/vals[0], 1/years)-1;
@@ -1754,6 +1763,7 @@
   }
 
   function computeBlend(){
+    if(!(state.portfolio.amount>0)) return { error:"Enter an amount greater than ₹0." };
     var legs = state.portfolio.legs.filter(function(l){ return l.weight>0 && seriesByKey(l.key); });
     if(legs.length===0) return { error:"Add at least one fund with a weight above 0%." };
     var totalW = legs.reduce(function(a,l){ return a+l.weight; }, 0);
@@ -1787,7 +1797,21 @@
     var niftyUnits = amount / niftyMap.get(common[0]);
     var niftyValue = common.map(function(d){ return niftyUnits*niftyMap.get(d); });
 
-    return { days:common, value:value, niftyValue:niftyValue, stats: computeSeriesStats(common, value, niftyValue) };
+    var lastDay = common[common.length-1];
+    var breakdown = legSeries.map(function(x, idx){
+      var currentValue = units[idx]*priceMaps[idx].get(lastDay);
+      return {
+        key:x.s.key, label:x.s.label, color:x.s.color, dash:x.s.dash,
+        initialWeight: x.w*100, currentValue: currentValue, currentWeight: currentValue/value[value.length-1]*100
+      };
+    });
+
+    return {
+      days:common, value:value, niftyValue:niftyValue,
+      stats: computeSeriesStats(common, value, niftyValue),
+      trough: maxDrawdownDetail(common, value),
+      breakdown: breakdown
+    };
   }
 
   function fmtCompactRupees(v){
@@ -1896,7 +1920,8 @@
     portfolioTile(grid, "Current value", fmtCompactRupees(st.currentValue),
       (totalReturn>=0?"+":"")+fmtNum(totalReturn,1)+"% total return", totalReturn>=0?"up":"down");
     portfolioTile(grid, "CAGR", fmtNum(st.cagr,2)+"%", "NIFTY 50 TRI: "+fmtNum(st.benchCagr,2)+"%");
-    portfolioTile(grid, "Max drawdown", fmtNum(st.maxdd,1)+"%", "NIFTY 50 TRI: "+fmtNum(st.benchMaxdd,1)+"%");
+    portfolioTile(grid, "Max drawdown", fmtNum(st.maxdd,1)+"%",
+      "worst point: " + fmtCompactRupees(result.trough.value) + " on " + fmtDate(dayToDate(result.trough.day)) + " (NIFTY 50 TRI: "+fmtNum(st.benchMaxdd,1)+"%)");
     portfolioTile(grid, "Ann. volatility", fmtNum(st.vol,2)+"%");
     portfolioTile(grid, "Beta / Alpha", fmtNum(st.beta,2)+" / "+fmtNum(st.alpha,1)+"%", "vs NIFTY 50 TRI");
     portfolioTile(grid, "Sharpe / Sortino", fmtNum(st.sharpe,2)+" / "+(st.sortino==null?"—":fmtNum(st.sortino,2)));
@@ -1909,18 +1934,52 @@
     note.textContent = "Common history: " + fmtDate(dayToDate(st.startDay)) + " – " + fmtDate(dayToDate(st.endDay)) + " (" + fmtNum(st.years,1) + " yrs), limited by whichever selected fund launched most recently. Buy-and-hold from that date — weights drift with performance, no rebalancing.";
     portfolioOutputEl.appendChild(note);
 
+    if(result.breakdown.length>1){
+      var mixTitle = document.createElement("div");
+      mixTitle.className = "portfolio-chart-title"; mixTitle.style.marginTop = "4px";
+      mixTitle.textContent = "How the mix has drifted (no rebalancing)";
+      portfolioOutputEl.appendChild(mixTitle);
+
+      var mixTable = document.createElement("table");
+      mixTable.className = "caltable";
+      var mThead = document.createElement("thead");
+      var mHtr = document.createElement("tr");
+      ["Fund","Initial weight","Current weight","Current value"].forEach(function(h){
+        var th = document.createElement("th"); th.textContent = h; mHtr.appendChild(th);
+      });
+      mThead.appendChild(mHtr); mixTable.appendChild(mThead);
+      var mTbody = document.createElement("tbody");
+      result.breakdown.forEach(function(b){
+        var tr = document.createElement("tr");
+        var tdName = document.createElement("td"); tdName.className = "yr";
+        var dot = document.createElement("span");
+        dot.style.display="inline-block"; dot.style.width="8px"; dot.style.height="8px";
+        dot.style.borderRadius="50%"; dot.style.marginRight="6px"; dot.style.boxSizing="border-box";
+        if(b.dash){ dot.style.border = "1.5px dashed " + b.color; } else { dot.style.background = b.color; }
+        tdName.appendChild(dot); tdName.appendChild(document.createTextNode(b.label));
+        var tdInit = document.createElement("td"); tdInit.textContent = fmtNum(b.initialWeight,1)+"%";
+        var tdCur = document.createElement("td"); tdCur.textContent = fmtNum(b.currentWeight,1)+"%";
+        var tdVal = document.createElement("td"); tdVal.style.textAlign="right"; tdVal.style.fontVariantNumeric="tabular-nums";
+        tdVal.textContent = fmtCompactRupees(b.currentValue);
+        tr.appendChild(tdName); tr.appendChild(tdInit); tr.appendChild(tdCur); tr.appendChild(tdVal);
+        mTbody.appendChild(tr);
+      });
+      mixTable.appendChild(mTbody);
+      portfolioOutputEl.appendChild(mixTable);
+    }
+
     var chartsRow = document.createElement("div");
     chartsRow.className = "portfolio-charts";
     var growthBox = document.createElement("div"); growthBox.className = "portfolio-chart-box";
     var growthTitle = document.createElement("div"); growthTitle.className = "portfolio-chart-title";
     growthTitle.textContent = "Portfolio value vs 100% NIFTY 50 TRI";
-    var growthCanvas = document.createElement("canvas"); growthCanvas.width = 640; growthCanvas.height = 240;
+    var growthCanvas = document.createElement("canvas"); growthCanvas.width = 1400; growthCanvas.height = 340;
     growthBox.appendChild(growthTitle); growthBox.appendChild(growthCanvas);
 
     var ddBox = document.createElement("div"); ddBox.className = "portfolio-chart-box";
     var ddTitle = document.createElement("div"); ddTitle.className = "portfolio-chart-title";
     ddTitle.textContent = "Portfolio drawdown";
-    var ddCanvas = document.createElement("canvas"); ddCanvas.width = 640; ddCanvas.height = 240;
+    var ddCanvas = document.createElement("canvas"); ddCanvas.width = 1400; ddCanvas.height = 300;
     ddBox.appendChild(ddTitle); ddBox.appendChild(ddCanvas);
 
     chartsRow.appendChild(growthBox); chartsRow.appendChild(ddBox);
